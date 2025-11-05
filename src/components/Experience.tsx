@@ -1,12 +1,12 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Briefcase } from 'lucide-react'
+import { Briefcase, CheckCircle2 } from 'lucide-react'
 import { profile } from '@/data/profile'
 
 const Experience = () => {
   return (
-    <section id="experience" className="py-20 px-4 sm:px-6 lg:px-8 bg-dark-secondary/50 relative section-background">
+    <section id="experience" className="py-20 px-4 sm:px-6 lg:px-8 bg-dark-secondary/50 dark:bg-dark-secondary/50 bg-light-secondary/50 relative section-background">
       <div className="max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -35,16 +35,16 @@ const Experience = () => {
                       <Briefcase className="w-5 h-5 text-accent" />
                       <h3 className="text-2xl font-bold text-primary">{exp.company}</h3>
                     </div>
-                    <p className="text-lg text-gray-300 font-semibold">{exp.role}</p>
-                    <p className="text-gray-400">{exp.location}</p>
+                    <p className="text-lg text-gray-300 dark:text-gray-300 text-gray-700 font-semibold">{exp.role}</p>
+                    <p className="text-gray-400 dark:text-gray-400 text-gray-600">{exp.location}</p>
                   </div>
                   <span className="text-accent font-semibold mt-2 md:mt-0">{exp.period}</span>
                 </div>
-                <ul className="space-y-2 mt-4">
+                <ul className="space-y-3 mt-4">
                   {exp.achievements.map((achievement, i) => (
-                    <li key={i} className="text-gray-300 flex items-start gap-2">
-                      <span className="text-accent mt-2">●</span>
-                      <span>{achievement}</span>
+                    <li key={i} className="text-gray-300 dark:text-gray-300 text-gray-700 flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
+                      <span className="leading-relaxed">{achievement}</span>
                     </li>
                   ))}
                 </ul>
@@ -58,4 +58,3 @@ const Experience = () => {
 }
 
 export default Experience
-

@@ -4,12 +4,21 @@
 
 @layer base {
   body {
-    @apply bg-dark text-white;
+    @apply dark:bg-dark bg-light-secondary dark:text-white text-gray-900;
     font-feature-settings: "rlig" 1, "calt" 1;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   
   html {
     scroll-behavior: smooth;
+  }
+  
+  .dark {
+    color-scheme: dark;
+  }
+  
+  .light {
+    color-scheme: light;
   }
 }
 
@@ -43,9 +52,10 @@
   }
   
   .gradient-border-content {
-    background: #0f172a;
+    @apply dark:bg-dark bg-light-secondary;
     border-radius: 10px;
     height: 100%;
+    transition: background-color 0.3s ease;
   }
   
   .glass-effect {

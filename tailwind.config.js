@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -8,11 +9,29 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#3b82f6',      // Professional blue
-        secondary: '#8b5cf6',     // Purple accent
-        accent: '#06b6d4',        // Cyan
-        dark: '#0f172a',          // Slate dark background
-        'dark-secondary': '#1e293b', // Slate secondary
+        primary: {
+          DEFAULT: '#6366f1',
+          dark: '#6366f1',
+          light: '#4f46e5',
+        },
+        secondary: {
+          DEFAULT: '#8b5cf6',
+          dark: '#8b5cf6',
+          light: '#7c3aed',
+        },
+        accent: {
+          DEFAULT: '#06b6d4',
+          dark: '#06b6d4',
+          light: '#0891b2',
+        },
+        dark: {
+          DEFAULT: '#0f172a',
+          secondary: '#1e293b',
+        },
+        light: {
+          DEFAULT: '#f8fafc',
+          secondary: '#f1f5f9',
+        },
       },
       animation: {
         'gradient': 'gradient 8s linear infinite',

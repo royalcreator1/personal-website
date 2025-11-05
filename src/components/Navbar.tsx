@@ -23,7 +23,7 @@ const Navbar = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrolled ? 'bg-dark-secondary/90 backdrop-blur-md shadow-lg' : 'bg-transparent'
+        scrolled ? 'dark:bg-dark-secondary/90 bg-light-secondary/90 backdrop-blur-md shadow-lg' : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,7 +42,7 @@ const Navbar = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => scrollToSection(item.toLowerCase())}
-                className="text-gray-300 hover:text-primary transition-colors"
+                className="dark:text-gray-300 text-gray-700 hover:text-primary transition-colors"
               >
                 {item}
               </motion.button>

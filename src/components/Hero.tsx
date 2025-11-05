@@ -85,7 +85,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="flex flex-wrap justify-center gap-6 text-gray-400"
+            className="flex flex-wrap justify-center gap-6 dark:text-gray-400 text-gray-600"
           >
             <div className="flex items-center gap-2">
               <MapPin className="w-5 h-5 text-accent" />
