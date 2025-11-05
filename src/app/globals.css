@@ -5,12 +5,28 @@
 @layer base {
   body {
     @apply bg-dark text-white;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  html {
+    scroll-behavior: smooth;
   }
 }
 
 @layer utilities {
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent;
+    background-size: 200% auto;
+    animation: gradient-shift 3s ease infinite;
+  }
+  
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
   }
   
   .gradient-border {
@@ -18,11 +34,28 @@
     background: linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4);
     padding: 2px;
     border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+  
+  .gradient-border:hover {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+    transform: translateY(-2px);
   }
   
   .gradient-border-content {
     background: #0a0a0f;
     border-radius: 10px;
+    height: 100%;
+  }
+  
+  .glass-effect {
+    background: rgba(26, 26, 46, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .section-padding {
+    @apply py-20 px-4 sm:px-6 lg:px-8;
   }
 }
 

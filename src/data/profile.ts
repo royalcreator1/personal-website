@@ -4,6 +4,7 @@ export const profile = {
   location: "Vijayawada, AP 521165",
   email: "jashuamrita360@gmail.com",
   phone: "+91 9993813331",
+  linkedin: "https://www.linkedin.com/in/ch-v-n-s-jaswanth/",
   
   experience: [
     {
@@ -47,10 +48,13 @@ export const profile = {
   },
   
   skills: {
-    languages: ["Python", "Java", "JavaScript", "TypeScript"],
-    frameworks: ["Django Rest Framework", "React", "Spring Boot", "FastAPI", "Node.js", "Streamlit"],
-    databases: ["PostgreSQL", "MySQL"],
-    tools: ["Postman", "Git", "Stripe", "Tesla Fleet API", "Docker", "AWS", "Azure DevOps"]
+    languages: ["Python", "Java", "JavaScript", "TypeScript", "Kotlin"],
+    frameworks: ["Django Rest Framework", "React", "Next.js", "Spring Boot", "FastAPI", "Node.js", "Streamlit"],
+    databases: ["PostgreSQL", "MySQL", "Elasticsearch"],
+    cloud: ["AWS", "EC2", "S3", "CloudFormation", "VPN", "Docker"],
+    messaging: ["Kafka", "RabbitMQ"],
+    monitoring: ["Grafana", "Prometheus"],
+    tools: ["Postman", "Git", "Stripe", "Tesla Fleet API", "Azure DevOps", "WebRTC", "Medium"]
   },
   
   projects: [

@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, Send } from 'lucide-react'
+import { Mail, Phone, MapPin, Send, Linkedin } from 'lucide-react'
 import { profile } from '@/data/profile'
 import { useState } from 'react'
 
@@ -98,6 +98,20 @@ const Contact = () => {
                     <div>
                       <p className="text-sm text-gray-400">Phone</p>
                       <p className="text-white">{profile.phone}</p>
+                    </div>
+                  </motion.a>
+                  
+                  <motion.a
+                    href={profile.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.05 }}
+                    className="flex items-center gap-4 p-4 rounded-lg bg-dark-secondary/50 hover:bg-dark-secondary transition-colors"
+                  >
+                    <Linkedin className="w-6 h-6 text-accent" />
+                    <div>
+                      <p className="text-sm text-gray-400">LinkedIn</p>
+                      <p className="text-white">Connect with me</p>
                     </div>
                   </motion.a>
                   

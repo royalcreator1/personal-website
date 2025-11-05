@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin } from 'lucide-react'
 import { profile } from '@/data/profile'
 import { useState, useEffect } from 'react'
@@ -15,14 +15,41 @@ const titles = [
 
 const Hero = () => {
   const [currentTitleIndex, setCurrentTitleIndex] = useState(0)
+  const [displayedText, setDisplayedText] = useState('')
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [typingSpeed, setTypingSpeed] = useState(100)
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const currentTitle = titles[currentTitleIndex]
+    let timeout: NodeJS.Timeout
+    
+    if (!isDeleting && displayedText === currentTitle) {
+      // Finished typing, wait then start deleting
+      timeout = setTimeout(() => {
+        setIsDeleting(true)
+        setTypingSpeed(50)
+      }, 2000)
+    } else if (isDeleting && displayedText === '') {
+      // Finished deleting, move to next title
+      setIsDeleting(false)
       setCurrentTitleIndex((prev) => (prev + 1) % titles.length)
-    }, 3000) // Change title every 3 seconds
-
-    return () => clearInterval(interval)
-  }, [])
+      setTypingSpeed(100)
+    } else if (isDeleting) {
+      // Deleting characters
+      timeout = setTimeout(() => {
+        setDisplayedText(currentTitle.substring(0, displayedText.length - 1))
+      }, typingSpeed)
+    } else {
+      // Typing characters
+      timeout = setTimeout(() => {
+        setDisplayedText(currentTitle.substring(0, displayedText.length + 1))
+      }, typingSpeed)
+    }
+    
+    return () => {
+      if (timeout) clearTimeout(timeout)
+    }
+  }, [displayedText, isDeleting, currentTitleIndex, typingSpeed])
 
   return (
     <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -46,18 +73,10 @@ const Hero = () => {
           </motion.h1>
           
           <div className="h-12 md:h-16 flex items-center justify-center mb-8">
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={currentTitleIndex}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
-                className="text-2xl md:text-3xl text-gray-300 font-semibold"
-              >
-                {titles[currentTitleIndex]}
-              </motion.p>
-            </AnimatePresence>
+            <p className="text-2xl md:text-3xl text-gray-300 font-semibold">
+              {displayedText}
+              <span className="animate-pulse text-accent">|</span>
+            </p>
           </div>
           
           <motion.div
@@ -120,4 +139,3 @@ const Hero = () => {
 }
 
 export default Hero
-
