@@ -51,24 +51,24 @@ const Skills = () => {
   ]
 
   return (
-    <section id="skills" className="py-20 px-4 sm:px-6 lg:px-8 dark:bg-dark-secondary/50 bg-gray-50 relative">
+    <section id="skills" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 dark:bg-dark-secondary/50 bg-gray-50 relative">
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-10 md:mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 text-gradient px-2">
             Technical Expertise
           </h2>
-          <p className="dark:text-gray-400 text-gray-600 text-lg max-w-2xl mx-auto">
+          <p className="dark:text-gray-400 text-gray-600 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-2">
             A comprehensive toolkit of modern technologies and frameworks to deliver robust, scalable solutions
           </p>
         </motion.div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {skillCategories.map((category, categoryIndex) => {
             const Icon = category.icon
             return (
@@ -81,19 +81,19 @@ const Skills = () => {
                 whileHover={{ scale: 1.02, y: -5 }}
                 className="gradient-border"
               >
-                <div className="gradient-border-content p-6 h-full">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg">
-                      <Icon className="w-5 h-5 text-accent" />
+                <div className="gradient-border-content p-4 sm:p-6 h-full">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                    <div className="p-1.5 sm:p-2 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex-shrink-0">
+                      <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
                     </div>
-                    <h3 className="text-xl font-bold text-gradient">{category.title}</h3>
+                    <h3 className="text-lg sm:text-xl font-bold text-gradient">{category.title}</h3>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {category.skills.map((skill, skillIndex) => (
                       <motion.span
                         key={skillIndex}
                         whileHover={{ scale: 1.1, rotate: 2 }}
-                        className={`px-3 py-1.5 bg-gradient-to-r ${category.color} rounded-lg text-sm font-semibold cursor-default shadow-sm`}
+                        className={`px-2 sm:px-3 py-1 sm:py-1.5 bg-gradient-to-r ${category.color} rounded-lg text-xs sm:text-sm font-semibold cursor-default shadow-sm`}
                       >
                         {skill}
                       </motion.span>

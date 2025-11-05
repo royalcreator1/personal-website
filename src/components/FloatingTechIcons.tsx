@@ -1,43 +1,48 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 import { 
   Code, GitBranch, Terminal, Database, Server, Cloud, Cpu, Zap, Box, Settings, Layers,
   Github, Package, Activity, Heart, Truck, FileCode, Network, Lock, CircleDot, CheckCircle2
 } from 'lucide-react'
 
 const techIcons = [
-  { icon: Code, label: 'Python', color: 'text-[#3776AB]/15 dark:text-[#3776AB]/15', delay: 0 },
-  { icon: Server, label: 'Java', color: 'text-[#ED8B00]/15 dark:text-[#ED8B00]/15', delay: 0.5 },
-  { icon: Github, label: 'GitHub', color: 'text-[#181717]/15 dark:text-[#181717]/15', delay: 1 },
-  { icon: Database, label: 'Database', color: 'text-[#4169E1]/15 dark:text-[#4169E1]/15', delay: 1.5 },
-  { icon: Cloud, label: 'AWS', color: 'text-[#FF9900]/15 dark:text-[#FF9900]/15', delay: 2 },
-  { icon: Layers, label: 'Kotlin', color: 'text-[#7F52FF]/15 dark:text-[#7F52FF]/15', delay: 2.5 },
-  { icon: GitBranch, label: 'Git', color: 'text-[#F05032]/15 dark:text-[#F05032]/15', delay: 3 },
-  { icon: Cpu, label: 'Docker', color: 'text-[#2496ED]/15 dark:text-[#2496ED]/15', delay: 3.5 },
-  { icon: Box, label: 'React', color: 'text-[#61DAFB]/15 dark:text-[#61DAFB]/15', delay: 4 },
-  { icon: Settings, label: 'Kafka', color: 'text-[#231F20]/15 dark:text-[#231F20]/15', delay: 4.5 },
-  { icon: Zap, label: 'Node.js', color: 'text-[#339933]/15 dark:text-[#339933]/15', delay: 5 },
-  { icon: Heart, label: 'Healthcare', color: 'text-[#E91E63]/15 dark:text-[#E91E63]/15', delay: 5.5 },
-  { icon: Truck, label: 'Supply Chain', color: 'text-[#4CAF50]/15 dark:text-[#4CAF50]/15', delay: 6 },
-  { icon: Package, label: 'Package Manager', color: 'text-[#CB3837]/15 dark:text-[#CB3837]/15', delay: 6.5 },
-  { icon: Activity, label: 'Monitoring', color: 'text-[#00D9FF]/15 dark:text-[#00D9FF]/15', delay: 7 },
-  { icon: FileCode, label: 'Code', color: 'text-[#007ACC]/15 dark:text-[#007ACC]/15', delay: 7.5 },
-  { icon: Network, label: 'Network', color: 'text-[#0080FF]/15 dark:text-[#0080FF]/15', delay: 8 },
-  { icon: Lock, label: 'Security', color: 'text-[#FFD700]/15 dark:text-[#FFD700]/15', delay: 8.5 },
+  { icon: Code, label: 'Python', color: 'text-[#FF4500]/20 dark:text-[#FF4500]/20', delay: 0 },
+  { icon: Server, label: 'Java', color: 'text-[#FFD700]/20 dark:text-[#FFD700]/20', delay: 0.5 },
+  { icon: Github, label: 'GitHub', color: 'text-[#FF6B35]/20 dark:text-[#FF6B35]/20', delay: 1 },
+  { icon: Database, label: 'Database', color: 'text-[#FF4500]/20 dark:text-[#FF4500]/20', delay: 1.5 },
+  { icon: Cloud, label: 'AWS', color: 'text-[#FFD700]/20 dark:text-[#FFD700]/20', delay: 2 },
+  { icon: Layers, label: 'Kotlin', color: 'text-[#FF6B35]/20 dark:text-[#FF6B35]/20', delay: 2.5 },
+  { icon: GitBranch, label: 'Git', color: 'text-[#FF4500]/20 dark:text-[#FF4500]/20', delay: 3 },
+  { icon: Cpu, label: 'Docker', color: 'text-[#FFD700]/20 dark:text-[#FFD700]/20', delay: 3.5 },
+  { icon: Box, label: 'React', color: 'text-[#FF6B35]/20 dark:text-[#FF6B35]/20', delay: 4 },
+  { icon: Settings, label: 'Kafka', color: 'text-[#FF4500]/20 dark:text-[#FF4500]/20', delay: 4.5 },
+  { icon: Zap, label: 'Node.js', color: 'text-[#FFD700]/20 dark:text-[#FFD700]/20', delay: 5 },
+  { icon: Heart, label: 'Healthcare', color: 'text-[#FF6B35]/20 dark:text-[#FF6B35]/20', delay: 5.5 },
+  { icon: Truck, label: 'Supply Chain', color: 'text-[#FF4500]/20 dark:text-[#FF4500]/20', delay: 6 },
+  { icon: Package, label: 'Package Manager', color: 'text-[#FFD700]/20 dark:text-[#FFD700]/20', delay: 6.5 },
+  { icon: Activity, label: 'Monitoring', color: 'text-[#FF6B35]/20 dark:text-[#FF6B35]/20', delay: 7 },
+  { icon: FileCode, label: 'Code', color: 'text-[#FF4500]/20 dark:text-[#FF4500]/20', delay: 7.5 },
+  { icon: Network, label: 'Network', color: 'text-[#FFD700]/20 dark:text-[#FFD700]/20', delay: 8 },
+  { icon: Lock, label: 'Security', color: 'text-[#FF6B35]/20 dark:text-[#FF6B35]/20', delay: 8.5 },
 ]
 
 const FloatingTechIcons = () => {
   const generateIcons = () => {
     const icons = []
-    for (let i = 0; i < 25; i++) {
+    // Reduce number of icons on mobile for better performance
+    const iconCount = typeof window !== 'undefined' && window.innerWidth < 640 ? 15 : 25
+    for (let i = 0; i < iconCount; i++) {
       const tech = techIcons[i % techIcons.length]
       const Icon = tech.icon
       const randomX = Math.random() * 100
       const randomY = Math.random() * 100
       const randomDuration = 20 + Math.random() * 15
       const randomDelay = Math.random() * 8
-      const randomSize = 14 + Math.random() * 20
+      const randomSize = typeof window !== 'undefined' && window.innerWidth < 640 
+        ? 12 + Math.random() * 12  // Smaller on mobile
+        : 14 + Math.random() * 20
       
       icons.push({
         Icon,
@@ -53,7 +58,18 @@ const FloatingTechIcons = () => {
     return icons
   }
 
-  const icons = generateIcons()
+  const [icons, setIcons] = useState<ReturnType<typeof generateIcons>>([])
+
+  useEffect(() => {
+    setIcons(generateIcons())
+    
+    const handleResize = () => {
+      setIcons(generateIcons())
+    }
+    
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
@@ -75,7 +91,7 @@ const FloatingTechIcons = () => {
       {icons.map((item) => (
         <motion.div
           key={item.key}
-          className={`absolute ${item.color} transition-opacity duration-300`}
+          className={`absolute ${item.color} transition-opacity duration-300 hidden sm:block`}
           style={{
             left: `${item.x}%`,
             top: `${item.y}%`,
@@ -97,10 +113,10 @@ const FloatingTechIcons = () => {
         </motion.div>
       ))}
 
-      {/* Subtle gradient orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/3 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/3 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-      <div className="absolute top-1/2 right-1/3 w-96 h-96 bg-accent/3 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }} />
+      {/* Subtle gradient orbs - hidden on mobile */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse hidden sm:block" style={{ boxShadow: '0 0 200px rgba(255, 69, 0, 0.3)' }} />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse hidden sm:block" style={{ animationDelay: '2s', boxShadow: '0 0 200px rgba(255, 215, 0, 0.3)' }} />
+      <div className="absolute top-1/2 right-1/3 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse hidden sm:block" style={{ animationDelay: '4s', boxShadow: '0 0 200px rgba(255, 107, 53, 0.3)' }} />
     </div>
   )
 }
