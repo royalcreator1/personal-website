@@ -7,16 +7,6 @@ export const profile = {
   
   experience: [
     {
-      company: "TIGER ANALYTICS",
-      location: "Chennai, IN",
-      role: "MLE Full Stack Engineer - Sedin Technologies Vendor",
-      period: "2024-Present",
-      achievements: [
-        "Delivered end-to-end solutions for a highly dynamic and data-driven application, including API development, UI implementation, and testing.",
-        "Developed RESTful APIs for a Pharma application using Python, ensuring robust backend architecture and seamless data integration."
-      ]
-    },
-    {
       company: "SEDIN TECHNOLOGIES",
       location: "Chennai, IN",
       role: "Software Engineer",
@@ -25,6 +15,16 @@ export const profile = {
         "Development of RESTful APIs using Django Framework, Spring Boot, and Node.js, reducing response time and enabling seamless integration with front-end applications.",
         "Skilled in payment gateway integration (Stripe) and chat functionality using third-party APIs (Sendbird Chat). Proven expertise in seamlessly implementing these features for enhanced application functionality.",
         "WebRTC with Dynamic Adaptive Bitrate was integrated to maintain smooth video calls and reduce call drop-offs, even in low-bandwidth conditions."
+      ]
+    },
+    {
+      company: "TIGER ANALYTICS",
+      location: "Chennai, IN",
+      role: "MLE Full Stack Engineer (Contractor from Sedin Technologies)",
+      period: "2024-2025",
+      achievements: [
+        "Delivered end-to-end solutions for a highly dynamic and data-driven application, including API development, UI implementation, and testing.",
+        "Developed RESTful APIs for a Pharma application using Python, ensuring robust backend architecture and seamless data integration."
       ]
     },
     {

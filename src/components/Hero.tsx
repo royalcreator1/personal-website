@@ -1,10 +1,29 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Mail, Phone, MapPin } from 'lucide-react'
 import { profile } from '@/data/profile'
+import { useState, useEffect } from 'react'
+
+const titles = [
+  'Software Engineer',
+  'Backend Developer',
+  'Frontend Developer',
+  'Integration Engineer',
+  'Android Developer'
+]
 
 const Hero = () => {
+  const [currentTitleIndex, setCurrentTitleIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTitleIndex((prev) => (prev + 1) % titles.length)
+    }, 3000) // Change title every 3 seconds
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 opacity-50" />
@@ -26,14 +45,20 @@ const Hero = () => {
             {profile.name}
           </motion.h1>
           
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="text-2xl md:text-3xl text-gray-300 mb-8"
-          >
-            {profile.title}
-          </motion.p>
+          <div className="h-12 md:h-16 flex items-center justify-center mb-8">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={currentTitleIndex}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+                className="text-2xl md:text-3xl text-gray-300 font-semibold"
+              >
+                {titles[currentTitleIndex]}
+              </motion.p>
+            </AnimatePresence>
+          </div>
           
           <motion.div
             initial={{ opacity: 0, y: 20 }}
