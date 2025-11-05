@@ -52,7 +52,7 @@ const Contact = () => {
   }
 
   return (
-    <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 dark:bg-dark-secondary/50 bg-gray-50 relative section-background">
+    <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 dark:bg-dark-secondary/50 bg-light-secondary/50 relative section-background">
       <div className="max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -80,7 +80,7 @@ const Contact = () => {
                   <motion.a
                     href={`mailto:${profile.email}`}
                     whileHover={{ scale: 1.05 }}
-                    className="flex items-center gap-4 p-4 rounded-lg dark:bg-dark-secondary/50 bg-gray-100 hover:dark:bg-dark-secondary hover:bg-gray-200 transition-colors duration-300"
+                    className="flex items-center gap-4 p-4 rounded-lg dark:bg-dark-secondary/50 bg-light-secondary/70 hover:dark:bg-dark-secondary hover:bg-light-secondary transition-colors duration-300"
                   >
                     <Mail className="w-6 h-6 text-accent" />
                     <div>
@@ -92,7 +92,7 @@ const Contact = () => {
                   <motion.a
                     href={`tel:${profile.phone}`}
                     whileHover={{ scale: 1.05 }}
-                    className="flex items-center gap-4 p-4 rounded-lg dark:bg-dark-secondary/50 bg-gray-100 hover:dark:bg-dark-secondary hover:bg-gray-200 transition-colors duration-300"
+                    className="flex items-center gap-4 p-4 rounded-lg dark:bg-dark-secondary/50 bg-light-secondary/70 hover:dark:bg-dark-secondary hover:bg-light-secondary transition-colors duration-300"
                   >
                     <Phone className="w-6 h-6 text-accent" />
                     <div>
@@ -106,7 +106,7 @@ const Contact = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.05 }}
-                    className="flex items-center gap-4 p-4 rounded-lg dark:bg-dark-secondary/50 bg-gray-100 hover:dark:bg-dark-secondary hover:bg-gray-200 transition-colors duration-300"
+                    className="flex items-center gap-4 p-4 rounded-lg dark:bg-dark-secondary/50 bg-light-secondary/70 hover:dark:bg-dark-secondary hover:bg-light-secondary transition-colors duration-300"
                   >
                     <Linkedin className="w-6 h-6 text-accent" />
                     <div>
@@ -149,7 +149,7 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 dark:bg-dark-secondary bg-gray-100 dark:border-gray-700 border-gray-300 rounded-lg dark:text-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 dark:bg-dark-secondary bg-light-secondary dark:border-orange-900/50 border-orange-200 rounded-lg dark:text-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
                     placeholder="Your name"
                   />
                 </div>
@@ -165,7 +165,7 @@ const Contact = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 dark:bg-dark-secondary bg-gray-100 dark:border-gray-700 border-gray-300 rounded-lg dark:text-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 dark:bg-dark-secondary bg-light-secondary dark:border-orange-900/50 border-orange-200 rounded-lg dark:text-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
                     placeholder="your.email@example.com"
                   />
                 </div>

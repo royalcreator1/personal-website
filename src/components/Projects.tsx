@@ -36,7 +36,7 @@ const Projects = () => {
                   </div>
                 </div>
                 
-                <div className="space-y-2 mb-4 text-sm text-gray-400 dark:text-gray-400 text-gray-600">
+                <div className="space-y-2 mb-4 text-sm dark:text-gray-400 text-gray-700">
                   <div className="flex items-center gap-2">
                     <Briefcase className="w-4 h-4" />
                     <span>{project.company}</span>
@@ -56,17 +56,17 @@ const Projects = () => {
                 </div>
                 
                 <div className="mb-4">
-                  <p className="text-sm text-gray-300 dark:text-gray-300 text-gray-700 mb-2">
+                    <p className="text-sm dark:text-gray-200 text-gray-900 mb-2">
                     <span className="text-accent font-semibold">Tools: </span>
                     {project.tools}
                   </p>
                 </div>
                 
                 <div>
-                  <p className="text-sm font-semibold text-gray-300 dark:text-gray-300 text-gray-700 mb-2">Contribution:</p>
+                  <p className="text-sm font-semibold dark:text-gray-200 text-gray-900 mb-2">Contribution:</p>
                   <ul className="space-y-3">
                     {project.contribution.map((item, i) => (
-                      <li key={i} className="text-sm text-gray-400 dark:text-gray-400 text-gray-600 flex items-start gap-3">
+                      <li key={i} className="text-sm dark:text-gray-300 text-gray-800 flex items-start gap-3">
                         <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
                         <span className="leading-relaxed">{item}</span>
                       </li>

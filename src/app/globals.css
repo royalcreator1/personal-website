@@ -8,9 +8,18 @@
   }
   
   body {
-    @apply dark:bg-dark bg-white dark:text-white text-gray-900;
+    @apply dark:bg-dark bg-light dark:text-white text-gray-900;
     font-feature-settings: "rlig" 1, "calt" 1;
     transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(255, 69, 0, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
+  }
+  
+  .dark body {
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 50%, rgba(255, 215, 0, 0.08) 0%, transparent 50%);
   }
   
   html {
@@ -30,7 +39,8 @@
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent;
     background-size: 200% auto;
-    animation: gradient-shift 3s ease infinite;
+    animation: gradient-shift 3s ease infinite, glow-pulse 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 8px rgba(255, 69, 0, 0.5));
   }
   
   @keyframes gradient-shift {
@@ -42,24 +52,52 @@
     }
   }
   
+  @keyframes glow-pulse {
+    0%, 100% {
+      filter: drop-shadow(0 0 8px rgba(255, 69, 0, 0.5)) drop-shadow(0 0 12px rgba(255, 215, 0, 0.3));
+    }
+    50% {
+      filter: drop-shadow(0 0 12px rgba(255, 69, 0, 0.8)) drop-shadow(0 0 18px rgba(255, 215, 0, 0.5));
+    }
+  }
+  
   .gradient-border {
     position: relative;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4);
+    background: linear-gradient(135deg, #FF4500, #FFD700, #FF6B35);
     padding: 2px;
     border-radius: 12px;
     transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(255, 69, 0, 0.2);
   }
   
   .gradient-border:hover {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.25);
+    box-shadow: 0 0 25px rgba(255, 69, 0, 0.5), 0 0 35px rgba(255, 215, 0, 0.3);
     transform: translateY(-2px);
+    animation: border-glow 2s ease-in-out infinite;
+  }
+  
+  @keyframes border-glow {
+    0%, 100% {
+      box-shadow: 0 0 25px rgba(255, 69, 0, 0.5), 0 0 35px rgba(255, 215, 0, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 35px rgba(255, 69, 0, 0.7), 0 0 45px rgba(255, 215, 0, 0.5);
+    }
   }
   
   .gradient-border-content {
-    @apply dark:bg-dark bg-white;
+    @apply dark:bg-dark bg-light;
     border-radius: 10px;
     height: 100%;
     transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .dark .gradient-border-content {
+    background: linear-gradient(135deg, #0a0000 0%, #1a0000 100%);
+  }
+  
+  .light .gradient-border-content {
+    background: linear-gradient(135deg, #FFF8F0 0%, #FFEDD5 100%);
   }
   
   .glass-effect {
@@ -82,10 +120,25 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.02) 0%, transparent 50%),
-                radial-gradient(circle at 80% 50%, rgba(139, 92, 246, 0.02) 0%, transparent 50%);
+    background: radial-gradient(circle at 20% 50%, rgba(255, 69, 0, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
     pointer-events: none;
     z-index: -1;
+    animation: background-pulse 4s ease-in-out infinite;
+  }
+  
+  .dark .section-background::before {
+    background: radial-gradient(circle at 20% 50%, rgba(255, 69, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 215, 0, 0.12) 0%, transparent 50%);
+  }
+  
+  @keyframes background-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
   }
 }
 

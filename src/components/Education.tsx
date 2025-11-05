@@ -32,8 +32,8 @@ const Education = () => {
               </div>
               <div className="flex-1">
                 <h3 className="text-2xl font-bold text-primary mb-2">{profile.education.school}</h3>
-                <p className="text-lg dark:text-gray-300 text-gray-800 font-semibold mb-2">{profile.education.degree}</p>
-                <p className="dark:text-gray-400 text-gray-600 mb-2">{profile.education.location}</p>
+                <p className="text-lg dark:text-gray-200 text-gray-900 font-semibold mb-2">{profile.education.degree}</p>
+                <p className="dark:text-gray-400 text-gray-700 mb-2">{profile.education.location}</p>
                 <span className="text-accent font-semibold">{profile.education.period}</span>
               </div>
             </div>

@@ -8,10 +8,12 @@ import Projects from '@/components/Projects'
 import Contact from '@/components/Contact'
 import FloatingTechIcons from '@/components/FloatingTechIcons'
 import ThemeToggle from '@/components/ThemeToggle'
+import OGParticles from '@/components/OGParticles'
 
 export default function Home() {
   return (
     <main className="min-h-screen relative">
+      <OGParticles />
       <FloatingTechIcons />
       <ThemeToggle />
       <div className="relative z-10">

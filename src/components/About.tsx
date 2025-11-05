@@ -41,13 +41,13 @@ const About = () => {
             About Me
           </h2>
           <div className="max-w-4xl mx-auto">
-            <p className="text-xl dark:text-gray-300 text-gray-800 leading-relaxed mb-6">
+            <p className="text-xl dark:text-gray-200 text-gray-900 leading-relaxed mb-6 font-medium">
               I'm a <span className="text-primary font-semibold">versatile Software Engineer</span> specializing in 
               building high-performance, scalable applications across the full technology stack. With expertise spanning 
               <span className="text-secondary font-semibold"> backend systems, frontend frameworks, cloud infrastructure, and mobile development</span>, 
               I deliver end-to-end solutions that drive business value.
             </p>
-            <p className="text-lg dark:text-gray-400 text-gray-600 leading-relaxed mb-6">
+            <p className="text-lg dark:text-gray-300 text-gray-800 leading-relaxed mb-6">
               My experience across diverse domains—healthcare, pharmaceuticals, fintech, and enterprise solutions—has 
               equipped me with a unique ability to understand complex business requirements and translate them into 
               robust, user-centric technical implementations. I'm passionate about clean code, architectural excellence, 
@@ -80,7 +80,7 @@ const About = () => {
                     <Icon className="w-6 h-6 text-accent" />
                   </div>
                   <h3 className="text-xl font-bold dark:text-white text-gray-900 mb-3">{service.title}</h3>
-                  <p className="dark:text-gray-400 text-gray-600 text-sm leading-relaxed flex-grow">{service.description}</p>
+                  <p className="dark:text-gray-300 text-gray-700 text-sm leading-relaxed flex-grow">{service.description}</p>
                 </div>
               </motion.div>
             )

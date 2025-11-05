@@ -10,27 +10,27 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#6366f1',
-          dark: '#6366f1',
-          light: '#4f46e5',
+          DEFAULT: '#FF4500',      // Deep Orange/Red - OG style
+          dark: '#FF4500',
+          light: '#DC2626',
         },
         secondary: {
-          DEFAULT: '#8b5cf6',
-          dark: '#8b5cf6',
-          light: '#7c3aed',
+          DEFAULT: '#FFD700',      // Gold - OG style
+          dark: '#FFD700',
+          light: '#F59E0B',
         },
         accent: {
-          DEFAULT: '#06b6d4',
-          dark: '#06b6d4',
-          light: '#0891b2',
+          DEFAULT: '#FF6B35',      // Bright Orange - OG style
+          dark: '#FF6B35',
+          light: '#EA580C',
         },
         dark: {
-          DEFAULT: '#0f172a',
-          secondary: '#1e293b',
+          DEFAULT: '#0a0000',      // Deep black with red tint
+          secondary: '#1a0000',
         },
         light: {
-          DEFAULT: '#f8fafc',
-          secondary: '#f1f5f9',
+          DEFAULT: '#FFF8F0',      // Cream/off-white
+          secondary: '#FFEDD5',
         },
       },
       animation: {

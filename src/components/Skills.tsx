@@ -51,7 +51,7 @@ const Skills = () => {
   ]
 
   return (
-    <section id="skills" className="py-20 px-4 sm:px-6 lg:px-8 dark:bg-dark-secondary/50 bg-gray-50 relative">
+    <section id="skills" className="py-20 px-4 sm:px-6 lg:px-8 dark:bg-dark-secondary/50 bg-light-secondary/50 relative">
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
