@@ -52,7 +52,7 @@ const Contact = () => {
   }
 
   return (
-    <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-dark-secondary/50 relative section-background">
+    <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 dark:bg-dark-secondary/50 bg-gray-50 relative section-background">
       <div className="max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -80,24 +80,24 @@ const Contact = () => {
                   <motion.a
                     href={`mailto:${profile.email}`}
                     whileHover={{ scale: 1.05 }}
-                    className="flex items-center gap-4 p-4 rounded-lg bg-dark-secondary/50 hover:bg-dark-secondary transition-colors"
+                    className="flex items-center gap-4 p-4 rounded-lg dark:bg-dark-secondary/50 bg-gray-100 hover:dark:bg-dark-secondary hover:bg-gray-200 transition-colors duration-300"
                   >
                     <Mail className="w-6 h-6 text-accent" />
                     <div>
-                      <p className="text-sm text-gray-400">Email</p>
-                      <p className="text-white">{profile.email}</p>
+                      <p className="text-sm dark:text-gray-400 text-gray-600">Email</p>
+                      <p className="dark:text-white text-gray-900">{profile.email}</p>
                     </div>
                   </motion.a>
                   
                   <motion.a
                     href={`tel:${profile.phone}`}
                     whileHover={{ scale: 1.05 }}
-                    className="flex items-center gap-4 p-4 rounded-lg bg-dark-secondary/50 hover:bg-dark-secondary transition-colors"
+                    className="flex items-center gap-4 p-4 rounded-lg dark:bg-dark-secondary/50 bg-gray-100 hover:dark:bg-dark-secondary hover:bg-gray-200 transition-colors duration-300"
                   >
                     <Phone className="w-6 h-6 text-accent" />
                     <div>
-                      <p className="text-sm text-gray-400">Phone</p>
-                      <p className="text-white">{profile.phone}</p>
+                      <p className="text-sm dark:text-gray-400 text-gray-600">Phone</p>
+                      <p className="dark:text-white text-gray-900">{profile.phone}</p>
                     </div>
                   </motion.a>
                   
@@ -106,20 +106,20 @@ const Contact = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.05 }}
-                    className="flex items-center gap-4 p-4 rounded-lg bg-dark-secondary/50 hover:bg-dark-secondary transition-colors"
+                    className="flex items-center gap-4 p-4 rounded-lg dark:bg-dark-secondary/50 bg-gray-100 hover:dark:bg-dark-secondary hover:bg-gray-200 transition-colors duration-300"
                   >
                     <Linkedin className="w-6 h-6 text-accent" />
                     <div>
-                      <p className="text-sm text-gray-400">LinkedIn</p>
-                      <p className="text-white">Connect with me</p>
+                      <p className="text-sm dark:text-gray-400 text-gray-600">LinkedIn</p>
+                      <p className="dark:text-white text-gray-900">Connect with me</p>
                     </div>
                   </motion.a>
                   
-                  <div className="flex items-center gap-4 p-4 rounded-lg bg-dark-secondary/50">
+                  <div className="flex items-center gap-4 p-4 rounded-lg dark:bg-dark-secondary/50 bg-gray-100">
                     <MapPin className="w-6 h-6 text-accent" />
                     <div>
-                      <p className="text-sm text-gray-400">Location</p>
-                      <p className="text-white">{profile.location}</p>
+                      <p className="text-sm dark:text-gray-400 text-gray-600">Location</p>
+                      <p className="dark:text-white text-gray-900">{profile.location}</p>
                     </div>
                   </div>
                 </div>
@@ -139,7 +139,7 @@ const Contact = () => {
               <h3 className="text-2xl font-bold mb-6 text-gradient">Send a Message</h3>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                  <label htmlFor="name" className="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
                     Name
                   </label>
                   <input
@@ -149,13 +149,13 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-dark-secondary border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 dark:bg-dark-secondary bg-gray-100 dark:border-gray-700 border-gray-300 rounded-lg dark:text-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
                     placeholder="Your name"
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
                     Email
                   </label>
                   <input
@@ -165,13 +165,13 @@ const Contact = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-dark-secondary border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 dark:bg-dark-secondary bg-gray-100 dark:border-gray-700 border-gray-300 rounded-lg dark:text-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
                     placeholder="your.email@example.com"
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
+                  <label htmlFor="message" className="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
                     Message
                   </label>
                   <textarea
@@ -181,7 +181,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-3 bg-dark-secondary border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
+                    className="w-full px-4 py-3 dark:bg-dark-secondary bg-gray-100 dark:border-gray-700 border-gray-300 rounded-lg dark:text-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 resize-none"
                     placeholder="Your message..."
                   />
                 </div>

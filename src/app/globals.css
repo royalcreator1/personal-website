@@ -3,10 +3,14 @@
 @tailwind utilities;
 
 @layer base {
+  * {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+  
   body {
-    @apply dark:bg-dark bg-light-secondary dark:text-white text-gray-900;
+    @apply dark:bg-dark bg-white dark:text-white text-gray-900;
     font-feature-settings: "rlig" 1, "calt" 1;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   html {
@@ -52,10 +56,10 @@
   }
   
   .gradient-border-content {
-    @apply dark:bg-dark bg-light-secondary;
+    @apply dark:bg-dark bg-white;
     border-radius: 10px;
     height: 100%;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .glass-effect {

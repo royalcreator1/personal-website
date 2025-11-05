@@ -41,19 +41,19 @@ const About = () => {
             About Me
           </h2>
           <div className="max-w-4xl mx-auto">
-            <p className="text-xl text-gray-300 leading-relaxed mb-6">
+            <p className="text-xl dark:text-gray-300 text-gray-800 leading-relaxed mb-6">
               I'm a <span className="text-primary font-semibold">versatile Software Engineer</span> specializing in 
               building high-performance, scalable applications across the full technology stack. With expertise spanning 
               <span className="text-secondary font-semibold"> backend systems, frontend frameworks, cloud infrastructure, and mobile development</span>, 
               I deliver end-to-end solutions that drive business value.
             </p>
-            <p className="text-lg text-gray-400 leading-relaxed mb-6">
+            <p className="text-lg dark:text-gray-400 text-gray-600 leading-relaxed mb-6">
               My experience across diverse domains—healthcare, pharmaceuticals, fintech, and enterprise solutions—has 
               equipped me with a unique ability to understand complex business requirements and translate them into 
               robust, user-centric technical implementations. I'm passionate about clean code, architectural excellence, 
               and creating seamless user experiences.
             </p>
-            <p className="text-lg text-gray-400 leading-relaxed">
+            <p className="text-lg dark:text-gray-400 text-gray-600 leading-relaxed">
               Currently serving as a Software Engineer at <span className="text-accent font-semibold">Sedin Technologies</span>, 
               I've successfully delivered production-grade applications with expertise in 
               modern technologies including Python, Java, TypeScript, Kotlin, and cloud platforms.
@@ -79,8 +79,8 @@ const About = () => {
                   <div className="p-3 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg w-fit mb-4">
                     <Icon className="w-6 h-6 text-accent" />
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">{service.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed flex-grow">{service.description}</p>
+                  <h3 className="text-xl font-bold dark:text-white text-gray-900 mb-3">{service.title}</h3>
+                  <p className="dark:text-gray-400 text-gray-600 text-sm leading-relaxed flex-grow">{service.description}</p>
                 </div>
               </motion.div>
             )
