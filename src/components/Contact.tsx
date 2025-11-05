@@ -52,7 +52,7 @@ const Contact = () => {
   }
 
   return (
-    <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-dark-secondary/50">
+    <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-dark-secondary/50 relative section-background">
       <div className="max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}

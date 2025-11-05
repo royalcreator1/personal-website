@@ -6,18 +6,22 @@ import Education from '@/components/Education'
 import Skills from '@/components/Skills'
 import Projects from '@/components/Projects'
 import Contact from '@/components/Contact'
+import FloatingTechIcons from '@/components/FloatingTechIcons'
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
-      <Navbar />
-      <Hero />
-      <About />
-      <Experience />
-      <Education />
-      <Skills />
-      <Projects />
-      <Contact />
+    <main className="min-h-screen relative">
+      <FloatingTechIcons />
+      <div className="relative z-10">
+        <Navbar />
+        <Hero />
+        <About />
+        <Experience />
+        <Education />
+        <Skills />
+        <Projects />
+        <Contact />
+      </div>
     </main>
   )
 }

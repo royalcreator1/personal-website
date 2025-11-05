@@ -82,9 +82,10 @@ export const profile = {
       tools: "Next.js, Python FastAPI",
       contribution: [
         "Designed and built both frontend and backend from scratch; defined the complete exam lifecycle from candidate start to completion.",
-        "Implemented HR summary reports by date range and quiz, enabling quick evaluation of cohorts.",
-        "Created reusable exam templates to conduct assessments repeatedly; adding questions using AI.",
-        "Onboarded 3 developers and led Phase 1 delivery; worked with 1 junior tester to validate the release."
+        "Implemented end-to-end examination workflow handling complete lifecycle for both aptitude rounds and coding rounds, including question management, candidate assessment, and result evaluation.",
+        "Developed comprehensive examination flow with real-time proctoring, automated code execution, and instant result compilation for coding assessments.",
+        "Implemented HR summary reports by date range and quiz, enabling quick evaluation of cohorts with detailed analytics and performance metrics.",
+        "Created reusable exam templates to conduct assessments repeatedly with AI-powered question generation and dynamic difficulty adjustment."
       ]
     },
     {
