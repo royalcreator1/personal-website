@@ -55,7 +55,7 @@ const About = () => {
             </p>
             <p className="text-lg text-gray-400 leading-relaxed">
               Currently serving as a Software Engineer at <span className="text-accent font-semibold">Sedin Technologies</span>, 
-              I've successfully delivered production-grade applications serving thousands of users, with expertise in 
+              I've successfully delivered production-grade applications with expertise in 
               modern technologies including Python, Java, TypeScript, Kotlin, and cloud platforms.
             </p>
           </div>

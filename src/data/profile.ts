@@ -1,7 +1,7 @@
 export const profile = {
   name: "CH V N S JASWANTH",
   title: "Software Engineer",
-  location: "Vijayawada, AP 521165",
+  location: "Bangalore, Indra Nagar 560038",
   email: "jashuamrita360@gmail.com",
   phone: "+91 9993813331",
   linkedin: "https://www.linkedin.com/in/ch-v-n-s-jaswanth/",

@@ -8,11 +8,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#6366f1',
-        secondary: '#8b5cf6',
-        accent: '#06b6d4',
-        dark: '#0a0a0f',
-        'dark-secondary': '#1a1a2e',
+        primary: '#3b82f6',      // Professional blue
+        secondary: '#8b5cf6',     // Purple accent
+        accent: '#06b6d4',        // Cyan
+        dark: '#0f172a',          // Slate dark background
+        'dark-secondary': '#1e293b', // Slate secondary
       },
       animation: {
         'gradient': 'gradient 8s linear infinite',
