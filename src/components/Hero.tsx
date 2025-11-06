@@ -11,7 +11,7 @@ const titles = [
   'Frontend Developer',
   'Integration Engineer',
   'Android Developer',
-  'aspiring Technical Architect'
+  'Aspiring Architect'
 ]
 
 const Hero = () => {

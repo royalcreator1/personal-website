@@ -153,42 +153,44 @@ export const playMorningSound = () => {
   }
 }
 
-export const playBatSound = () => {
+export const playMidnightSound = () => {
   const ctx = getAudioContext()
   if (!ctx) return
 
   try {
-    // Create dangerous bat sounds with multiple rapid, low-frequency pulses
-    // Bats make high-pitched squeaks and wing flapping sounds
-    for (let i = 0; i < 12; i++) {
+    // Create mysterious midnight sounds - deep, atmospheric cricket-like chirps
+    // Multiple layers of low-frequency pulses with occasional higher chirps
+    for (let i = 0; i < 15; i++) {
       const oscillator = ctx.createOscillator()
       const gainNode = ctx.createGain()
 
       oscillator.connect(gainNode)
       gainNode.connect(ctx.destination)
 
-      // Mix of high-pitched squeaks and low wing flapping
-      const isSqueak = i % 3 === 0
-      const baseFreq = isSqueak 
-        ? 8000 + Math.random() * 4000  // High-pitched squeaks
-        : 100 + Math.random() * 50     // Low wing flapping
+      // Mix of deep cricket chirps and occasional higher notes
+      const isHighChirp = i % 4 === 0
+      const baseFreq = isHighChirp 
+        ? 3000 + Math.random() * 2000  // Occasional high chirps
+        : 200 + Math.random() * 150    // Deep cricket-like chirps
       
       oscillator.frequency.setValueAtTime(baseFreq, ctx.currentTime)
-      if (isSqueak) {
-        oscillator.frequency.exponentialRampToValueAtTime(baseFreq * 1.5, ctx.currentTime + 0.02)
+      if (!isHighChirp) {
+        // Add frequency modulation for cricket-like effect
+        oscillator.frequency.exponentialRampToValueAtTime(baseFreq * 1.2, ctx.currentTime + 0.03)
+        oscillator.frequency.exponentialRampToValueAtTime(baseFreq, ctx.currentTime + 0.06)
       }
-      oscillator.type = isSqueak ? 'sine' : 'sawtooth'
+      oscillator.type = isHighChirp ? 'sine' : 'sawtooth'
 
-      const startTime = ctx.currentTime + i * 0.06
-      const duration = isSqueak ? 0.03 : 0.05
+      const startTime = ctx.currentTime + i * 0.08
+      const duration = isHighChirp ? 0.04 : 0.08
       gainNode.gain.setValueAtTime(0, startTime)
-      gainNode.gain.linearRampToValueAtTime(isSqueak ? 0.12 : 0.08, startTime + 0.01)
+      gainNode.gain.linearRampToValueAtTime(isHighChirp ? 0.1 : 0.12, startTime + 0.01)
       gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration)
 
       oscillator.start(startTime)
       oscillator.stop(startTime + duration)
     }
   } catch (error) {
-    console.debug('Error playing bat sound')
+    console.debug('Error playing midnight sound')
   }
 }

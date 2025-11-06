@@ -45,9 +45,12 @@ const CustomCursor = () => {
 
   return (
     <>
-      {/* Main cursor dot */}
+      {/* Main cursor dot - using gradient colors matching role text */}
       <motion.div
-        className="fixed top-0 left-0 w-4 h-4 rounded-full bg-gradient-to-r from-primary via-secondary to-accent pointer-events-none z-[9999] mix-blend-difference"
+        className="fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[9999]"
+        style={{
+          background: 'linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4)',
+        }}
         animate={{
           x: mousePosition.x - 8,
           y: mousePosition.y - 8,
@@ -59,9 +62,14 @@ const CustomCursor = () => {
         }}
       />
 
-      {/* Outer ring */}
+      {/* Outer ring - matching gradient using box-shadow */}
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-primary/50 pointer-events-none z-[9998] mix-blend-difference"
+        className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[9998]"
+        style={{
+          border: '2px solid #6366f1',
+          boxShadow: '0 0 0 1px #8b5cf6, 0 0 0 2px #06b6d4',
+          opacity: 0.7,
+        }}
         animate={{
           x: mousePosition.x - 16,
           y: mousePosition.y - 16,
@@ -74,9 +82,12 @@ const CustomCursor = () => {
         }}
       />
 
-      {/* Glow effect */}
+      {/* Glow effect - matching gradient */}
       <motion.div
-        className="fixed top-0 left-0 w-20 h-20 rounded-full bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 blur-xl pointer-events-none z-[9997]"
+        className="fixed top-0 left-0 w-20 h-20 rounded-full blur-xl pointer-events-none z-[9997]"
+        style={{
+          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.2))',
+        }}
         animate={{
           x: mousePosition.x - 40,
           y: mousePosition.y - 40,
@@ -89,11 +100,14 @@ const CustomCursor = () => {
         }}
       />
 
-      {/* Particle trail */}
+      {/* Particle trail - matching gradient colors */}
       {[...Array(3)].map((_, i) => (
         <motion.div
           key={i}
-          className="fixed top-0 left-0 w-2 h-2 rounded-full bg-accent pointer-events-none z-[9996]"
+          className="fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-[9996]"
+          style={{
+            background: i === 0 ? '#6366f1' : i === 1 ? '#8b5cf6' : '#06b6d4',
+          }}
           animate={{
             x: mousePosition.x - 4,
             y: mousePosition.y - 4,
@@ -113,4 +127,3 @@ const CustomCursor = () => {
 }
 
 export default CustomCursor
-
