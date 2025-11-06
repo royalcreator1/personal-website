@@ -8,10 +8,12 @@ import Skills from '@/components/Skills'
 import Projects from '@/components/Projects'
 import Contact from '@/components/Contact'
 import FloatingTechIcons from '@/components/FloatingTechIcons'
+import CustomCursor from '@/components/CustomCursor'
 
 export default function Home() {
   return (
     <main className="min-h-screen relative">
+      <CustomCursor />
       <FloatingTechIcons />
       <Sidebar />
       <Navbar />

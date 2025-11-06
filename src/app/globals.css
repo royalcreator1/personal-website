@@ -11,6 +11,33 @@
     @apply dark:bg-dark bg-white dark:text-white text-gray-900;
     font-feature-settings: "rlig" 1, "calt" 1;
     transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: none;
+  }
+  
+  @media (max-width: 768px) {
+    body {
+      cursor: auto;
+    }
+  }
+  
+  * {
+    cursor: none;
+  }
+  
+  @media (max-width: 768px) {
+    * {
+      cursor: auto;
+    }
+  }
+  
+  a, button, input, textarea, [role="button"] {
+    cursor: none;
+  }
+  
+  @media (max-width: 768px) {
+    a, button, input, textarea, [role="button"] {
+      cursor: pointer;
+    }
   }
   
   html {

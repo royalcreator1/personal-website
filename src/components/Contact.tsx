@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Send, Linkedin } from 'lucide-react'
 import { profile } from '@/data/profile'
 import { useState } from 'react'
+import { playClickSound, playSuccessSound } from '@/utils/sounds'
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    playClickSound()
     setIsSubmitting(true)
     setSubmitStatus('idle')
 
@@ -31,6 +33,7 @@ const Contact = () => {
       if (response.ok) {
         setSubmitStatus('success')
         setFormData({ name: '', email: '', message: '' })
+        playSuccessSound()
         setTimeout(() => setSubmitStatus('idle'), 5000)
       } else {
         setSubmitStatus('error')
@@ -79,6 +82,7 @@ const Contact = () => {
               <div className="space-y-4">
                 <motion.a
                   href={`mailto:${profile.email}`}
+                  onClick={() => playClickSound()}
                   whileHover={{ scale: 1.02, x: 5 }}
                   className="flex items-center gap-4 p-4 rounded-lg dark:bg-dark-secondary/50 bg-gray-100/50 hover:dark:bg-dark-secondary hover:bg-gray-100 transition-all duration-300"
                 >
@@ -93,6 +97,7 @@ const Contact = () => {
                 
                 <motion.a
                   href={`tel:${profile.phone}`}
+                  onClick={() => playClickSound()}
                   whileHover={{ scale: 1.02, x: 5 }}
                   className="flex items-center gap-4 p-4 rounded-lg dark:bg-dark-secondary/50 bg-gray-100/50 hover:dark:bg-dark-secondary hover:bg-gray-100 transition-all duration-300"
                 >
@@ -109,6 +114,7 @@ const Contact = () => {
                   href={profile.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => playClickSound()}
                   whileHover={{ scale: 1.02, x: 5 }}
                   className="flex items-center gap-4 p-4 rounded-lg dark:bg-dark-secondary/50 bg-gray-100/50 hover:dark:bg-dark-secondary hover:bg-gray-100 transition-all duration-300"
                 >

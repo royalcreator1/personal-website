@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useContext, useEffect, useState } from 'react'
 import { ThemeContext } from '@/contexts/ThemeContext'
 import { Sun, Moon } from 'lucide-react'
+import { playSwitchSound } from '@/utils/sounds'
 
 const Navbar = () => {
   const [mounted, setMounted] = useState(false)
@@ -28,6 +29,11 @@ const Navbar = () => {
   const { theme, toggleTheme } = context
   const isDark = theme === 'dark'
 
+  const handleToggle = () => {
+    playSwitchSound()
+    toggleTheme()
+  }
+
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -35,7 +41,7 @@ const Navbar = () => {
       className="fixed top-0 right-0 z-50 p-4 md:p-6"
     >
       <motion.button
-        onClick={toggleTheme}
+        onClick={handleToggle}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         className="w-10 h-10 rounded-full dark:bg-dark-secondary/90 bg-white/90 backdrop-blur-md shadow-lg flex items-center justify-center dark:text-gray-300 text-gray-700 hover:bg-gradient-to-br hover:from-primary hover:to-secondary hover:text-white transition-all"
