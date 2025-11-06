@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { useContext, useEffect, useState } from 'react'
 import { ThemeContext } from '@/contexts/ThemeContext'
 import { Sun, Moon } from 'lucide-react'
-import { playSwitchSound } from '@/utils/sounds'
+import { playMorningSound, playCricketSound } from '@/utils/sounds'
 
 const Navbar = () => {
   const [mounted, setMounted] = useState(false)
@@ -30,7 +30,15 @@ const Navbar = () => {
   const isDark = theme === 'dark'
 
   const handleToggle = () => {
-    playSwitchSound()
+    // Play sound based on current theme (before toggle)
+    // If currently dark, will switch to light (morning sound)
+    // If currently light, will switch to dark (cricket sound)
+    if (isDark) {
+      playMorningSound()
+    } else {
+      playCricketSound()
+    }
+    
     toggleTheme()
   }
 

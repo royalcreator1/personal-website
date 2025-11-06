@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, ArrowDown } from 'lucide-react'
 import { profile } from '@/data/profile'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { playClickSound, playSwitchSound } from '@/utils/sounds'
 
 const titles = [
@@ -20,6 +20,7 @@ const Hero = () => {
   const [displayedText, setDisplayedText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
   const [typingSpeed, setTypingSpeed] = useState(100)
+  const soundPlayedRef = useRef(false)
 
   useEffect(() => {
     const currentTitle = titles[currentTitleIndex]
@@ -29,13 +30,17 @@ const Hero = () => {
       timeout = setTimeout(() => {
         setIsDeleting(true)
         setTypingSpeed(50)
+        soundPlayedRef.current = false
       }, 2000)
     } else if (isDeleting && displayedText === '') {
       setIsDeleting(false)
       setCurrentTitleIndex((prev) => (prev + 1) % titles.length)
       setTypingSpeed(100)
-      // Play switch sound when transitioning to next role
-      playSwitchSound()
+      // Play switch sound only once when transitioning to next role
+      if (!soundPlayedRef.current) {
+        playSwitchSound()
+        soundPlayedRef.current = true
+      }
     } else if (isDeleting) {
       timeout = setTimeout(() => {
         setDisplayedText(currentTitle.substring(0, displayedText.length - 1))
@@ -149,7 +154,11 @@ const Hero = () => {
           >
             <a
               href={`mailto:${profile.email}`}
-              onClick={() => playClickSound()}
+              onClick={(e) => {
+                e.preventDefault()
+                playClickSound()
+                window.location.href = `mailto:${profile.email}`
+              }}
               className="flex items-center gap-2 dark:text-gray-400 text-gray-600 hover:text-primary transition-colors"
             >
               <Mail className="w-4 h-4" />
@@ -157,7 +166,11 @@ const Hero = () => {
             </a>
             <a
               href={`tel:${profile.phone}`}
-              onClick={() => playClickSound()}
+              onClick={(e) => {
+                e.preventDefault()
+                playClickSound()
+                window.location.href = `tel:${profile.phone}`
+              }}
               className="flex items-center gap-2 dark:text-gray-400 text-gray-600 hover:text-primary transition-colors"
             >
               <Phone className="w-4 h-4" />
