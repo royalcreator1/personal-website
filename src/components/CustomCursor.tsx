@@ -43,6 +43,14 @@ const CustomCursor = () => {
 
   if (!isVisible) return null
 
+  // Generate sparkle particles around cursor
+  const sparkles = Array.from({ length: 12 }, (_, i) => ({
+    id: i,
+    angle: (360 / 12) * i,
+    radius: 15 + Math.random() * 20,
+    delay: i * 0.05,
+  }))
+
   return (
     <>
       {/* Main cursor dot - using gradient colors matching role text */}
@@ -63,7 +71,7 @@ const CustomCursor = () => {
         }}
       />
 
-      {/* Outer ring - matching gradient */}
+      {/* Outer ring - fixed positioning */}
       <motion.div
         className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[9998]"
         style={{
@@ -101,25 +109,79 @@ const CustomCursor = () => {
         }}
       />
 
-      {/* Particle trail - matching gradient colors */}
-      {[...Array(3)].map((_, i) => (
+      {/* Sparkle dust particles - orbiting around cursor */}
+      {sparkles.map((sparkle) => {
+        const radians = (sparkle.angle * Math.PI) / 180
+        const offsetX = Math.cos(radians) * sparkle.radius
+        const offsetY = Math.sin(radians) * sparkle.radius
+        
+        return (
+          <motion.div
+            key={sparkle.id}
+            className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full pointer-events-none z-[9996]"
+            style={{
+              background: sparkle.id % 3 === 0 
+                ? '#6366f1' 
+                : sparkle.id % 3 === 1 
+                ? '#8b5cf6' 
+                : '#06b6d4',
+              boxShadow: `0 0 4px ${sparkle.id % 3 === 0 ? '#6366f1' : sparkle.id % 3 === 1 ? '#8b5cf6' : '#06b6d4'}`,
+            }}
+            animate={{
+              x: mousePosition.x + offsetX - 3,
+              y: mousePosition.y + offsetY - 3,
+              opacity: [0.3, 1, 0.3],
+              scale: [0.5, 1, 0.5],
+            }}
+            transition={{
+              x: { type: "spring", stiffness: 1500, damping: 50, mass: 0.1 },
+              y: { type: "spring", stiffness: 1500, damping: 50, mass: 0.1 },
+              opacity: {
+                duration: 2,
+                delay: sparkle.delay,
+                repeat: Infinity,
+                ease: "easeInOut",
+              },
+              scale: {
+                duration: 2,
+                delay: sparkle.delay,
+                repeat: Infinity,
+                ease: "easeInOut",
+              },
+            }}
+          />
+        )
+      })}
+
+      {/* Additional floating particles */}
+      {[...Array(6)].map((_, i) => (
         <motion.div
-          key={i}
-          className="fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-[9996]"
+          key={`particle-${i}`}
+          className="fixed top-0 left-0 w-1 h-1 rounded-full pointer-events-none z-[9995]"
           style={{
-            background: i === 0 ? '#6366f1' : i === 1 ? '#8b5cf6' : '#06b6d4',
+            background: i % 3 === 0 ? '#6366f1' : i % 3 === 1 ? '#8b5cf6' : '#06b6d4',
           }}
           animate={{
-            x: mousePosition.x - 4,
-            y: mousePosition.y - 4,
-            opacity: [0, 1, 0],
-            scale: [0, 1, 0],
+            x: mousePosition.x - 2 + (Math.sin(i) * 30),
+            y: mousePosition.y - 2 + (Math.cos(i) * 30),
+            opacity: [0, 0.6, 0],
+            scale: [0, 1.5, 0],
           }}
           transition={{
             x: { type: "spring", stiffness: 1500, damping: 50, mass: 0.1 },
             y: { type: "spring", stiffness: 1500, damping: 50, mass: 0.1 },
-            opacity: { duration: 0.5, delay: i * 0.1, repeat: Infinity, ease: "easeOut" },
-            scale: { duration: 0.5, delay: i * 0.1, repeat: Infinity, ease: "easeOut" },
+            opacity: {
+              duration: 1.5,
+              delay: i * 0.15,
+              repeat: Infinity,
+              ease: "easeOut",
+            },
+            scale: {
+              duration: 1.5,
+              delay: i * 0.15,
+              repeat: Infinity,
+              ease: "easeOut",
+            },
           }}
         />
       ))}
