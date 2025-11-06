@@ -153,44 +153,39 @@ export const playMorningSound = () => {
   }
 }
 
-export const playMidnightSound = () => {
+export const playNightTimeSound = () => {
   const ctx = getAudioContext()
   if (!ctx) return
 
   try {
-    // Create mysterious midnight sounds - deep, atmospheric cricket-like chirps
-    // Multiple layers of low-frequency pulses with occasional higher chirps
-    for (let i = 0; i < 15; i++) {
+    // Create regular night time sounds - peaceful, ambient cricket-like chirps
+    // Multiple layers of gentle, rhythmic chirping
+    for (let i = 0; i < 10; i++) {
       const oscillator = ctx.createOscillator()
       const gainNode = ctx.createGain()
 
       oscillator.connect(gainNode)
       gainNode.connect(ctx.destination)
 
-      // Mix of deep cricket chirps and occasional higher notes
-      const isHighChirp = i % 4 === 0
-      const baseFreq = isHighChirp 
-        ? 3000 + Math.random() * 2000  // Occasional high chirps
-        : 200 + Math.random() * 150    // Deep cricket-like chirps
+      // Gentle cricket-like chirps with varying frequencies
+      const baseFreq = 300 + Math.random() * 200  // Soft, low-frequency chirps
       
       oscillator.frequency.setValueAtTime(baseFreq, ctx.currentTime)
-      if (!isHighChirp) {
-        // Add frequency modulation for cricket-like effect
-        oscillator.frequency.exponentialRampToValueAtTime(baseFreq * 1.2, ctx.currentTime + 0.03)
-        oscillator.frequency.exponentialRampToValueAtTime(baseFreq, ctx.currentTime + 0.06)
-      }
-      oscillator.type = isHighChirp ? 'sine' : 'sawtooth'
+      // Add gentle frequency modulation for natural cricket sound
+      oscillator.frequency.exponentialRampToValueAtTime(baseFreq * 1.15, ctx.currentTime + 0.04)
+      oscillator.frequency.exponentialRampToValueAtTime(baseFreq, ctx.currentTime + 0.08)
+      oscillator.type = 'sine'
 
-      const startTime = ctx.currentTime + i * 0.08
-      const duration = isHighChirp ? 0.04 : 0.08
+      const startTime = ctx.currentTime + i * 0.1
+      const duration = 0.1
       gainNode.gain.setValueAtTime(0, startTime)
-      gainNode.gain.linearRampToValueAtTime(isHighChirp ? 0.1 : 0.12, startTime + 0.01)
+      gainNode.gain.linearRampToValueAtTime(0.08, startTime + 0.02)
       gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration)
 
       oscillator.start(startTime)
       oscillator.stop(startTime + duration)
     }
   } catch (error) {
-    console.debug('Error playing midnight sound')
+    console.debug('Error playing night time sound')
   }
 }
