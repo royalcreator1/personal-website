@@ -4,7 +4,6 @@ import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, ArrowDown } from 'lucide-react'
 import { profile } from '@/data/profile'
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
 
 const titles = [
   'Software Engineer',
@@ -14,55 +13,6 @@ const titles = [
   'Android Developer',
   'Aspiring Architect'
 ]
-
-// Component to handle photo display with fallback
-const PhotoDisplay = () => {
-  const [imageSrc, setImageSrc] = useState('/my_photo.jpg')
-  const [imageError, setImageError] = useState(false)
-  const possibleNames = ['/my_photo.jpg', '/my_photo.JPG', '/my_profile.jpg', '/my_profile.JPG']
-  const [currentIndex, setCurrentIndex] = useState(0)
-
-  const handleError = () => {
-    if (currentIndex < possibleNames.length - 1) {
-      // Try next filename
-      const nextIndex = currentIndex + 1
-      setCurrentIndex(nextIndex)
-      setImageSrc(possibleNames[nextIndex])
-    } else {
-      // All attempts failed, show placeholder
-      setImageError(true)
-    }
-  }
-
-  if (imageError) {
-    return (
-      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/30 via-secondary/30 to-accent/30 rounded-lg z-10">
-        <div className="text-center p-8">
-          <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg">
-            <span className="text-4xl font-bold text-white">
-              {profile.name.split(' ').map(n => n[0]).join('')}
-            </span>
-          </div>
-          <p className="text-sm dark:text-gray-400 text-gray-600 mt-2">Upload photo to display</p>
-        </div>
-      </div>
-    )
-  }
-
-  return (
-    <div className="absolute inset-0">
-      <Image
-        src={imageSrc}
-        alt="Jaswanth Chengalapttu"
-        fill
-        className="object-cover rounded-lg"
-        priority
-        sizes="(max-width: 640px) 256px, (max-width: 768px) 320px, 384px"
-        onError={handleError}
-      />
-    </div>
-  )
-}
 
 const Hero = () => {
   const [currentTitleIndex, setCurrentTitleIndex] = useState(0)
@@ -103,180 +53,112 @@ const Hero = () => {
       {/* Subtle background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5" />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left side - Text content */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-20">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-3xl"
+        >
+          {/* Greeting */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="mb-4"
+          >
+            <span className="text-accent text-sm sm:text-base font-medium">Hi, my name is</span>
+          </motion.div>
+
+          {/* Name - Single line */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-3xl"
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 sm:mb-8 dark:text-white text-gray-900 leading-[1.1] tracking-tight"
           >
-            {/* Greeting */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="mb-4"
-            >
-              <span className="text-accent text-sm sm:text-base font-medium">Hi, my name is</span>
-            </motion.div>
-
-            {/* Name - Single line */}
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 sm:mb-8 dark:text-white text-gray-900 leading-[1.1] tracking-tight"
-            >
-              {profile.name}
-            </motion.h1>
-            
-            {/* Dynamic Title - Fixed height with proper line-height */}
-            <div className="min-h-[60px] sm:min-h-[70px] md:min-h-[80px] lg:min-h-[90px] flex items-center mb-8 sm:mb-10">
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.7 }}
-                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-semibold dark:text-gray-300 text-gray-700 leading-[1.2]"
-              >
-                I'm a{' '}
-                <span className="text-gradient inline-block">
-                  {displayedText}
-                  <span className="animate-pulse text-accent">|</span>
-                </span>
-              </motion.p>
-            </div>
-            
-            {/* Description */}
+            {profile.name}
+          </motion.h1>
+          
+          {/* Dynamic Title - Fixed height with proper line-height */}
+          <div className="min-h-[60px] sm:min-h-[70px] md:min-h-[80px] lg:min-h-[90px] flex items-center mb-8 sm:mb-10">
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-              className="text-base sm:text-lg md:text-xl dark:text-gray-400 text-gray-600 mb-10 max-w-2xl leading-relaxed"
-            >
-              I build scalable applications and deliver end-to-end solutions across the full technology stack,
-              specializing in backend systems, frontend frameworks, cloud infrastructure, and mobile development.
-            </motion.p>
-            
-            {/* CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1 }}
-              className="flex flex-wrap gap-4 mb-12"
-            >
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-6 py-3 bg-gradient-to-r from-primary via-secondary to-accent rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transition-all"
-              >
-                Get In Touch
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-6 py-3 dark:bg-dark-secondary/50 bg-gray-100 dark:text-gray-300 text-gray-700 rounded-lg font-semibold hover:dark:bg-dark-secondary hover:bg-gray-200 transition-all border border-gray-700/20 dark:border-gray-600/20"
-              >
-                View Projects
-              </motion.button>
-            </motion.div>
-
-            {/* Contact Info */}
-            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1.2 }}
-              className="flex flex-wrap gap-4 sm:gap-6 text-sm sm:text-base"
+              transition={{ delay: 0.7 }}
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-semibold dark:text-gray-300 text-gray-700 leading-[1.2]"
             >
-              <a
-                href={`mailto:${profile.email}`}
-                className="flex items-center gap-2 dark:text-gray-400 text-gray-600 hover:text-primary transition-colors"
-              >
-                <Mail className="w-4 h-4" />
-                <span className="break-all">{profile.email}</span>
-              </a>
-              <a
-                href={`tel:${profile.phone}`}
-                className="flex items-center gap-2 dark:text-gray-400 text-gray-600 hover:text-primary transition-colors"
-              >
-                <Phone className="w-4 h-4" />
-                <span>{profile.phone}</span>
-              </a>
-              <div className="flex items-center gap-2 dark:text-gray-400 text-gray-600">
-                <MapPin className="w-4 h-4" />
-                <span>{profile.location}</span>
-              </div>
-            </motion.div>
+              I'm a{' '}
+              <span className="text-gradient inline-block">
+                {displayedText}
+                <span className="animate-pulse text-accent">|</span>
+              </span>
+            </motion.p>
+          </div>
+          
+          {/* Description */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="text-base sm:text-lg md:text-xl dark:text-gray-400 text-gray-600 mb-10 max-w-2xl leading-relaxed"
+          >
+            I build scalable applications and deliver end-to-end solutions across the full technology stack,
+            specializing in backend systems, frontend frameworks, cloud infrastructure, and mobile development.
+          </motion.p>
+          
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            className="flex flex-wrap gap-4 mb-12"
+          >
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              className="px-6 py-3 bg-gradient-to-r from-primary via-secondary to-accent rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transition-all"
+            >
+              Get In Touch
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+              className="px-6 py-3 dark:bg-dark-secondary/50 bg-gray-100 dark:text-gray-300 text-gray-700 rounded-lg font-semibold hover:dark:bg-dark-secondary hover:bg-gray-200 transition-all border border-gray-700/20 dark:border-gray-600/20"
+            >
+              View Projects
+            </motion.button>
           </motion.div>
 
-          {/* Right side - Photo with decorative frame */}
+          {/* Contact Info */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="flex justify-center lg:justify-end"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="flex flex-wrap gap-4 sm:gap-6 text-sm sm:text-base"
           >
-            <div className="relative group">
-              {/* Decorative frame with gradient border */}
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="gradient-border p-3"
-              >
-                <div className="gradient-border-content p-6">
-                  <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 overflow-hidden rounded-xl bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20">
-                    {/* Photo */}
-                    <div className="relative w-full h-full">
-                      <PhotoDisplay />
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Decorative corner accents with glow */}
-              <div className="absolute -top-3 -left-3 w-10 h-10 border-t-4 border-l-4 border-primary rounded-tl-xl opacity-70 blur-sm" />
-              <div className="absolute -top-3 -right-3 w-10 h-10 border-t-4 border-r-4 border-secondary rounded-tr-xl opacity-70 blur-sm" />
-              <div className="absolute -bottom-3 -left-3 w-10 h-10 border-b-4 border-l-4 border-accent rounded-bl-xl opacity-70 blur-sm" />
-              <div className="absolute -bottom-3 -right-3 w-10 h-10 border-b-4 border-r-4 border-primary rounded-br-xl opacity-70 blur-sm" />
-
-              {/* Floating sparkles around frame */}
-              {[...Array(12)].map((_, i) => {
-                const angle = (360 / 12) * i
-                const radius = 200
-                const radians = (angle * Math.PI) / 180
-                const x = Math.cos(radians) * radius
-                const y = Math.sin(radians) * radius
-                const color = i % 3 === 0 ? '#6366f1' : i % 3 === 1 ? '#8b5cf6' : '#06b6d4'
-                
-                return (
-                  <motion.div
-                    key={i}
-                    className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full pointer-events-none"
-                    style={{
-                      background: color,
-                      boxShadow: `0 0 10px ${color}, 0 0 20px ${color}`,
-                      transform: `translate(${x - 4}px, ${y - 4}px)`,
-                    }}
-                    animate={{
-                      opacity: [0.2, 0.8, 0.2],
-                      scale: [0.6, 1.3, 0.6],
-                      y: [0, -10, 0],
-                    }}
-                    transition={{
-                      duration: 4,
-                      delay: i * 0.15,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                  />
-                )
-              })}
+            <a
+              href={`mailto:${profile.email}`}
+              className="flex items-center gap-2 dark:text-gray-400 text-gray-600 hover:text-primary transition-colors"
+            >
+              <Mail className="w-4 h-4" />
+              <span className="break-all">{profile.email}</span>
+            </a>
+            <a
+              href={`tel:${profile.phone}`}
+              className="flex items-center gap-2 dark:text-gray-400 text-gray-600 hover:text-primary transition-colors"
+            >
+              <Phone className="w-4 h-4" />
+              <span>{profile.phone}</span>
+            </a>
+            <div className="flex items-center gap-2 dark:text-gray-400 text-gray-600">
+              <MapPin className="w-4 h-4" />
+              <span>{profile.location}</span>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
       
       {/* Scroll Indicator */}
