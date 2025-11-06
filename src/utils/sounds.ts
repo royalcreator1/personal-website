@@ -153,34 +153,42 @@ export const playMorningSound = () => {
   }
 }
 
-export const playCricketSound = () => {
+export const playBatSound = () => {
   const ctx = getAudioContext()
   if (!ctx) return
 
   try {
-    // Create cricket-like chirping sound with multiple rapid pulses
-    for (let i = 0; i < 8; i++) {
+    // Create dangerous bat sounds with multiple rapid, low-frequency pulses
+    // Bats make high-pitched squeaks and wing flapping sounds
+    for (let i = 0; i < 12; i++) {
       const oscillator = ctx.createOscillator()
       const gainNode = ctx.createGain()
 
       oscillator.connect(gainNode)
       gainNode.connect(ctx.destination)
 
-      // Varying frequency for cricket-like effect
-      const baseFreq = 2000 + Math.random() * 1000
+      // Mix of high-pitched squeaks and low wing flapping
+      const isSqueak = i % 3 === 0
+      const baseFreq = isSqueak 
+        ? 8000 + Math.random() * 4000  // High-pitched squeaks
+        : 100 + Math.random() * 50     // Low wing flapping
+      
       oscillator.frequency.setValueAtTime(baseFreq, ctx.currentTime)
-      oscillator.frequency.exponentialRampToValueAtTime(baseFreq * 1.3, ctx.currentTime + 0.02)
-      oscillator.type = 'sine'
+      if (isSqueak) {
+        oscillator.frequency.exponentialRampToValueAtTime(baseFreq * 1.5, ctx.currentTime + 0.02)
+      }
+      oscillator.type = isSqueak ? 'sine' : 'sawtooth'
 
-      const startTime = ctx.currentTime + i * 0.08
+      const startTime = ctx.currentTime + i * 0.06
+      const duration = isSqueak ? 0.03 : 0.05
       gainNode.gain.setValueAtTime(0, startTime)
-      gainNode.gain.linearRampToValueAtTime(0.1, startTime + 0.01)
-      gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 0.03)
+      gainNode.gain.linearRampToValueAtTime(isSqueak ? 0.12 : 0.08, startTime + 0.01)
+      gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration)
 
       oscillator.start(startTime)
-      oscillator.stop(startTime + 0.03)
+      oscillator.stop(startTime + duration)
     }
   } catch (error) {
-    console.debug('Error playing cricket sound')
+    console.debug('Error playing bat sound')
   }
 }
