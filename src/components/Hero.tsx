@@ -15,6 +15,55 @@ const titles = [
   'Aspiring Architect'
 ]
 
+// Component to handle photo display with fallback
+const PhotoDisplay = () => {
+  const [imageSrc, setImageSrc] = useState('/my_photo.jpg')
+  const [imageError, setImageError] = useState(false)
+  const possibleNames = ['/my_photo.jpg', '/my_photo.JPG', '/my_profile.jpg', '/my_profile.JPG']
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  const handleError = () => {
+    if (currentIndex < possibleNames.length - 1) {
+      // Try next filename
+      const nextIndex = currentIndex + 1
+      setCurrentIndex(nextIndex)
+      setImageSrc(possibleNames[nextIndex])
+    } else {
+      // All attempts failed, show placeholder
+      setImageError(true)
+    }
+  }
+
+  if (imageError) {
+    return (
+      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/30 via-secondary/30 to-accent/30 rounded-lg z-10">
+        <div className="text-center p-8">
+          <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg">
+            <span className="text-4xl font-bold text-white">
+              {profile.name.split(' ').map(n => n[0]).join('')}
+            </span>
+          </div>
+          <p className="text-sm dark:text-gray-400 text-gray-600 mt-2">Upload photo to display</p>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="absolute inset-0">
+      <Image
+        src={imageSrc}
+        alt="Jaswanth Chengalapttu"
+        fill
+        className="object-cover rounded-lg"
+        priority
+        sizes="(max-width: 640px) 256px, (max-width: 768px) 320px, 384px"
+        onError={handleError}
+      />
+    </div>
+  )
+}
+
 const Hero = () => {
   const [currentTitleIndex, setCurrentTitleIndex] = useState(0)
   const [displayedText, setDisplayedText] = useState('')
@@ -181,32 +230,7 @@ const Hero = () => {
                   <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 overflow-hidden rounded-xl bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20">
                     {/* Photo */}
                     <div className="relative w-full h-full">
-                      <div className="absolute inset-0">
-                        <Image
-                          src="/my_photo.jpg"
-                          alt="Jaswanth Chengalapttu"
-                          fill
-                          className="object-cover rounded-lg"
-                          priority
-                          sizes="(max-width: 640px) 256px, (max-width: 768px) 320px, 384px"
-                          onError={(e) => {
-                            // Hide image if it fails to load
-                            const target = e.target as HTMLImageElement
-                            target.style.display = 'none'
-                          }}
-                        />
-                      </div>
-                      {/* Fallback placeholder - shows when image doesn't exist */}
-                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/30 via-secondary/30 to-accent/30 rounded-lg">
-                        <div className="text-center p-8">
-                          <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg">
-                            <span className="text-4xl font-bold text-white">
-                              {profile.name.split(' ').map(n => n[0]).join('')}
-                            </span>
-                          </div>
-                          <p className="text-sm dark:text-gray-400 text-gray-600 mt-2">Upload photo to display</p>
-                        </div>
-                      </div>
+                      <PhotoDisplay />
                     </div>
                   </div>
                 </div>
