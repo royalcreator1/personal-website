@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin } from 'lucide-react'
+import { Mail, Phone, MapPin, Download, ArrowDown } from 'lucide-react'
 import { profile } from '@/data/profile'
 import { useState, useEffect } from 'react'
 
@@ -48,89 +48,143 @@ const Hero = () => {
   }, [displayedText, isDeleting, currentTitleIndex, typingSpeed])
 
   return (
-    <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-16 md:pt-0">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(59,130,246,0.04),transparent_50%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(139,92,246,0.04),transparent_50%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_80%,rgba(6,182,212,0.04),transparent_50%)]" />
+    <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden md:pl-20">
+      {/* Subtle background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5" />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-20">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center"
+          className="max-w-3xl"
         >
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 text-gradient leading-tight"
-          >
-            {profile.name}
-          </motion.h1>
-          
-          <div className="h-10 sm:h-12 md:h-16 flex items-center justify-center mb-6 sm:mb-8">
-            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl dark:text-gray-300 text-gray-700 font-semibold">
-              {displayedText}
-              <span className="animate-pulse text-accent">|</span>
-            </p>
-          </div>
-          
+          {/* Greeting */}
           <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="mb-4"
+          >
+            <span className="text-accent text-sm sm:text-base font-medium">Hi, my name is</span>
+          </motion.div>
+
+          {/* Name */}
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 sm:gap-4 md:gap-6 dark:text-gray-400 text-gray-600 text-sm sm:text-base"
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 dark:text-white text-gray-900 leading-tight"
           >
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />
-              <span className="break-words">{profile.location}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />
-              <a href={`mailto:${profile.email}`} className="hover:text-primary transition-colors break-all">
-                {profile.email}
-              </a>
-            </div>
-            <div className="flex items-center gap-2">
-              <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />
-              <a href={`tel:${profile.phone}`} className="hover:text-primary transition-colors">
-                {profile.phone}
-              </a>
-            </div>
-          </motion.div>
+            {profile.name.split(' ').map((name, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 + i * 0.1 }}
+                className="block"
+              >
+                {name}
+              </motion.span>
+            ))}
+          </motion.h1>
           
-          <motion.div
+          {/* Dynamic Title */}
+          <div className="h-12 sm:h-16 md:h-20 flex items-center mb-8">
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7 }}
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold dark:text-gray-300 text-gray-700"
+            >
+              I'm a{' '}
+              <span className="text-gradient inline-block">
+                {displayedText}
+                <span className="animate-pulse text-accent">|</span>
+              </span>
+            </motion.p>
+          </div>
+          
+          {/* Description */}
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="mt-8 sm:mt-12"
+            className="text-base sm:text-lg md:text-xl dark:text-gray-400 text-gray-600 mb-10 max-w-2xl leading-relaxed"
+          >
+            I build scalable applications and deliver end-to-end solutions across the full technology stack,
+            specializing in backend systems, frontend frameworks, cloud infrastructure, and mobile development.
+          </motion.p>
+          
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            className="flex flex-wrap gap-4 mb-12"
           >
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-primary via-secondary to-accent rounded-full font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all"
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              className="px-6 py-3 bg-gradient-to-r from-primary via-secondary to-accent rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transition-all"
             >
-              View My Work
+              Get In Touch
             </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+              className="px-6 py-3 dark:bg-dark-secondary/50 bg-gray-100 dark:text-gray-300 text-gray-700 rounded-lg font-semibold hover:dark:bg-dark-secondary hover:bg-gray-200 transition-all border border-gray-700/20 dark:border-gray-600/20"
+            >
+              View Projects
+            </motion.button>
+          </motion.div>
+
+          {/* Contact Info */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="flex flex-wrap gap-4 sm:gap-6 text-sm sm:text-base"
+          >
+            <a
+              href={`mailto:${profile.email}`}
+              className="flex items-center gap-2 dark:text-gray-400 text-gray-600 hover:text-primary transition-colors"
+            >
+              <Mail className="w-4 h-4" />
+              <span className="break-all">{profile.email}</span>
+            </a>
+            <a
+              href={`tel:${profile.phone}`}
+              className="flex items-center gap-2 dark:text-gray-400 text-gray-600 hover:text-primary transition-colors"
+            >
+              <Phone className="w-4 h-4" />
+              <span>{profile.phone}</span>
+            </a>
+            <div className="flex items-center gap-2 dark:text-gray-400 text-gray-600">
+              <MapPin className="w-4 h-4" />
+              <span>{profile.location}</span>
+            </div>
           </motion.div>
         </motion.div>
       </div>
       
+      {/* Scroll Indicator */}
       <motion.div
-        animate={{ y: [0, -20, 0] }}
-        transition={{ duration: 6, repeat: Infinity }}
-        className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2 hidden sm:block"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden md:block"
       >
-        <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
-          <motion.div
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-1 h-3 bg-gray-400 rounded-full mt-2"
-          />
-        </div>
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="flex flex-col items-center gap-2 text-gray-400"
+        >
+          <span className="text-xs">Scroll</span>
+          <ArrowDown className="w-5 h-5" />
+        </motion.div>
       </motion.div>
     </section>
   )

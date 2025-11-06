@@ -1,99 +1,105 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { profile } from '@/data/profile'
 import { Code, Layers, Database, Cloud, MessageSquare, Activity, Wrench } from 'lucide-react'
+import { useRef } from 'react'
 
 const Skills = () => {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: '-100px' })
+
   const skillCategories = [
     { 
       title: 'Programming Languages', 
       skills: profile.skills.languages, 
-      color: 'from-primary to-primary/50',
-      icon: Code
+      icon: Code,
+      gradient: 'from-blue-500 to-cyan-500'
     },
     { 
       title: 'Frameworks & Libraries', 
       skills: profile.skills.frameworks, 
-      color: 'from-secondary to-secondary/50',
-      icon: Layers
+      icon: Layers,
+      gradient: 'from-purple-500 to-pink-500'
     },
     { 
       title: 'Databases & Search', 
       skills: profile.skills.databases, 
-      color: 'from-accent to-accent/50',
-      icon: Database
+      icon: Database,
+      gradient: 'from-cyan-500 to-blue-500'
     },
     { 
       title: 'Cloud & Infrastructure', 
       skills: profile.skills.cloud, 
-      color: 'from-purple-500 to-purple-500/50',
-      icon: Cloud
+      icon: Cloud,
+      gradient: 'from-indigo-500 to-purple-500'
     },
     { 
       title: 'Messaging & Streaming', 
       skills: profile.skills.messaging, 
-      color: 'from-pink-500 to-pink-500/50',
-      icon: MessageSquare
+      icon: MessageSquare,
+      gradient: 'from-pink-500 to-rose-500'
     },
     { 
       title: 'Monitoring & Observability', 
       skills: profile.skills.monitoring, 
-      color: 'from-green-500 to-green-500/50',
-      icon: Activity
+      icon: Activity,
+      gradient: 'from-green-500 to-emerald-500'
     },
     { 
       title: 'Development Tools', 
       skills: profile.skills.tools, 
-      color: 'from-orange-500 to-orange-500/50',
-      icon: Wrench
+      icon: Wrench,
+      gradient: 'from-orange-500 to-amber-500'
     },
   ]
 
   return (
-    <section id="skills" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 dark:bg-dark-secondary/50 bg-gray-50 relative">
-      <div className="max-w-7xl mx-auto relative z-10">
+    <section id="skills" className="py-20 px-4 sm:px-6 lg:px-8 md:pl-28 relative min-h-screen flex items-center">
+      <div className="max-w-6xl mx-auto w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-10 md:mb-12"
+          className="mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 text-gradient px-2">
-            Technical Expertise
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="text-gradient">Technical</span>{' '}
+            <span className="dark:text-white text-gray-900">Expertise</span>
           </h2>
-          <p className="dark:text-gray-400 text-gray-600 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-2">
+          <p className="dark:text-gray-400 text-gray-600 text-lg max-w-2xl">
             A comprehensive toolkit of modern technologies and frameworks to deliver robust, scalable solutions
           </p>
         </motion.div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div ref={ref} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {skillCategories.map((category, categoryIndex) => {
             const Icon = category.icon
             return (
               <motion.div
                 key={categoryIndex}
                 initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
-                whileHover={{ scale: 1.02, y: -5 }}
-                className="gradient-border"
+                className="group"
               >
-                <div className="gradient-border-content p-4 sm:p-6 h-full">
-                  <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                    <div className="p-1.5 sm:p-2 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex-shrink-0">
-                      <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
+                <div className="dark:bg-dark-secondary/50 bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/20 dark:border-gray-600/20 hover:border-primary/50 transition-all duration-300 h-full">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className={`p-3 rounded-lg bg-gradient-to-br ${category.gradient} shadow-lg`}>
+                      <Icon className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-gradient">{category.title}</h3>
+                    <h3 className="text-xl font-bold dark:text-white text-gray-900">{category.title}</h3>
                   </div>
-                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                  <div className="flex flex-wrap gap-2">
                     {category.skills.map((skill, skillIndex) => (
                       <motion.span
                         key={skillIndex}
-                        whileHover={{ scale: 1.1, rotate: 2 }}
-                        className={`px-2 sm:px-3 py-1 sm:py-1.5 bg-gradient-to-r ${category.color} rounded-lg text-xs sm:text-sm font-semibold cursor-default shadow-sm`}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+                        transition={{ delay: categoryIndex * 0.1 + skillIndex * 0.05 }}
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        className={`px-3 py-1.5 bg-gradient-to-r ${category.gradient} rounded-lg text-sm font-medium text-white shadow-md cursor-default`}
                       >
                         {skill}
                       </motion.span>
