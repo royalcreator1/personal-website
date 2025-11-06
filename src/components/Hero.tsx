@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, Download, ArrowDown } from 'lucide-react'
+import { Mail, Phone, MapPin, ArrowDown } from 'lucide-react'
 import { profile } from '@/data/profile'
 import { useState, useEffect } from 'react'
 
@@ -69,33 +69,23 @@ const Hero = () => {
             <span className="text-accent text-sm sm:text-base font-medium">Hi, my name is</span>
           </motion.div>
 
-          {/* Name */}
+          {/* Name - Single line */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 dark:text-white text-gray-900 leading-tight"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 sm:mb-8 dark:text-white text-gray-900 leading-[1.1] tracking-tight"
           >
-            {profile.name.split(' ').map((name, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + i * 0.1 }}
-                className="block"
-              >
-                {name}
-              </motion.span>
-            ))}
+            {profile.name}
           </motion.h1>
           
-          {/* Dynamic Title */}
-          <div className="h-12 sm:h-16 md:h-20 flex items-center mb-8">
+          {/* Dynamic Title - Fixed height with proper line-height */}
+          <div className="min-h-[60px] sm:min-h-[70px] md:min-h-[80px] lg:min-h-[90px] flex items-center mb-8 sm:mb-10">
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7 }}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold dark:text-gray-300 text-gray-700"
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-semibold dark:text-gray-300 text-gray-700 leading-[1.2]"
             >
               I'm a{' '}
               <span className="text-gradient inline-block">

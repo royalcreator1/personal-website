@@ -1,5 +1,5 @@
 export const profile = {
-  name: "CH V N S JASWANTH",
+  name: "Jaswanth Chengalapttu",
   title: "Software Engineer",
   location: "Bangalore, Indra Nagar 560038",
   email: "jashuamrita360@gmail.com",
