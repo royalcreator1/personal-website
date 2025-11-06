@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Home, User, Briefcase, GraduationCap, Code, FolderOpen, Mail } from 'lucide-react'
-import { playClickSound } from '@/utils/sounds'
 
 const Sidebar = () => {
   const [activeSection, setActiveSection] = useState('hero')
@@ -28,7 +27,6 @@ const Sidebar = () => {
   }, [])
 
   const scrollToSection = (id: string) => {
-    playClickSound()
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
     setIsOpen(false)
   }
@@ -47,10 +45,7 @@ const Sidebar = () => {
     <>
       {/* Mobile Menu Button */}
       <button
-        onClick={() => {
-          playClickSound()
-          setIsOpen(!isOpen)
-        }}
+        onClick={() => setIsOpen(!isOpen)}
         className="fixed top-4 left-4 z-50 md:hidden p-2 rounded-lg dark:bg-dark-secondary/90 bg-white/90 backdrop-blur-md shadow-lg dark:text-gray-300 text-gray-700"
         aria-label="Toggle menu"
       >
@@ -103,10 +98,7 @@ const Sidebar = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => {
-                playClickSound()
-                setIsOpen(false)
-              }}
+              onClick={() => setIsOpen(false)}
               className="fixed inset-0 bg-black/50 z-40 md:hidden"
             />
             <motion.aside

@@ -3,8 +3,7 @@
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, ArrowDown } from 'lucide-react'
 import { profile } from '@/data/profile'
-import { useState, useEffect, useRef } from 'react'
-import { playClickSound, playSwitchSound } from '@/utils/sounds'
+import { useState, useEffect } from 'react'
 
 const titles = [
   'Software Engineer',
@@ -12,7 +11,7 @@ const titles = [
   'Frontend Developer',
   'Integration Engineer',
   'Android Developer',
-  'Technical Architect'
+  'aspiring Technical Architect'
 ]
 
 const Hero = () => {
@@ -20,7 +19,6 @@ const Hero = () => {
   const [displayedText, setDisplayedText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
   const [typingSpeed, setTypingSpeed] = useState(100)
-  const soundPlayedRef = useRef(false)
 
   useEffect(() => {
     const currentTitle = titles[currentTitleIndex]
@@ -30,17 +28,11 @@ const Hero = () => {
       timeout = setTimeout(() => {
         setIsDeleting(true)
         setTypingSpeed(50)
-        soundPlayedRef.current = false
       }, 2000)
     } else if (isDeleting && displayedText === '') {
       setIsDeleting(false)
       setCurrentTitleIndex((prev) => (prev + 1) % titles.length)
       setTypingSpeed(100)
-      // Play switch sound only once when transitioning to next role
-      if (!soundPlayedRef.current) {
-        playSwitchSound()
-        soundPlayedRef.current = true
-      }
     } else if (isDeleting) {
       timeout = setTimeout(() => {
         setDisplayedText(currentTitle.substring(0, displayedText.length - 1))
@@ -55,11 +47,6 @@ const Hero = () => {
       if (timeout) clearTimeout(timeout)
     }
   }, [displayedText, isDeleting, currentTitleIndex, typingSpeed])
-
-  const handleButtonClick = (action: () => void) => {
-    playClickSound()
-    action()
-  }
 
   return (
     <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden md:pl-20">
@@ -130,7 +117,7 @@ const Hero = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => handleButtonClick(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }))}
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               className="px-6 py-3 bg-gradient-to-r from-primary via-secondary to-accent rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transition-all"
             >
               Get In Touch
@@ -138,7 +125,7 @@ const Hero = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => handleButtonClick(() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }))}
+              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
               className="px-6 py-3 dark:bg-dark-secondary/50 bg-gray-100 dark:text-gray-300 text-gray-700 rounded-lg font-semibold hover:dark:bg-dark-secondary hover:bg-gray-200 transition-all border border-gray-700/20 dark:border-gray-600/20"
             >
               View Projects
@@ -154,11 +141,6 @@ const Hero = () => {
           >
             <a
               href={`mailto:${profile.email}`}
-              onClick={(e) => {
-                e.preventDefault()
-                playClickSound()
-                window.location.href = `mailto:${profile.email}`
-              }}
               className="flex items-center gap-2 dark:text-gray-400 text-gray-600 hover:text-primary transition-colors"
             >
               <Mail className="w-4 h-4" />
@@ -166,11 +148,6 @@ const Hero = () => {
             </a>
             <a
               href={`tel:${profile.phone}`}
-              onClick={(e) => {
-                e.preventDefault()
-                playClickSound()
-                window.location.href = `tel:${profile.phone}`
-              }}
               className="flex items-center gap-2 dark:text-gray-400 text-gray-600 hover:text-primary transition-colors"
             >
               <Phone className="w-4 h-4" />
