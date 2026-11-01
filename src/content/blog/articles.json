@@ -1,0 +1,2587 @@
+{
+  "schemaVersion": 1,
+  "extractedAt": "2026-11-02",
+  "scope": "Exactly six complete text-only articles; supersedes the earlier 24-article summary scope for this handoff.",
+  "titleRendering": "Render metadata.title once as h1; bodyBlocks exclude the duplicated Markdown title and optional metadata subtitle.",
+  "inlineFormat": "paragraph.markdown and list.itemsMarkdown retain Markdown emphasis, inline code, and two-space hard line breaks; parse safely.",
+  "sourceUrlVisibility": "Provenance only; no public Medium CTA or redirect.",
+  "articles": [
+    {
+      "id": "0bdcfb91a745",
+      "slug": "best-practices-for-streamlit-development-structuring-code-and-managing-session-state",
+      "title": "Best Practices for Streamlit Development: Structuring Code and Managing Session State",
+      "publishedAt": "2025-02-23",
+      "author": "Jaswanth",
+      "category": "Data applications",
+      "featuredRank": 1,
+      "excerpt": "Practical organization and state-management patterns for larger Streamlit applications with editable data and database integration.",
+      "sourceUrl": "https://medium.com/@jashuamrita360/best-practices-for-streamlit-development-structuring-code-and-managing-session-state-0bdcfb91a745",
+      "sourceReadingMinutes": 5,
+      "contentFormat": "markdown-and-semantic-blocks",
+      "fullTextIncluded": true,
+      "images": [],
+      "markdownFile": "articles/01-streamlit.md",
+      "bodyMarkdown": "# Best Practices for Streamlit Development: Structuring Code and Managing Session State\n\n## Introduction\n\nStreamlit is a popular open-source Python framework that allows developers to quickly create interactive web applications with minimal effort. As more developers turn to Streamlit for building data-driven applications, it’s important to follow best practices for structuring the code, managing session states, and handling complex functionalities such as row-level modifications and grouping.\n\nThis document is designed to provide Streamlit developers with strategies for managing session states, organizing code, and optimizing performance in complex projects. The document also highlights common challenges faced during Streamlit development and offers solutions to streamline development and enhance the overall user experience.\n\n## Key Concepts\n\nBefore diving into best practices, let’s understand some key concepts in Streamlit development.\n\n### 1. Session State in Streamlit\n\nSession state in Streamlit is a way to store variables and data across app reruns. By default, Streamlit’s session state is reset every time the page is refreshed, making it difficult to persist data between interactions. However, Streamlit provides the ability to manage session state by using `st.session_state`.\n\nThe following are some key points about session state:\n\n- **Storing Variables:** You can store data in `st.session_state` to persist it across reruns.\n- **Accessing Session State:** You can access session state using `st.session_state.<variable_name>`.\n- **Handling Errors:** Be aware that if the same variable name exists in the session state, it may throw errors. To prevent this, always ensure that unique keys are used or append an index to the variable names.\n\n### 2. Modular Code Structure\n\nIn complex Streamlit applications, especially those with hundreds of lines of code, modularity becomes key. The code should be structured in a way that makes it easy to understand, maintain, and extend. Dividing the code into multiple modules helps achieve this.\n\n### 3. Handling Row-Level Modifications in Table\n\nFor data-heavy applications, it’s often necessary to show rows of data, along with actionable buttons for each row. Streamlit allows you to display data in a tabular format using `st.dataframe` or `st.table`. However, when you need row-level customization or actions (e.g., edit, delete, or update), you must use `for` loops to iterate over the rows and create buttons for each.\n\n### 4. Grouping Data and Conditional Logic\n\nIn cases where you need to perform advanced grouping of data (such as grouping based on logical conditions like AND/OR), or you need to manage multiple selections or subgroups, session state can be particularly challenging. When working with these kinds of features, maintaining the integrity of session state and ensuring that the data doesn’t conflict is crucial.\n\n### 5. SQLAlchemy Integration\n\nIn many Streamlit applications, SQLAlchemy is used to manage the backend database. It provides an Object-Relational Mapping (ORM) layer to interact with SQL databases in a Pythonic manner. Streamlit’s seamless integration with SQLAlchemy makes it an ideal solution for handling database interactions.\n\n## Best Practices for Structuring Streamlit Code\n\n### 1. Organize Code into Modules\n\nIn a large Streamlit application, it’s essential to keep the code modular. Split the application into separate modules for better readability and maintainability. A typical project structure might look like this:\n\n```text\nproject/\n│\n├── app_core/ # Backend logic and SQLAlchemy-related code\n│   ├── database.py # Database connection and models\n│   ├── queries.py # SQL queries and helpers\n│   └── utils.py # Utility functions\n│\n├── pages/ # Frontend related code\n│   ├── home.py # Home page of the app\n│   ├── settings.py # Settings page\n│   └── reports.py # Report generation page\n│\n└── main.py # Main entry point to run the Streamlit app\n```\n\n### 2. Handle Session State Carefully\n\nWhen working with session state in Streamlit, follow these best practices:\n\n- **Use unique variable names** to avoid conflicts, especially when multiple parts of the app are interacting with the session state. Consider appending an index or identifier if the same variable name might appear in different contexts.\n- **Check for the presence of variables** in session state before using them. For example:\n\n```python\nif 'my_variable' not in st.session_state:\n    st.session_state['my_variable'] = []\n```\n\n- **Save the state of widgets** such as checkboxes, sliders, and text inputs using session state to persist their values between app reruns.\n\n### 3. Create Helper Functions for Repetitive Tasks\n\nIn large applications, repetitive tasks should be abstracted into helper functions. For example, displaying rows of data with action buttons can be abstracted into a reusable function:\n\n```python\ndef display_row_with_buttons(data):\n    for idx, row in data.iterrows():\n        col1, col2 = st.columns([1, 3])\n        col1.write(row['column_name'])\n        col2.button(f\"Action {idx}\", key=f\"button_{idx}\")\n```\n\nThis approach keeps the code DRY (Don’t Repeat Yourself) and improves readability.\n\n### 4. Use Loops for Dynamic Content\n\nWhen you need to display dynamic content (e.g., rows of data or complex forms), using loops can simplify the logic. For example, displaying grouped data with checkboxes:\n\n```python\ngroup_names = ['Group 1', 'Group 2', 'Group 3']\nselected_groups = []\nfor group in group_names:\n    if st.checkbox(f'Select {group}'):\n        selected_groups.append(group)\n```\n\nFor handling grouping with logical conditions (AND/OR), carefully manage the session state to avoid conflicts. This may involve combining the selections into a single session state variable and implementing the logic based on the user’s selections.\n\n### 5. SQLAlchemy and Backend Integration\n\nWhen integrating Streamlit with SQLAlchemy for database operations:\n\n- Define database models and CRUD (Create, Read, Update, Delete) operations in the `app_core` module.\n- Use SQLAlchemy queries to interact with the database and pass the results to the frontend.\n- Consider creating utility functions to handle common queries or data transformations, and use them in your pages as needed.\n\nExample of SQLAlchemy integration:\n\n```python\nfrom app_core.database import session, MyModel\n\ndef get_data_from_db():\n    return session.query(MyModel).all()\n\ndef insert_data_to_db(data):\n    new_data = MyModel(name=data)\n    session.add(new_data)\n    session.commit()\n```\n\n### 6. Error Handling and Debugging\n\nStreamlit does not have a built-in error handling mechanism. It’s important to handle errors gracefully, especially when working with database connections, session state, or user inputs. Always use `try-except` blocks where needed.\n\n## Conclusion\n\nStreamlit is a powerful tool for building data-driven applications with minimal effort. However, as projects grow in complexity, managing session state, modularizing code, and implementing advanced features can become challenging. By following best practices such as modular code organization, careful session state management, and using loops for dynamic content, developers can create maintainable and efficient Streamlit applications.\n\nFor more advanced scenarios, such as working with SQLAlchemy or implementing complex logical conditions, the strategies discussed in this document can help developers streamline development and ensure their applications perform as expected.\n\n**Author:**  \nJaswanth  \nSoftware Engineer, Sedin Technologies  \n24/02/2025",
+      "bodyBlocks": [
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Introduction",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Streamlit is a popular open-source Python framework that allows developers to quickly create interactive web applications with minimal effort. As more developers turn to Streamlit for building data-driven applications, it’s important to follow best practices for structuring the code, managing session states, and handling complex functionalities such as row-level modifications and grouping.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "This document is designed to provide Streamlit developers with strategies for managing session states, organizing code, and optimizing performance in complex projects. The document also highlights common challenges faced during Streamlit development and offers solutions to streamline development and enhance the overall user experience.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Key Concepts",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Before diving into best practices, let’s understand some key concepts in Streamlit development.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "1. Session State in Streamlit",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Session state in Streamlit is a way to store variables and data across app reruns. By default, Streamlit’s session state is reset every time the page is refreshed, making it difficult to persist data between interactions. However, Streamlit provides the ability to manage session state by using `st.session_state`.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "The following are some key points about session state:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "**Storing Variables:** You can store data in `st.session_state` to persist it across reruns.",
+            "**Accessing Session State:** You can access session state using `st.session_state.<variable_name>`.",
+            "**Handling Errors:** Be aware that if the same variable name exists in the session state, it may throw errors. To prevent this, always ensure that unique keys are used or append an index to the variable names."
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "2. Modular Code Structure",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "In complex Streamlit applications, especially those with hundreds of lines of code, modularity becomes key. The code should be structured in a way that makes it easy to understand, maintain, and extend. Dividing the code into multiple modules helps achieve this.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "3. Handling Row-Level Modifications in Table",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "For data-heavy applications, it’s often necessary to show rows of data, along with actionable buttons for each row. Streamlit allows you to display data in a tabular format using `st.dataframe` or `st.table`. However, when you need row-level customization or actions (e.g., edit, delete, or update), you must use `for` loops to iterate over the rows and create buttons for each.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "4. Grouping Data and Conditional Logic",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "In cases where you need to perform advanced grouping of data (such as grouping based on logical conditions like AND/OR), or you need to manage multiple selections or subgroups, session state can be particularly challenging. When working with these kinds of features, maintaining the integrity of session state and ensuring that the data doesn’t conflict is crucial.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "5. SQLAlchemy Integration",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "In many Streamlit applications, SQLAlchemy is used to manage the backend database. It provides an Object-Relational Mapping (ORM) layer to interact with SQL databases in a Pythonic manner. Streamlit’s seamless integration with SQLAlchemy makes it an ideal solution for handling database interactions.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Best Practices for Structuring Streamlit Code",
+          "fontRole": "heading"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "1. Organize Code into Modules",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "In a large Streamlit application, it’s essential to keep the code modular. Split the application into separate modules for better readability and maintainability. A typical project structure might look like this:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "text",
+          "code": "project/\n│\n├── app_core/ # Backend logic and SQLAlchemy-related code\n│   ├── database.py # Database connection and models\n│   ├── queries.py # SQL queries and helpers\n│   └── utils.py # Utility functions\n│\n├── pages/ # Frontend related code\n│   ├── home.py # Home page of the app\n│   ├── settings.py # Settings page\n│   └── reports.py # Report generation page\n│\n└── main.py # Main entry point to run the Streamlit app",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "2. Handle Session State Carefully",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "When working with session state in Streamlit, follow these best practices:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "**Use unique variable names** to avoid conflicts, especially when multiple parts of the app are interacting with the session state. Consider appending an index or identifier if the same variable name might appear in different contexts.",
+            "**Check for the presence of variables** in session state before using them. For example:"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "if 'my_variable' not in st.session_state:\n    st.session_state['my_variable'] = []",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "**Save the state of widgets** such as checkboxes, sliders, and text inputs using session state to persist their values between app reruns."
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "3. Create Helper Functions for Repetitive Tasks",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "In large applications, repetitive tasks should be abstracted into helper functions. For example, displaying rows of data with action buttons can be abstracted into a reusable function:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "def display_row_with_buttons(data):\n    for idx, row in data.iterrows():\n        col1, col2 = st.columns([1, 3])\n        col1.write(row['column_name'])\n        col2.button(f\"Action {idx}\", key=f\"button_{idx}\")",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "This approach keeps the code DRY (Don’t Repeat Yourself) and improves readability.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "4. Use Loops for Dynamic Content",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "When you need to display dynamic content (e.g., rows of data or complex forms), using loops can simplify the logic. For example, displaying grouped data with checkboxes:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "group_names = ['Group 1', 'Group 2', 'Group 3']\nselected_groups = []\nfor group in group_names:\n    if st.checkbox(f'Select {group}'):\n        selected_groups.append(group)",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "For handling grouping with logical conditions (AND/OR), carefully manage the session state to avoid conflicts. This may involve combining the selections into a single session state variable and implementing the logic based on the user’s selections.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "5. SQLAlchemy and Backend Integration",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "When integrating Streamlit with SQLAlchemy for database operations:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Define database models and CRUD (Create, Read, Update, Delete) operations in the `app_core` module.",
+            "Use SQLAlchemy queries to interact with the database and pass the results to the frontend.",
+            "Consider creating utility functions to handle common queries or data transformations, and use them in your pages as needed."
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Example of SQLAlchemy integration:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "from app_core.database import session, MyModel\n\ndef get_data_from_db():\n    return session.query(MyModel).all()\n\ndef insert_data_to_db(data):\n    new_data = MyModel(name=data)\n    session.add(new_data)\n    session.commit()",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "6. Error Handling and Debugging",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Streamlit does not have a built-in error handling mechanism. It’s important to handle errors gracefully, especially when working with database connections, session state, or user inputs. Always use `try-except` blocks where needed.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Conclusion",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Streamlit is a powerful tool for building data-driven applications with minimal effort. However, as projects grow in complexity, managing session state, modularizing code, and implementing advanced features can become challenging. By following best practices such as modular code organization, careful session state management, and using loops for dynamic content, developers can create maintainable and efficient Streamlit applications.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "For more advanced scenarios, such as working with SQLAlchemy or implementing complex logical conditions, the strategies discussed in this document can help developers streamline development and ensure their applications perform as expected.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Author:**  \nJaswanth  \nSoftware Engineer, Sedin Technologies  \n24/02/2025",
+          "fontRole": "body"
+        }
+      ],
+      "toc": [
+        {
+          "level": 2,
+          "text": "Introduction"
+        },
+        {
+          "level": 2,
+          "text": "Key Concepts"
+        },
+        {
+          "level": 3,
+          "text": "1. Session State in Streamlit"
+        },
+        {
+          "level": 3,
+          "text": "2. Modular Code Structure"
+        },
+        {
+          "level": 3,
+          "text": "3. Handling Row-Level Modifications in Table"
+        },
+        {
+          "level": 3,
+          "text": "4. Grouping Data and Conditional Logic"
+        },
+        {
+          "level": 3,
+          "text": "5. SQLAlchemy Integration"
+        },
+        {
+          "level": 2,
+          "text": "Best Practices for Structuring Streamlit Code"
+        },
+        {
+          "level": 3,
+          "text": "1. Organize Code into Modules"
+        },
+        {
+          "level": 3,
+          "text": "2. Handle Session State Carefully"
+        },
+        {
+          "level": 3,
+          "text": "3. Create Helper Functions for Repetitive Tasks"
+        },
+        {
+          "level": 3,
+          "text": "4. Use Loops for Dynamic Content"
+        },
+        {
+          "level": 3,
+          "text": "5. SQLAlchemy and Backend Integration"
+        },
+        {
+          "level": 3,
+          "text": "6. Error Handling and Debugging"
+        },
+        {
+          "level": 2,
+          "text": "Conclusion"
+        }
+      ],
+      "wordCountIncludingCode": 1075,
+      "codeBlockCount": 5,
+      "tableCount": 0
+    },
+    {
+      "id": "f380583bf50b",
+      "slug": "12-engineering-principles-every-backend-developer-should-master",
+      "title": "🚀 12 Engineering Principles Every Backend Developer Should Master",
+      "subtitle": "With a real-life example: designing a high-scale user service that saves 1M users",
+      "publishedAt": "2025-11-16",
+      "author": "Jaswanth",
+      "category": "Backend architecture",
+      "featuredRank": 2,
+      "excerpt": "An opinionated guide to service configuration, deployment, statelessness, operations, and a bulk-registration example.",
+      "sourceUrl": "https://medium.com/@jashuamrita360/12-engineering-principles-every-backend-developer-should-master-f380583bf50b",
+      "sourceReadingMinutes": 5,
+      "contentFormat": "markdown-and-semantic-blocks",
+      "fullTextIncluded": true,
+      "images": [],
+      "markdownFile": "articles/02-backend-principles.md",
+      "bodyMarkdown": "# 🚀 12 Engineering Principles Every Backend Developer Should Master\n\n## With a real-life example: designing a high-scale user service that saves 1M users\n\nModern backend systems demand more than writing APIs - they demand *architecture thinking*. Whether you’re building internal tools or powering an Instagram-scale app that handles millions of users, certain principles make your services reliable, scalable, and predictable.\n\nLet’s walk through **12 non-negotiable principles** with a real-life scenario:  \n👉 *Designing a user-registration microservice capable of saving 1 million users efficiently*\n\n## 1. 📦 One Codebase = One Service\n\nIn microservices, each service must live in its own repo with its own lifecycle.\n\n**Why?**  \nIf your “User Service” and “Feed Service” share a repo, deployments become tightly coupled. Fixing a small bug in signup might redeploy feed ranking algorithms unnecessarily.\n\n**Real Example:**  \nYour “User Registration Service” handles profile creation, verification, and metadata. Keeping it isolated lets you safely scale or refactor user ingestion logic without touching unrelated systems.\n\n## 2. 📑 Up-to-date Dependency Files\n\nNever forget to update `requirements.txt` or `pyproject.toml`.\n\n**Because:**  \nYour CI/CD, Docker builds, and production images rely on that dependency list.  \nMissing a package = broken deployment.\n\n## 3. 🔐 Secrets Belong in .env (NOT in code)\n\nAPI keys, DB passwords, S3 creds — never push them into Git.\n\nUse:\n\n- `.env`\n- AWS Secrets Manager\n- Vault\n- Doppler\n\nAnything except plain code.\n\n**Bad:**\n\n```python\nS3_KEY = \"ACBD123\"\n```\n\n**Good:**\n\n```python\nos.getenv(\"S3_KEY\")\n```\n\n## 4. 🔌 Plug-and-Play Architecture\n\nYour service shouldn’t care whether files come from:\n\n- S3\n- MinIO\n- GCP Storage\n\nAbstract the storage logic.\n\nThis helps you:\n\n- Run locally with MinIO\n- Deploy to production using S3\n- switch providers with zero code rewrite\n\n## 5. 🐳 Build → Release → Run With ONE Docker Image\n\nNever build multiple images for dev/prod.\n\nSame image across:\n\n- Dev\n- QA\n- Staging\n- Production\n\nThis removes “it works on my machine” forever.\n\n## 6. 🌀 Stateless Services\n\nStore no session or state inside your app.  \nUse Redis, DB, or queues.\n\n**Why?**  \nStateless microservices = horizontal scaling without losing user sessions.\n\nExample:  \nWhen registering 1M users in parallel, each request may hit a different pod — but all should see the same user state via Redis/Postgres.\n\n## 7. 🔌 Port Binding\n\nEach service exposes its own port.  \nNo ambiguity.\n\nExample:  \nUser Service → `:8000`  \nFeed Service → `:7000`  \nNotification Service → `:9000`\n\n## 8. 📈 Concurrency = Scale Out, Not Threads\n\n**Concurrency** means handling many tasks at the same time (e.g., 1,000 signups, DB writes, Redis calls, file uploads).\n\n**Thread (single server concurrency):** A **thread** is a small worker inside one server that handles tasks in parallel.  \nBut a single machine has limits (CPU/RAM), so threads cannot scale infinitely.\n\n**Example:**  \nOne FastAPI server running 4 threads:\n\n```text\n1 Server\n ├── Thread 1\n ├── Thread 2\n ├── Thread 3\n └── Thread 4\n(limit reached)\n```\n\n**Pod (distributed concurrency):** A **pod** is a full instance of your service running in Kubernetes.  \nScaling concurrency means adding **more pods**, not more threads.\n\n**Example:**  \nMultiple pods handling huge traffic:\n\n```text\nServer 1 → Pod A\nServer 2 → Pod B\nServer 3 → Pod C\nServer 4 → Pod D\n...\nServer 100 → Pod Z\n```\n\nThreads help inside one server, but **only multiple pods can handle millions of requests** across a cluster.\n\n## 9. ⚡ Disposability\n\nYour service should start and stop in seconds.\n\n- Fast startup\n- Graceful shutdown\n- Health checks\n- No downtime deploys\n\nThis directly affects your ability to deploy 20 times per day safely.\n\n## 10. 🎭 Dev / Prod Parity\n\nWhat works locally must behave the same in production.\n\nThat means:\n\n- Same DB type\n- Same message queue type\n- Dockerized services\n- Similar environment configuration\n\nYou can’t test with SQLite locally and expect Postgres behavior in prod.\n\n## 11. 📡 Stream Logs — Don’t Write Files\n\nNever write logs to disk on a container — containers are ephemeral.\n\nInstead:\n\n```text\nstdout/stderr → Kubernetes\n→ CloudWatch / Logstash / Datadog / Loki\n```\n\nThis ensures visibility across 100+ pods.\n\n## 12. 🧰 Admin Processes Belong in CI/CD\n\nMigrations or batch jobs should NEVER run automatically inside your web server.\n\nUse:\n\n- Alembic migrations via GitHub Actions\n- One-off scripts via CI jobs\n\nIf your user signup service accidentally runs migrations on every startup → welcome to production outages.\n\n## 🏗️ Real-Life Scenario: Saving 1,000,000 User Records (Instagram-Style)\n\nImagine you’re building the **User Registration Service** for a social app like Instagram for Meta.\n\nChallenges:\n\n- High write throughput\n- Unique username validation\n- Email/phone verification\n- Storing metadata\n- Fast ingestion (batch or real-time)\n\nTo handle millions of writes:\n\n- Use async API (FastAPI + async SQL)\n- Bulk inserts\n- Connection pooling\n- Stateless workers scaled to 10–50 replicas\n- Caching duplicate checks in Redis\n\n## 🧪 Architecture Overview\n\n```text\n               ┌───────────┐\nRequest  --->  │  FastAPI  │  ---> Async PostgreSQL (users table)\n               └───────────┘\n                    │\n                    │ Duplicate checks (username/email)\n                    ▼\n                 Redis Cache\n```\n\n**Scaling:**  \nKubernetes deploys 20+ replicas, each stateless.  \nAll share Redis and the database.\n\n## 🧵 FastAPI Example: Saving Millions of Users Efficiently\n\n### 1️⃣ Model + DB Setup (Async SQLAlchemy)\n\n```python\n# db.py\nfrom sqlalchemy.ext.asyncio import create_async_engine, AsyncSession\nfrom sqlalchemy.orm import sessionmaker\n\nDATABASE_URL = \"postgresql+asyncpg://user:pass@localhost:5432/instagram\"\nengine = create_async_engine(DATABASE_URL, pool_pre_ping=True)\nSessionLocal = sessionmaker(\n    autocommit=False,\n    autoflush=False,\n    bind=engine,\n    class_=AsyncSession\n)\n```\n\n### 2️⃣ User Model\n\n```python\n# models.py\nfrom sqlalchemy import Column, Integer, String\nfrom sqlalchemy.orm import declarative_base\n\nBase = declarative_base()\nclass User(Base):\n    __tablename__ = \"users\"\n    id = Column(Integer, primary_key=True, index=True)\n    username = Column(String(255), unique=True, index=True)\n    email = Column(String(255), unique=True, index=True)\n```\n\n### 3️⃣ Service Logic (Bulk Save)\n\n```python\n# service.py\nfrom redis.asyncio import Redis\nfrom models import User\nfrom sqlalchemy import insert\n\nredis = Redis(host=\"localhost\", port=6379, decode_responses=True)\nasync def save_users_bulk(db, users):\n    # Avoid duplicate username\n    filtered = []\n    for u in users:\n        key = f\"user:{u['username']}\"\n        exists = await redis.get(key)\n        if exists:\n            continue  # duplicate\n        await redis.set(key, 1, ex=3600)\n        filtered.append(u)\n    if filtered:\n        stmt = insert(User).values(filtered)\n        await db.execute(stmt)\n        await db.commit()\n    return {\"saved\": len(filtered)}\n```\n\n### 4️⃣ API Endpoint\n\n```python\n# main.py\nfrom fastapi import FastAPI, Depends\nfrom db import SessionLocal\nfrom service import save_users_bulk\n\napp = FastAPI()\nasync def get_db():\n    async with SessionLocal() as session:\n        yield session\n@app.post(\"/users/bulk\")\nasync def create_users(users: list[dict], db=Depends(get_db)):\n    result = await save_users_bulk(db, users)\n    return result\n```\n\n## Summary\n\n**How does this handle 1M users:**\n\n- **Async Postgres** gives high throughput\n- **Bulk insert** reduces DB round-trip\n- **Redis** caches duplicate checks\n- **Stateless service** lets Kubernetes scale to many replicas\n- **The Same Docker image** runs everywhere\n- **Streaming logs** let you observe ingestion speed\n- **Admin scripts** (migrations) run via CI before deployment\n\nThis architecture can ingest millions of records in minutes, depending on the DB capacity.\n\nIf you internalize these 12 principles, you’ll build backend systems that are:\n\n- predictable\n- scalable\n- easier to maintain\n- friendly to CI/CD\n- cloud-native and microservice-ready\n\nThese principles are exactly how companies like Meta, Instagram, Netflix, and Uber keep their services stable while serving **hundreds of millions of users daily**.\n\nHappy Coding :)  \nJaswanth.",
+      "bodyBlocks": [
+        {
+          "type": "paragraph",
+          "markdown": "Modern backend systems demand more than writing APIs - they demand *architecture thinking*. Whether you’re building internal tools or powering an Instagram-scale app that handles millions of users, certain principles make your services reliable, scalable, and predictable.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Let’s walk through **12 non-negotiable principles** with a real-life scenario:  \n👉 *Designing a user-registration microservice capable of saving 1 million users efficiently*",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "1. 📦 One Codebase = One Service",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "In microservices, each service must live in its own repo with its own lifecycle.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Why?**  \nIf your “User Service” and “Feed Service” share a repo, deployments become tightly coupled. Fixing a small bug in signup might redeploy feed ranking algorithms unnecessarily.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Real Example:**  \nYour “User Registration Service” handles profile creation, verification, and metadata. Keeping it isolated lets you safely scale or refactor user ingestion logic without touching unrelated systems.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "2. 📑 Up-to-date Dependency Files",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Never forget to update `requirements.txt` or `pyproject.toml`.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Because:**  \nYour CI/CD, Docker builds, and production images rely on that dependency list.  \nMissing a package = broken deployment.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "3. 🔐 Secrets Belong in .env (NOT in code)",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "API keys, DB passwords, S3 creds — never push them into Git.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Use:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "`.env`",
+            "AWS Secrets Manager",
+            "Vault",
+            "Doppler"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Anything except plain code.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Bad:**",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "S3_KEY = \"ACBD123\"",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Good:**",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "os.getenv(\"S3_KEY\")",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "4. 🔌 Plug-and-Play Architecture",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Your service shouldn’t care whether files come from:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "S3",
+            "MinIO",
+            "GCP Storage"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Abstract the storage logic.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "This helps you:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Run locally with MinIO",
+            "Deploy to production using S3",
+            "switch providers with zero code rewrite"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "5. 🐳 Build → Release → Run With ONE Docker Image",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Never build multiple images for dev/prod.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Same image across:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Dev",
+            "QA",
+            "Staging",
+            "Production"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "This removes “it works on my machine” forever.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "6. 🌀 Stateless Services",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Store no session or state inside your app.  \nUse Redis, DB, or queues.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Why?**  \nStateless microservices = horizontal scaling without losing user sessions.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Example:  \nWhen registering 1M users in parallel, each request may hit a different pod — but all should see the same user state via Redis/Postgres.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "7. 🔌 Port Binding",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Each service exposes its own port.  \nNo ambiguity.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Example:  \nUser Service → `:8000`  \nFeed Service → `:7000`  \nNotification Service → `:9000`",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "8. 📈 Concurrency = Scale Out, Not Threads",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Concurrency** means handling many tasks at the same time (e.g., 1,000 signups, DB writes, Redis calls, file uploads).",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Thread (single server concurrency):** A **thread** is a small worker inside one server that handles tasks in parallel.  \nBut a single machine has limits (CPU/RAM), so threads cannot scale infinitely.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Example:**  \nOne FastAPI server running 4 threads:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "text",
+          "code": "1 Server\n ├── Thread 1\n ├── Thread 2\n ├── Thread 3\n └── Thread 4\n(limit reached)",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Pod (distributed concurrency):** A **pod** is a full instance of your service running in Kubernetes.  \nScaling concurrency means adding **more pods**, not more threads.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Example:**  \nMultiple pods handling huge traffic:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "text",
+          "code": "Server 1 → Pod A\nServer 2 → Pod B\nServer 3 → Pod C\nServer 4 → Pod D\n...\nServer 100 → Pod Z",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Threads help inside one server, but **only multiple pods can handle millions of requests** across a cluster.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "9. ⚡ Disposability",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Your service should start and stop in seconds.",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Fast startup",
+            "Graceful shutdown",
+            "Health checks",
+            "No downtime deploys"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "This directly affects your ability to deploy 20 times per day safely.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "10. 🎭 Dev / Prod Parity",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "What works locally must behave the same in production.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "That means:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Same DB type",
+            "Same message queue type",
+            "Dockerized services",
+            "Similar environment configuration"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "You can’t test with SQLite locally and expect Postgres behavior in prod.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "11. 📡 Stream Logs — Don’t Write Files",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Never write logs to disk on a container — containers are ephemeral.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Instead:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "text",
+          "code": "stdout/stderr → Kubernetes\n→ CloudWatch / Logstash / Datadog / Loki",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "This ensures visibility across 100+ pods.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "12. 🧰 Admin Processes Belong in CI/CD",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Migrations or batch jobs should NEVER run automatically inside your web server.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Use:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Alembic migrations via GitHub Actions",
+            "One-off scripts via CI jobs"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "If your user signup service accidentally runs migrations on every startup → welcome to production outages.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "🏗️ Real-Life Scenario: Saving 1,000,000 User Records (Instagram-Style)",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Imagine you’re building the **User Registration Service** for a social app like Instagram for Meta.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Challenges:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "High write throughput",
+            "Unique username validation",
+            "Email/phone verification",
+            "Storing metadata",
+            "Fast ingestion (batch or real-time)"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "To handle millions of writes:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Use async API (FastAPI + async SQL)",
+            "Bulk inserts",
+            "Connection pooling",
+            "Stateless workers scaled to 10–50 replicas",
+            "Caching duplicate checks in Redis"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "🧪 Architecture Overview",
+          "fontRole": "heading"
+        },
+        {
+          "type": "code",
+          "language": "text",
+          "code": "               ┌───────────┐\nRequest  --->  │  FastAPI  │  ---> Async PostgreSQL (users table)\n               └───────────┘\n                    │\n                    │ Duplicate checks (username/email)\n                    ▼\n                 Redis Cache",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Scaling:**  \nKubernetes deploys 20+ replicas, each stateless.  \nAll share Redis and the database.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "🧵 FastAPI Example: Saving Millions of Users Efficiently",
+          "fontRole": "heading"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "1️⃣ Model + DB Setup (Async SQLAlchemy)",
+          "fontRole": "heading"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "# db.py\nfrom sqlalchemy.ext.asyncio import create_async_engine, AsyncSession\nfrom sqlalchemy.orm import sessionmaker\n\nDATABASE_URL = \"postgresql+asyncpg://user:pass@localhost:5432/instagram\"\nengine = create_async_engine(DATABASE_URL, pool_pre_ping=True)\nSessionLocal = sessionmaker(\n    autocommit=False,\n    autoflush=False,\n    bind=engine,\n    class_=AsyncSession\n)",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "2️⃣ User Model",
+          "fontRole": "heading"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "# models.py\nfrom sqlalchemy import Column, Integer, String\nfrom sqlalchemy.orm import declarative_base\n\nBase = declarative_base()\nclass User(Base):\n    __tablename__ = \"users\"\n    id = Column(Integer, primary_key=True, index=True)\n    username = Column(String(255), unique=True, index=True)\n    email = Column(String(255), unique=True, index=True)",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "3️⃣ Service Logic (Bulk Save)",
+          "fontRole": "heading"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "# service.py\nfrom redis.asyncio import Redis\nfrom models import User\nfrom sqlalchemy import insert\n\nredis = Redis(host=\"localhost\", port=6379, decode_responses=True)\nasync def save_users_bulk(db, users):\n    # Avoid duplicate username\n    filtered = []\n    for u in users:\n        key = f\"user:{u['username']}\"\n        exists = await redis.get(key)\n        if exists:\n            continue  # duplicate\n        await redis.set(key, 1, ex=3600)\n        filtered.append(u)\n    if filtered:\n        stmt = insert(User).values(filtered)\n        await db.execute(stmt)\n        await db.commit()\n    return {\"saved\": len(filtered)}",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "4️⃣ API Endpoint",
+          "fontRole": "heading"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "# main.py\nfrom fastapi import FastAPI, Depends\nfrom db import SessionLocal\nfrom service import save_users_bulk\n\napp = FastAPI()\nasync def get_db():\n    async with SessionLocal() as session:\n        yield session\n@app.post(\"/users/bulk\")\nasync def create_users(users: list[dict], db=Depends(get_db)):\n    result = await save_users_bulk(db, users)\n    return result",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Summary",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**How does this handle 1M users:**",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "**Async Postgres** gives high throughput",
+            "**Bulk insert** reduces DB round-trip",
+            "**Redis** caches duplicate checks",
+            "**Stateless service** lets Kubernetes scale to many replicas",
+            "**The Same Docker image** runs everywhere",
+            "**Streaming logs** let you observe ingestion speed",
+            "**Admin scripts** (migrations) run via CI before deployment"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "This architecture can ingest millions of records in minutes, depending on the DB capacity.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "If you internalize these 12 principles, you’ll build backend systems that are:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "predictable",
+            "scalable",
+            "easier to maintain",
+            "friendly to CI/CD",
+            "cloud-native and microservice-ready"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "These principles are exactly how companies like Meta, Instagram, Netflix, and Uber keep their services stable while serving **hundreds of millions of users daily**.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Happy Coding :)  \nJaswanth.",
+          "fontRole": "body"
+        }
+      ],
+      "toc": [
+        {
+          "level": 2,
+          "text": "1. 📦 One Codebase = One Service"
+        },
+        {
+          "level": 2,
+          "text": "2. 📑 Up-to-date Dependency Files"
+        },
+        {
+          "level": 2,
+          "text": "3. 🔐 Secrets Belong in .env (NOT in code)"
+        },
+        {
+          "level": 2,
+          "text": "4. 🔌 Plug-and-Play Architecture"
+        },
+        {
+          "level": 2,
+          "text": "5. 🐳 Build → Release → Run With ONE Docker Image"
+        },
+        {
+          "level": 2,
+          "text": "6. 🌀 Stateless Services"
+        },
+        {
+          "level": 2,
+          "text": "7. 🔌 Port Binding"
+        },
+        {
+          "level": 2,
+          "text": "8. 📈 Concurrency = Scale Out, Not Threads"
+        },
+        {
+          "level": 2,
+          "text": "9. ⚡ Disposability"
+        },
+        {
+          "level": 2,
+          "text": "10. 🎭 Dev / Prod Parity"
+        },
+        {
+          "level": 2,
+          "text": "11. 📡 Stream Logs — Don’t Write Files"
+        },
+        {
+          "level": 2,
+          "text": "12. 🧰 Admin Processes Belong in CI/CD"
+        },
+        {
+          "level": 2,
+          "text": "🏗️ Real-Life Scenario: Saving 1,000,000 User Records (Instagram-Style)"
+        },
+        {
+          "level": 2,
+          "text": "🧪 Architecture Overview"
+        },
+        {
+          "level": 2,
+          "text": "🧵 FastAPI Example: Saving Millions of Users Efficiently"
+        },
+        {
+          "level": 3,
+          "text": "1️⃣ Model + DB Setup (Async SQLAlchemy)"
+        },
+        {
+          "level": 3,
+          "text": "2️⃣ User Model"
+        },
+        {
+          "level": 3,
+          "text": "3️⃣ Service Logic (Bulk Save)"
+        },
+        {
+          "level": 3,
+          "text": "4️⃣ API Endpoint"
+        },
+        {
+          "level": 2,
+          "text": "Summary"
+        }
+      ],
+      "wordCountIncludingCode": 1178,
+      "codeBlockCount": 10,
+      "tableCount": 0
+    },
+    {
+      "id": "d9c4b0dc6e30",
+      "slug": "merge-migrations-in-fastapi-alembic-like-djangos-merge",
+      "title": "🚀 Merge Migrations in FastAPI (Alembic) Like Django’s Merge",
+      "publishedAt": "2025-06-24",
+      "author": "Jaswanth",
+      "category": "Databases & migrations",
+      "featuredRank": 3,
+      "excerpt": "A concise walkthrough of reconciling divergent Alembic migration heads created by parallel development.",
+      "sourceUrl": "https://medium.com/@jashuamrita360/merge-migrations-in-fastapi-alembic-like-djangos-merge-d9c4b0dc6e30",
+      "sourceReadingMinutes": 1,
+      "contentFormat": "markdown-and-semantic-blocks",
+      "fullTextIncluded": true,
+      "images": [],
+      "markdownFile": "articles/03-alembic-migrations.md",
+      "bodyMarkdown": "# 🚀 Merge Migrations in FastAPI (Alembic) Like Django’s Merge\n\nWhen multiple developers are working on different parts of the database schema in a **FastAPI** project (with **SQLAlchemy** + **Alembic**), migration conflicts can occur — just like in **Django**. However, Django gives a direct `makemigrations — merge` command.\n\nSo, how do we handle this with Alembic? Let’s walk through it in **2 minutes**.\n\n## 🧠 What’s a Migration Conflict?\n\nLet’s say:\n\nDev A adds a column `age` to `User`\n\nDev B adds a column `is_active` to `User`\n\nBoth create migrations. Now, Alembic has **two heads** — and doesn’t know which one to pick as the next step.\n\n## 👇 Step-by-step: How to Merge Alembic Migrations\n\n### 1. 🔍 See the Migration Heads\n\nRun:\n\n```bash\nalembic heads\n```\n\nYou’ll see something like:\n\n```text\nRev: abc123 — Add age\nRev: def456 — Add is_active\n```\n\nUh-oh! We’ve got multiple heads.\n\n### 2. 💥 See the Branches now\n\n```bash\nalembic branches\n```\n\nYou’ll see each divergent path.\n\n### 3. ✅ Create a Merge Migration\n\nNow we tell Alembic: “Hey, just merge these two paths.”\n\n```bash\nalembic merge -m \"merge age and is_active changes\" abc123 def456\n```\n\nThis creates a new migration that merges both.\n\n### 4. 🛠 Apply the Merge\n\nNow simply run:\n\n```bash\nalembic upgrade head\n```\n\nDone! 🧹 The merge commit becomes the new parent for both diverged branches.\n\n### 💡 Pro Tip\n\n*Use consistent naming and commit migrations quickly to avoid conflicts. Merging often keeps things smooth.*",
+      "bodyBlocks": [
+        {
+          "type": "paragraph",
+          "markdown": "When multiple developers are working on different parts of the database schema in a **FastAPI** project (with **SQLAlchemy** + **Alembic**), migration conflicts can occur — just like in **Django**. However, Django gives a direct `makemigrations — merge` command.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "So, how do we handle this with Alembic? Let’s walk through it in **2 minutes**.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "🧠 What’s a Migration Conflict?",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Let’s say:",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Dev A adds a column `age` to `User`",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Dev B adds a column `is_active` to `User`",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Both create migrations. Now, Alembic has **two heads** — and doesn’t know which one to pick as the next step.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "👇 Step-by-step: How to Merge Alembic Migrations",
+          "fontRole": "heading"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "1. 🔍 See the Migration Heads",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Run:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "bash",
+          "code": "alembic heads",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "You’ll see something like:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "text",
+          "code": "Rev: abc123 — Add age\nRev: def456 — Add is_active",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Uh-oh! We’ve got multiple heads.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "2. 💥 See the Branches now",
+          "fontRole": "heading"
+        },
+        {
+          "type": "code",
+          "language": "bash",
+          "code": "alembic branches",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "You’ll see each divergent path.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "3. ✅ Create a Merge Migration",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Now we tell Alembic: “Hey, just merge these two paths.”",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "bash",
+          "code": "alembic merge -m \"merge age and is_active changes\" abc123 def456",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "This creates a new migration that merges both.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "4. 🛠 Apply the Merge",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Now simply run:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "bash",
+          "code": "alembic upgrade head",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Done! 🧹 The merge commit becomes the new parent for both diverged branches.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "💡 Pro Tip",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "*Use consistent naming and commit migrations quickly to avoid conflicts. Merging often keeps things smooth.*",
+          "fontRole": "body"
+        }
+      ],
+      "toc": [
+        {
+          "level": 2,
+          "text": "🧠 What’s a Migration Conflict?"
+        },
+        {
+          "level": 2,
+          "text": "👇 Step-by-step: How to Merge Alembic Migrations"
+        },
+        {
+          "level": 3,
+          "text": "1. 🔍 See the Migration Heads"
+        },
+        {
+          "level": 3,
+          "text": "2. 💥 See the Branches now"
+        },
+        {
+          "level": 3,
+          "text": "3. ✅ Create a Merge Migration"
+        },
+        {
+          "level": 3,
+          "text": "4. 🛠 Apply the Merge"
+        },
+        {
+          "level": 3,
+          "text": "💡 Pro Tip"
+        }
+      ],
+      "wordCountIncludingCode": 247,
+      "codeBlockCount": 5,
+      "tableCount": 0
+    },
+    {
+      "id": "1b11d0863b9b",
+      "slug": "understanding-django-sessions",
+      "title": "Understanding Django Sessions",
+      "publishedAt": "2026-03-05",
+      "author": "Jaswanth",
+      "category": "Django",
+      "featuredRank": 4,
+      "excerpt": "How Django maintains user state across HTTP requests, with session storage options and authentication trade-offs.",
+      "sourceUrl": "https://medium.com/@jashuamrita360/understanding-django-sessions-1b11d0863b9b",
+      "sourceReadingMinutes": 3,
+      "contentFormat": "markdown-and-semantic-blocks",
+      "fullTextIncluded": true,
+      "images": [],
+      "markdownFile": "articles/04-django-sessions.md",
+      "bodyMarkdown": "# Understanding Django Sessions\n\nWhen building web applications, one core problem appears immediately:\n\n**HTTP is stateless.**\n\nThis means every request is independent.  \nThe server does **not remember who you are** between requests.\n\nSo if a user logs in and then opens another page, the server technically has **no idea it is the same user**.\n\nThat’s the problem **sessions** solve.\n\n## The Problem: Stateless HTTP\n\nExample flow without sessions:\n\n```text\nRequest 1 → Login\nServer validates credentials\n\nRequest 2 → Open dashboard\nServer receives request but does not know who the user is\n```\n\nWithout storing state somewhere, **authentication cannot persist**.\n\nThis is why web frameworks introduced **sessions**.\n\n## What Is a Django Session?\n\nA **Django session** is a mechanism that allows the server to store **user-specific data across multiple requests**.\n\nInstead of storing everything in the browser, Django:\n\n- Stores session data **on the server**\n- Sends a **session ID cookie** to the browser\n- Uses that ID to retrieve session data on every request\n\n## Simple Django Session Flow\n\n```text\nUser logs in\n        ↓\nDjango creates session record\n        ↓\nSession ID sent to browser cookie\n        ↓\nBrowser sends session ID in every request\n        ↓\nDjango loads session data\n```\n\nExample:\n\n```text\nBrowser Cookie\nsessionid = abcd1234\n```\n\nServer stores:\n\n```text\nsessionid: abcd1234\n{\n    user_id: 42\n    is_authenticated: True\n}\n```\n\n## Simple Example\n\n### Saving Data in Session\n\n```python\ndef login_view(request):\n    request.session['user_id'] = 42\n    request.session['username'] = \"john\"\n```\n\nNow Django stores this data in the session backend.\n\n### Reading Session Data\n\n```python\ndef dashboard(request):\n    user = request.session.get('username')\n    return HttpResponse(f\"Welcome {user}\")\n```\n\n### Removing Session Data\n\n```python\ndef logout(request):\n    request.session.flush()\n```\n\nThis deletes the session and logs the user out.\n\n## Where Django Stores Sessions\n\nDjango supports multiple storage backends.\n\n### 1. Database (Most common)\n\n```python\nSESSION_ENGINE = 'django.contrib.sessions.backends.db'\n# Stored in table: django_session\n```\n\nSafe, persistent, easy to scale.\n\n### 2. File System\n\n```python\nSESSION_ENGINE = 'django.contrib.sessions.backends.file'\n# Stored as files on disk : /tmp/django_sessions/\n```\n\nSimple but not ideal for large production systems.\n\n### 3. Cache (Redis / Memcached)\n\n```python\nSESSION_ENGINE = 'django.contrib.sessions.backends.cache'\n```\n\nFastest option. Used in high-scale systems.\n\n### 4. Signed Cookies\n\n```python\nSESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'\n# Session stored in browser.\n# Server does not store anything.\n```\n\nLess secure for large data.\n\n## What Was Used Before Sessions?\n\nBefore frameworks like Django handled sessions automatically, developers used several methods.\n\n### 1. Hidden Form Fields\n\nState was passed manually in HTML forms.\n\nExample:\n\n```html\n<input type=\"hidden\" name=\"user_id\" value=\"42\">\n```\n\nProblems:\n\n- Easily manipulated\n- Not secure\n- Only works with forms\n\n### 2. URL Parameters\n\nUser identity was passed in the URL.\n\nExample:\n\n```text\n/dashboard?user_id=42\n```\n\nProblems:\n\n- Visible in URL\n- Security risk\n- Easily modified\n\n### 3. Cookies Only\n\nDevelopers stored everything directly in browser cookies.\n\nExample:\n\n```text\nuser_id=42\nrole=admin\n```\n\nProblems:\n\n- Client-controlled\n- Security risk\n- Size limitation (~4KB)\n\n## What Django Sessions Solved\n\nDjango sessions solved multiple problems at once.\n\n### 1. Server-side security\n\nSensitive data stays on the server.\n\nOnly a **session ID** is sent to the browser.\n\n### 2. Automatic authentication persistence\n\nDjango’s authentication system relies on sessions.\n\nAfter login:\n\n```python\nrequest.user\n```\n\nworks automatically across requests.\n\n### 3. Secure session management\n\nDjango handles:\n\n- Session creation\n- Expiration\n- Session rotation\n- CSRF protection\n- Secure cookies\n\n### 4. Storage flexibility\n\nYou can easily switch between:\n\n- Database\n- Redis\n- File system\n- Cookies\n\nWithout changing application logic.\n\n## Security Features Django Provides\n\nDjango sessions support important security features.\n\n```python\nSESSION_COOKIE_SECURE = True\nSESSION_COOKIE_HTTPONLY = True\nSESSION_COOKIE_SAMESITE = 'Lax'\n```\n\nThese prevent:\n\n- XSS cookie theft\n- CSRF attacks\n- insecure transmission\n\n## When Sessions Are Not Used\n\nSome modern architectures avoid sessions completely.\n\nExample:\n\n### JWT Authentication\n\nUsed in:\n\n- REST APIs\n- Microservices\n- Mobile apps\n\nInstead of sessions:\n\n```http\nAuthorization: Bearer <token>\n```\n\nThe token itself contains user identity.\n\nBut JWT has its own tradeoffs:\n\n- Token revocation is difficult\n- Harder logout logic\n- Larger payload\n\n## When Django Sessions Are Best\n\nSessions are ideal for:\n\n- Server-rendered Django apps\n- MVT architecture\n- Admin dashboards\n- Internal tools\n- Traditional web applications\n\nThey provide **simplicity, security, and stability**.\n\n## Final Thoughts\n\nDjango sessions are one of the most important features that make web authentication easy.\n\nThey abstract away the complexity of maintaining state in a stateless protocol.\n\nInstead of manually passing identity across requests, Django handles everything using:\n\n- session IDs\n- secure cookies\n- server-side storage\n\nFor most Django applications, **sessions remain the simplest and most reliable authentication mechanism**.",
+      "bodyBlocks": [
+        {
+          "type": "paragraph",
+          "markdown": "When building web applications, one core problem appears immediately:",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**HTTP is stateless.**",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "This means every request is independent.  \nThe server does **not remember who you are** between requests.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "So if a user logs in and then opens another page, the server technically has **no idea it is the same user**.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "That’s the problem **sessions** solve.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "The Problem: Stateless HTTP",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Example flow without sessions:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "text",
+          "code": "Request 1 → Login\nServer validates credentials\n\nRequest 2 → Open dashboard\nServer receives request but does not know who the user is",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Without storing state somewhere, **authentication cannot persist**.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "This is why web frameworks introduced **sessions**.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "What Is a Django Session?",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "A **Django session** is a mechanism that allows the server to store **user-specific data across multiple requests**.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Instead of storing everything in the browser, Django:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Stores session data **on the server**",
+            "Sends a **session ID cookie** to the browser",
+            "Uses that ID to retrieve session data on every request"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Simple Django Session Flow",
+          "fontRole": "heading"
+        },
+        {
+          "type": "code",
+          "language": "text",
+          "code": "User logs in\n        ↓\nDjango creates session record\n        ↓\nSession ID sent to browser cookie\n        ↓\nBrowser sends session ID in every request\n        ↓\nDjango loads session data",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Example:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "text",
+          "code": "Browser Cookie\nsessionid = abcd1234",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Server stores:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "text",
+          "code": "sessionid: abcd1234\n{\n    user_id: 42\n    is_authenticated: True\n}",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Simple Example",
+          "fontRole": "heading"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Saving Data in Session",
+          "fontRole": "heading"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "def login_view(request):\n    request.session['user_id'] = 42\n    request.session['username'] = \"john\"",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Now Django stores this data in the session backend.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Reading Session Data",
+          "fontRole": "heading"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "def dashboard(request):\n    user = request.session.get('username')\n    return HttpResponse(f\"Welcome {user}\")",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Removing Session Data",
+          "fontRole": "heading"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "def logout(request):\n    request.session.flush()",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "This deletes the session and logs the user out.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Where Django Stores Sessions",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Django supports multiple storage backends.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "1. Database (Most common)",
+          "fontRole": "heading"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "SESSION_ENGINE = 'django.contrib.sessions.backends.db'\n# Stored in table: django_session",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Safe, persistent, easy to scale.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "2. File System",
+          "fontRole": "heading"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "SESSION_ENGINE = 'django.contrib.sessions.backends.file'\n# Stored as files on disk : /tmp/django_sessions/",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Simple but not ideal for large production systems.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "3. Cache (Redis / Memcached)",
+          "fontRole": "heading"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "SESSION_ENGINE = 'django.contrib.sessions.backends.cache'",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Fastest option. Used in high-scale systems.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "4. Signed Cookies",
+          "fontRole": "heading"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'\n# Session stored in browser.\n# Server does not store anything.",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Less secure for large data.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "What Was Used Before Sessions?",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Before frameworks like Django handled sessions automatically, developers used several methods.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "1. Hidden Form Fields",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "State was passed manually in HTML forms.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Example:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "html",
+          "code": "<input type=\"hidden\" name=\"user_id\" value=\"42\">",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Problems:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Easily manipulated",
+            "Not secure",
+            "Only works with forms"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "2. URL Parameters",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "User identity was passed in the URL.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Example:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "text",
+          "code": "/dashboard?user_id=42",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Problems:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Visible in URL",
+            "Security risk",
+            "Easily modified"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "3. Cookies Only",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Developers stored everything directly in browser cookies.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Example:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "text",
+          "code": "user_id=42\nrole=admin",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Problems:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Client-controlled",
+            "Security risk",
+            "Size limitation (~4KB)"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "What Django Sessions Solved",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Django sessions solved multiple problems at once.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "1. Server-side security",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Sensitive data stays on the server.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Only a **session ID** is sent to the browser.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "2. Automatic authentication persistence",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Django’s authentication system relies on sessions.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "After login:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "request.user",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "works automatically across requests.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "3. Secure session management",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Django handles:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Session creation",
+            "Expiration",
+            "Session rotation",
+            "CSRF protection",
+            "Secure cookies"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "4. Storage flexibility",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "You can easily switch between:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Database",
+            "Redis",
+            "File system",
+            "Cookies"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Without changing application logic.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Security Features Django Provides",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Django sessions support important security features.",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "SESSION_COOKIE_SECURE = True\nSESSION_COOKIE_HTTPONLY = True\nSESSION_COOKIE_SAMESITE = 'Lax'",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "These prevent:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "XSS cookie theft",
+            "CSRF attacks",
+            "insecure transmission"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "When Sessions Are Not Used",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Some modern architectures avoid sessions completely.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Example:",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "JWT Authentication",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Used in:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "REST APIs",
+            "Microservices",
+            "Mobile apps"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Instead of sessions:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "http",
+          "code": "Authorization: Bearer <token>",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "The token itself contains user identity.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "But JWT has its own tradeoffs:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Token revocation is difficult",
+            "Harder logout logic",
+            "Larger payload"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "When Django Sessions Are Best",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Sessions are ideal for:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Server-rendered Django apps",
+            "MVT architecture",
+            "Admin dashboards",
+            "Internal tools",
+            "Traditional web applications"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "They provide **simplicity, security, and stability**.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Final Thoughts",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Django sessions are one of the most important features that make web authentication easy.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "They abstract away the complexity of maintaining state in a stateless protocol.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Instead of manually passing identity across requests, Django handles everything using:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "session IDs",
+            "secure cookies",
+            "server-side storage"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "For most Django applications, **sessions remain the simplest and most reliable authentication mechanism**.",
+          "fontRole": "body"
+        }
+      ],
+      "toc": [
+        {
+          "level": 2,
+          "text": "The Problem: Stateless HTTP"
+        },
+        {
+          "level": 2,
+          "text": "What Is a Django Session?"
+        },
+        {
+          "level": 2,
+          "text": "Simple Django Session Flow"
+        },
+        {
+          "level": 2,
+          "text": "Simple Example"
+        },
+        {
+          "level": 3,
+          "text": "Saving Data in Session"
+        },
+        {
+          "level": 3,
+          "text": "Reading Session Data"
+        },
+        {
+          "level": 3,
+          "text": "Removing Session Data"
+        },
+        {
+          "level": 2,
+          "text": "Where Django Stores Sessions"
+        },
+        {
+          "level": 3,
+          "text": "1. Database (Most common)"
+        },
+        {
+          "level": 3,
+          "text": "2. File System"
+        },
+        {
+          "level": 3,
+          "text": "3. Cache (Redis / Memcached)"
+        },
+        {
+          "level": 3,
+          "text": "4. Signed Cookies"
+        },
+        {
+          "level": 2,
+          "text": "What Was Used Before Sessions?"
+        },
+        {
+          "level": 3,
+          "text": "1. Hidden Form Fields"
+        },
+        {
+          "level": 3,
+          "text": "2. URL Parameters"
+        },
+        {
+          "level": 3,
+          "text": "3. Cookies Only"
+        },
+        {
+          "level": 2,
+          "text": "What Django Sessions Solved"
+        },
+        {
+          "level": 3,
+          "text": "1. Server-side security"
+        },
+        {
+          "level": 3,
+          "text": "2. Automatic authentication persistence"
+        },
+        {
+          "level": 3,
+          "text": "3. Secure session management"
+        },
+        {
+          "level": 3,
+          "text": "4. Storage flexibility"
+        },
+        {
+          "level": 2,
+          "text": "Security Features Django Provides"
+        },
+        {
+          "level": 2,
+          "text": "When Sessions Are Not Used"
+        },
+        {
+          "level": 3,
+          "text": "JWT Authentication"
+        },
+        {
+          "level": 2,
+          "text": "When Django Sessions Are Best"
+        },
+        {
+          "level": 2,
+          "text": "Final Thoughts"
+        }
+      ],
+      "wordCountIncludingCode": 757,
+      "codeBlockCount": 17,
+      "tableCount": 0
+    },
+    {
+      "id": "1293665633f7",
+      "slug": "how-i-built-a-robust-gs1-parser-for-real-world-medical-barcodes-android-kotlin",
+      "title": "How I built a robust GS1 parser for real-world medical barcodes (Android/Kotlin)",
+      "publishedAt": "2025-12-09",
+      "author": "Jaswanth",
+      "category": "Android & integrations",
+      "featuredRank": 5,
+      "excerpt": "A detailed Kotlin parsing implementation for messy medical barcode input, including missing separators and duplicated payloads.",
+      "sourceUrl": "https://medium.com/@jashuamrita360/how-i-built-a-robust-gs1-parser-for-real-world-medical-barcodes-android-kotlin-1293665633f7",
+      "sourceReadingMinutes": 8,
+      "contentFormat": "markdown-and-semantic-blocks",
+      "fullTextIncluded": true,
+      "images": [],
+      "markdownFile": "articles/05-gs1-parser.md",
+      "bodyMarkdown": "# How I built a robust GS1 parser for real-world medical barcodes (Android/Kotlin)\n\nI had a Honeywell Android device with a scanner feeding my Android app raw GS1 strings **without** FNC1 separators. Many GS1 libraries assume clean, standards-compliant inputs (e.g., explicit group separators), but hospital labels don’t always cooperate. I needed a parser that could **reliably extract GTIN, lot, expiry, production, and serial** from messy strings produced by various medical products.\n\nHere’s how I approached it and the reusable Kotlin “plugin” I ended up shipping.\n\n## The real-world problem\n\nDevice: Honeywell handhelds scanning DataMatrix/GS1.\n\nInput: raw strings with **no FNC1** (ASCII 29) and **inconsistent formatting** (duplicates, stray characters, missing wrappers).\n\nGoal: extract these Application Identifiers (AIs):\n\n- `01`: GTIN (fixed 14 digits)\n- `10`: LOT (variable length)\n- `17`: Expiry date (YYMMDD)\n- `11`: Production date (YYMMDD)\n- `21`: Serial (variable length)\n\nConstraint: Many ribbons/labels cram values tightly; separators are absent; some scanners even **duplicate the whole payload** (`A + A`).\n\n## Design principles\n\n**Start from the first true GTIN**: find `01` that’s not preceded by a digit and only accept it if it’s followed by 14 digits.\n\n**Sanitize but keep useful chars**: normalize Unicode, drop invisibles, keep `-`, `/`, `.` because lots often contain them (e.g., `C24137/C`).\n\n**Guard dates**: accept `11` and `17` **only** if followed by a valid YYMMDD (not just six digits).\n\n**Heuristics for variable fields**:\n\n- For `10` (Lot): prefer the next valid `21` (Serial) **that doesn’t overlap** a date; otherwise, stop at the next valid date; otherwise, consider a duplicate `01` as the next block.\n- For `21` (Serial): if a date is close, stop there; else prefer the **right-most** valid `10` (Lot) before a date; else duplicate `01`.\n\n**Handle duplicates**: if the segment after the first `01` is literally `A + A`, trim to `A`.\n\n**Be conservative**: never cut numeric lots just because a random `01` appears — use it only when no fixed boundary (dates) is available.\n\n## Edge cases the parser handles\n\n- No FNC1s (or they’re removed by the scanner).\n- Serial before lot and vice versa.\n- Lots with `/`, `-`, `.` characters.\n- Duplicate blocks (same payload twice).\n- Stray digits that look like AIs but are not (e.g., `11` without a valid YYMMDD).\n- Overlap pitfalls where `…2117…` tricks a naive parser.\n\n## Drop-in “plugin” for Android/Kotlin\n\nPut this file anywhere you reuse parsing (e.g., `com.company.scanner.gs1` module). It’s self-contained and has clear requirements at the top.  \njust copy paste this code and use it\n\n```kotlin\npackage com.company.scanner.util\n\nimport android.util.Log\nimport java.text.Normalizer\n\n/**\n * -------------------------------------------------------------------------\n *  GS1 BARCODE PARSER – SIMPLE\n * -------------------------------------------------------------------------\n *\n *  REQUIREMENTS:\n *  - Parse GS1-128 / GS1 DataMatrix strings.\n *  - Extract common AIs:\n *        (01) GTIN\n *        (10) LOT / Batch\n *        (17) Expiry (YYMMDD)\n *        (21) Serial\n *  - Should NOT crash on malformed data.\n *  - Should ignore unknown AIs.\n *  - Suitable for Kotlin Multiplatform or Android.\n *\n *  NOTES:\n *  - This parser assumes parentheses-based AIs: (01)1234...(10)ABC...\n *  - Keeps logic readable & maintainable for medium-sized PRs.\n *  - Extend the AI_MAP if new attributes are required.\n */\nobject Gs1 {\n    // -------------------- CONFIG --------------------\n    private const val TAG = \"INV_DEBUG\"\n    private const val GS1_PARSER_VERSION = \"v31-fix-gs1-21-overlap\"\n    // -------------------- DATA MODEL --------------------\n    data class Result(\n        val raw: String,\n        val gtin: String?,\n        val lot: String?,\n        val expiryYmd: String?,\n        val serial: String?,\n        val productionYmd: String?\n    )\n    // -------------------- OPTIONAL DEBUG WRAPPER --------------------\n    fun parseWithDebug(raw0: String): Result? {\n        Log.d(TAG, \"---------------- GS1 DEBUG ----------------\")\n        Log.d(TAG, \"PARSER VERSION = $GS1_PARSER_VERSION\")\n        Log.d(TAG, \"RAW EXACT = [$raw0]\")\n        Log.d(TAG, \"RAW CHARS = \" + raw0.toCharArray().joinToString(\" \") { it.toString() })\n        Log.d(TAG, \"RAW HEX   = \" + raw0.encodeToByteArray().joinToString(\" \") { \"%02X\".format(it) })\n        val result = parse(raw0)\n        Log.d(TAG, \"PARSED GS1 → $result\")\n        Log.d(TAG, \"-------------------------------------------\")\n        return result\n    }\n    // -------------------- CORE PARSER --------------------\n    private const val validateCheckDigit = false\n    private val TRUE_01 = Regex(\"(?<!\\\\d)01\\\\d{14}\")        // true GTIN start\n    // heuristics\n    private const val MIN_SERIAL_LEN = 6\n    private const val MAX_VAR_LEN = 20\n    private const val MIN_LOT_LEN = 1\n    private const val GS = '\\u001D'\n    fun parse(raw0: String): Result? {\n        fun sanitizeForGs1(input: String): String {\n            val nfkc = Normalizer.normalize(input, Normalizer.Form.NFKC)\n            val noInvis = nfkc.replace(Regex(\"[\\\\p{Cf}\\\\p{Z}\\\\p{Mn}\\\\p{Me}]\"), \"\")\n            val noGs = noInvis.replace(GS.toString(), \"\")\n            val unwrapped = noGs.removePrefix(\"]Q3\").removePrefix(\"]Q1\")\n                .replace(\"(\", \"\").replace(\")\", \"\")\n            // keep A–Z, a–z, 0–9, '-', '/', '.'\n            return unwrapped.replace(Regex(\"[^A-Za-z0-9\\\\-\\\\./]\"), \"\")\n        }\n        var s = sanitizeForGs1(raw0)\n        val first01Match = TRUE_01.find(s) ?: return null\n        val first01 = first01Match.range.first\n        // Trim A+A duplicate block if present (after first 01)\n        run {\n            val seg = s.substring(first01)\n            if (seg.length % 2 == 0) {\n                val half = seg.length / 2\n                val a = seg.substring(0, half)\n                val b = seg.substring(half)\n                if (b.startsWith(a)) s = s.substring(0, first01) + a\n            }\n        }\n        var i = first01\n        var gtin: String? = null\n        var lot: String? = null\n        var prodIso: String? = null\n        var expIso: String? = null\n        var serial: String? = null\n        var seenGtin = false\n        fun digitsAt(p: Int, n: Int): Boolean {\n            if (p + n > s.length) return false\n            for (k in 0 until n) if (!s[p + k].isDigit()) return false\n            return true\n        }\n        fun fixedDigits(p0: Int, n: Int): Pair<String, Int> {\n            var p = p0\n            val sb = StringBuilder()\n            while (p < s.length && sb.length < n && s[p].isDigit()) {\n                sb.append(s[p]); p++\n            }\n            return sb.toString() to p\n        }\n        fun isValidYyMmDd(s6: String): Boolean {\n            if (s6.length != 6 || !s6.all { it.isDigit() }) return false\n            val mm = s6.substring(2, 4).toInt()\n            val dd = s6.substring(4, 6).toInt()\n            return mm in 1..12 && dd in 1..31\n        }\n        fun yymmddToIso(s6: String): String? {\n            if (!isValidYyMmDd(s6)) return null\n            val yy = s6.substring(0, 2)\n            val mm = s6.substring(2, 4)\n            val dd = s6.substring(4, 6)\n            return \"20$yy-$mm-$dd\"\n        }\n        // Next fixed boundary for variable fields: next valid 11/17 (ignore 01)\n        fun nextFixedBoundaryNo01(p0: Int): Int {\n            var best = s.length\n            var idx = p0\n            while (true) {\n                idx = s.indexOf(\"11\", idx)\n                if (idx == -1) break\n                if (digitsAt(idx + 2, 6) && isValidYyMmDd(s.substring(idx + 2, idx + 8))) {\n                    best = minOf(best, idx); break\n                }\n                idx++\n            }\n            idx = p0\n            while (true) {\n                idx = s.indexOf(\"17\", idx)\n                if (idx == -1) break\n                if (digitsAt(idx + 2, 6) && isValidYyMmDd(s.substring(idx + 2, idx + 8))) {\n                    best = minOf(best, idx); break\n                }\n                idx++\n            }\n            return best\n        }\n        // Next duplicate \"01\" (with 14 digits after) before searchEnd\n        fun nextDup01After(p0: Int, searchEnd: Int): Int {\n            var idx = s.indexOf(\"01\", p0)\n            while (idx != -1 && idx < searchEnd) {\n                if (digitsAt(idx + 2, 14)) return idx\n                idx = s.indexOf(\"01\", idx + 1)\n            }\n            return -1\n        }\n        // -------- boundaries for variable AIs --------\n        // LOT (AI=10): prefer a plausible SERIAL (21) if it does NOT overlap a date AI; else fixed date; else dup 01.\n        fun boundaryForLot(p0: Int, haveSerial: Boolean): Int {\n            val fixedCandidate = nextFixedBoundaryNo01(p0)\n            var candidate = fixedCandidate\n            var chosen = false\n            if (!haveSerial) {\n                var idx = p0\n                while (true) {\n                    idx = s.indexOf(\"21\", idx)\n                    if (idx == -1) break\n                    val gap = idx - p0\n                    if (gap > MAX_VAR_LEN) break\n                    // prevent overlap - require the '21' to fully precede the fixed boundary, not share its '1'\n                    if (fixedCandidate != s.length && (idx + 2) > fixedCandidate) { idx++; continue }\n                    if (gap < MIN_LOT_LEN) { idx++; continue }\n                    val endFor21 = nextFixedBoundaryNo01(idx + 2)\n                    val serialCand = s.substring(idx + 2, minOf(idx + 2 + MAX_VAR_LEN, endFor21))\n                    val ok = serialCand.isNotEmpty() &&\n                            serialCand.length >= MIN_SERIAL_LEN &&\n                            serialCand.all { it.isLetterOrDigit() }\n                    if (ok) {\n                        candidate = minOf(candidate, idx)\n                        chosen = true\n                        break\n                    }\n                    idx++\n                }\n            }\n            // If no valid date boundary exists at all, allow dup 01 as last resort\n            if (!chosen && candidate == s.length && seenGtin) {\n                val dup01 = nextDup01After(p0, candidate)\n                if (dup01 != -1 && (dup01 - p0) >= MIN_LOT_LEN) candidate = dup01\n            }\n            return candidate\n        }\n        // SERIAL (AI=21): use near fixed date if present; else right-most valid LOT (10); else dup \"01\".\n        fun boundaryForSerial(p0: Int, haveLot: Boolean): Int {\n            val fixed = nextFixedBoundaryNo01(p0)\n            val useFixed = fixed != s.length && (fixed - p0) <= MAX_VAR_LEN\n            if (useFixed) return fixed\n            val searchEnd = if (fixed != s.length) fixed else s.length\n            var best10 = -1\n            if (!haveLot) {\n                var idx = p0\n                while (true) {\n                    idx = s.indexOf(\"10\", idx)\n                    if (idx == -1 || idx >= searchEnd) break\n                    if (idx - p0 >= MIN_SERIAL_LEN) {\n                        val endFor10 = nextFixedBoundaryNo01(idx + 2)\n                        val lotCand = s.substring(idx + 2, minOf(idx + 2 + MAX_VAR_LEN, endFor10))\n                        val ok = lotCand.isNotEmpty() &&\n                                lotCand.length in MIN_LOT_LEN..MAX_VAR_LEN &&\n                                lotCand.all { it.isLetterOrDigit() || it == '-' || it == '/' || it == '.' }\n                        if (ok) best10 = idx // keep right-most valid 10\n                    }\n                    idx++\n                }\n            }\n            val dup01 = nextDup01After(p0, searchEnd)\n            if (best10 != -1) {\n                if (dup01 != -1 && dup01 < best10) {\n                    return if (dup01 + 1 == best10) best10 else dup01\n                }\n                return best10\n            }\n            if (dup01 != -1) return dup01\n            return fixed\n        }\n        // ---- main scan loop ----\n        while (i + 2 <= s.length) {\n            if (s[i] == GS) { i++; continue }\n            val ai = s.substring(i, i + 2)\n            val p = i + 2\n            when (ai) {\n                \"01\" -> {\n                    if (seenGtin) break\n                    val (v, np) = fixedDigits(p, 14)\n                    if (v.length == 14) {\n                        gtin = if (validateCheckDigit) v.takeIf { isValidGtin14(it) } else v\n                        seenGtin = true\n                        i = np\n                    } else {\n                        i++\n                    }\n                }\n                \"11\" -> {\n                    val (v, np) = fixedDigits(p, 6)\n                    if (v.length == 6 && isValidYyMmDd(v)) {\n                        prodIso = yymmddToIso(v); i = np\n                    } else i += 2\n                }\n                \"17\" -> {\n                    val (v, np) = fixedDigits(p, 6)\n                    if (v.length == 6 && isValidYyMmDd(v)) {\n                        expIso = yymmddToIso(v); i = np\n                    } else i += 2\n                }\n                \"10\" -> {\n                    val end = boundaryForLot(p, haveSerial = (serial != null))\n                    val v = s.substring(p, end).trim().trimEnd(GS)\n                    if (v.isNotEmpty() && lot == null) lot = v\n                    i = end\n                }\n                \"21\" -> {\n                    val end = boundaryForSerial(p, haveLot = (lot != null))\n                    val v = s.substring(p, end).trim().trimEnd(GS)\n                    if (v.isNotEmpty() && serial == null) serial = v\n                    i = end\n                }\n                else -> {\n                    if (ai.all { it.isDigit() }) i += 2 else i++\n                }\n            }\n        }\n        if (gtin == null && lot == null && expIso == null && serial == null && prodIso == null) return null\n        return Result(raw0, gtin, lot, expIso, serial, prodIso)\n    }\n    // -------------------- HELPERS --------------------\n    private fun isValidGtin14(s: String): Boolean {\n        if (!s.matches(Regex(\"\\\\d{14}\"))) return false\n        val d = s.map { it - '0' }\n        var sum = 0\n        for (i in 12 downTo 0) {\n            val weight = if ((12 - i) % 2 == 0) 3 else 1\n            sum += d[i] * weight\n        }\n        val check = (10 - (sum % 10)) % 10\n        return d[13] == check\n    }\n}\n```\n\n```kotlin\n// Production code (silent)\nval parsed = Gs1.parse(rawScan)\nif (parsed != null) {\n    // Use fields: parsed.gtin, parsed.lot, parsed.expiryYmd, parsed.productionYmd, parsed.serial\n}\n\n// During development\nval debug = Gs1.parseWithDebug(rawScan)\n```\n\n## What made this work in practice\n\n**Date-aware boundaries**: Treating `11`/`17` As real boundaries, only with valid YYMMDD suppressed tons of false splits.\n\n**Right-most lot for serial**: When dates were distant, choosing the **right-most** `10` (still valid) gave stable splits between `21` and `10`.\n\n**Dup-block trimming**: Many scanners emit `A + A`. Trimming early avoids cascading misparses.\n\n**Allowing `/`, `-`, `.` in lots**: Small change, big impact.\n\n## Future improvements\n\n- Make `MIN_SERIAL_LEN`, `MAX_VAR_LEN`, and allowed lot characters configurable per site or label family.\n- Add support for more AIs (e.g., `240`, `241`, etc.) if your products require them.\n- Optional check digit validation for GTIN (`validateCheckDigit = true` Once your dataset is stable.\n\n## Wrap-up\n\nIf you’re dealing with scanners that don’t insert FNC1 and labels that aren’t pristine, a heuristic parser beats strict validators. This one has held up across a growing set of hospital-grade samples, and it’s easy to drop into any Android project.\n\n**With love,**  \n**Jaswanth**  \n**Software Engineer at Sedin Technologies**  \n**Happy coding!**\n\n---\n\n### Text transcribed from the original cover illustration\n\nThe cover repeats the article title and shows this illustrative medical label:\n\n```text\n(01) 12345678901234\n(10) LOT2025\n(17) 250630\n(21) ABC123\n```",
+      "bodyBlocks": [
+        {
+          "type": "paragraph",
+          "markdown": "I had a Honeywell Android device with a scanner feeding my Android app raw GS1 strings **without** FNC1 separators. Many GS1 libraries assume clean, standards-compliant inputs (e.g., explicit group separators), but hospital labels don’t always cooperate. I needed a parser that could **reliably extract GTIN, lot, expiry, production, and serial** from messy strings produced by various medical products.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Here’s how I approached it and the reusable Kotlin “plugin” I ended up shipping.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "The real-world problem",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Device: Honeywell handhelds scanning DataMatrix/GS1.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Input: raw strings with **no FNC1** (ASCII 29) and **inconsistent formatting** (duplicates, stray characters, missing wrappers).",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Goal: extract these Application Identifiers (AIs):",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "`01`: GTIN (fixed 14 digits)",
+            "`10`: LOT (variable length)",
+            "`17`: Expiry date (YYMMDD)",
+            "`11`: Production date (YYMMDD)",
+            "`21`: Serial (variable length)"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Constraint: Many ribbons/labels cram values tightly; separators are absent; some scanners even **duplicate the whole payload** (`A + A`).",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Design principles",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Start from the first true GTIN**: find `01` that’s not preceded by a digit and only accept it if it’s followed by 14 digits.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Sanitize but keep useful chars**: normalize Unicode, drop invisibles, keep `-`, `/`, `.` because lots often contain them (e.g., `C24137/C`).",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Guard dates**: accept `11` and `17` **only** if followed by a valid YYMMDD (not just six digits).",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Heuristics for variable fields**:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "For `10` (Lot): prefer the next valid `21` (Serial) **that doesn’t overlap** a date; otherwise, stop at the next valid date; otherwise, consider a duplicate `01` as the next block.",
+            "For `21` (Serial): if a date is close, stop there; else prefer the **right-most** valid `10` (Lot) before a date; else duplicate `01`."
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Handle duplicates**: if the segment after the first `01` is literally `A + A`, trim to `A`.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Be conservative**: never cut numeric lots just because a random `01` appears — use it only when no fixed boundary (dates) is available.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Edge cases the parser handles",
+          "fontRole": "heading"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "No FNC1s (or they’re removed by the scanner).",
+            "Serial before lot and vice versa.",
+            "Lots with `/`, `-`, `.` characters.",
+            "Duplicate blocks (same payload twice).",
+            "Stray digits that look like AIs but are not (e.g., `11` without a valid YYMMDD).",
+            "Overlap pitfalls where `…2117…` tricks a naive parser."
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Drop-in “plugin” for Android/Kotlin",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "Put this file anywhere you reuse parsing (e.g., `com.company.scanner.gs1` module). It’s self-contained and has clear requirements at the top.  \njust copy paste this code and use it",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "kotlin",
+          "code": "package com.company.scanner.util\n\nimport android.util.Log\nimport java.text.Normalizer\n\n/**\n * -------------------------------------------------------------------------\n *  GS1 BARCODE PARSER – SIMPLE\n * -------------------------------------------------------------------------\n *\n *  REQUIREMENTS:\n *  - Parse GS1-128 / GS1 DataMatrix strings.\n *  - Extract common AIs:\n *        (01) GTIN\n *        (10) LOT / Batch\n *        (17) Expiry (YYMMDD)\n *        (21) Serial\n *  - Should NOT crash on malformed data.\n *  - Should ignore unknown AIs.\n *  - Suitable for Kotlin Multiplatform or Android.\n *\n *  NOTES:\n *  - This parser assumes parentheses-based AIs: (01)1234...(10)ABC...\n *  - Keeps logic readable & maintainable for medium-sized PRs.\n *  - Extend the AI_MAP if new attributes are required.\n */\nobject Gs1 {\n    // -------------------- CONFIG --------------------\n    private const val TAG = \"INV_DEBUG\"\n    private const val GS1_PARSER_VERSION = \"v31-fix-gs1-21-overlap\"\n    // -------------------- DATA MODEL --------------------\n    data class Result(\n        val raw: String,\n        val gtin: String?,\n        val lot: String?,\n        val expiryYmd: String?,\n        val serial: String?,\n        val productionYmd: String?\n    )\n    // -------------------- OPTIONAL DEBUG WRAPPER --------------------\n    fun parseWithDebug(raw0: String): Result? {\n        Log.d(TAG, \"---------------- GS1 DEBUG ----------------\")\n        Log.d(TAG, \"PARSER VERSION = $GS1_PARSER_VERSION\")\n        Log.d(TAG, \"RAW EXACT = [$raw0]\")\n        Log.d(TAG, \"RAW CHARS = \" + raw0.toCharArray().joinToString(\" \") { it.toString() })\n        Log.d(TAG, \"RAW HEX   = \" + raw0.encodeToByteArray().joinToString(\" \") { \"%02X\".format(it) })\n        val result = parse(raw0)\n        Log.d(TAG, \"PARSED GS1 → $result\")\n        Log.d(TAG, \"-------------------------------------------\")\n        return result\n    }\n    // -------------------- CORE PARSER --------------------\n    private const val validateCheckDigit = false\n    private val TRUE_01 = Regex(\"(?<!\\\\d)01\\\\d{14}\")        // true GTIN start\n    // heuristics\n    private const val MIN_SERIAL_LEN = 6\n    private const val MAX_VAR_LEN = 20\n    private const val MIN_LOT_LEN = 1\n    private const val GS = '\\u001D'\n    fun parse(raw0: String): Result? {\n        fun sanitizeForGs1(input: String): String {\n            val nfkc = Normalizer.normalize(input, Normalizer.Form.NFKC)\n            val noInvis = nfkc.replace(Regex(\"[\\\\p{Cf}\\\\p{Z}\\\\p{Mn}\\\\p{Me}]\"), \"\")\n            val noGs = noInvis.replace(GS.toString(), \"\")\n            val unwrapped = noGs.removePrefix(\"]Q3\").removePrefix(\"]Q1\")\n                .replace(\"(\", \"\").replace(\")\", \"\")\n            // keep A–Z, a–z, 0–9, '-', '/', '.'\n            return unwrapped.replace(Regex(\"[^A-Za-z0-9\\\\-\\\\./]\"), \"\")\n        }\n        var s = sanitizeForGs1(raw0)\n        val first01Match = TRUE_01.find(s) ?: return null\n        val first01 = first01Match.range.first\n        // Trim A+A duplicate block if present (after first 01)\n        run {\n            val seg = s.substring(first01)\n            if (seg.length % 2 == 0) {\n                val half = seg.length / 2\n                val a = seg.substring(0, half)\n                val b = seg.substring(half)\n                if (b.startsWith(a)) s = s.substring(0, first01) + a\n            }\n        }\n        var i = first01\n        var gtin: String? = null\n        var lot: String? = null\n        var prodIso: String? = null\n        var expIso: String? = null\n        var serial: String? = null\n        var seenGtin = false\n        fun digitsAt(p: Int, n: Int): Boolean {\n            if (p + n > s.length) return false\n            for (k in 0 until n) if (!s[p + k].isDigit()) return false\n            return true\n        }\n        fun fixedDigits(p0: Int, n: Int): Pair<String, Int> {\n            var p = p0\n            val sb = StringBuilder()\n            while (p < s.length && sb.length < n && s[p].isDigit()) {\n                sb.append(s[p]); p++\n            }\n            return sb.toString() to p\n        }\n        fun isValidYyMmDd(s6: String): Boolean {\n            if (s6.length != 6 || !s6.all { it.isDigit() }) return false\n            val mm = s6.substring(2, 4).toInt()\n            val dd = s6.substring(4, 6).toInt()\n            return mm in 1..12 && dd in 1..31\n        }\n        fun yymmddToIso(s6: String): String? {\n            if (!isValidYyMmDd(s6)) return null\n            val yy = s6.substring(0, 2)\n            val mm = s6.substring(2, 4)\n            val dd = s6.substring(4, 6)\n            return \"20$yy-$mm-$dd\"\n        }\n        // Next fixed boundary for variable fields: next valid 11/17 (ignore 01)\n        fun nextFixedBoundaryNo01(p0: Int): Int {\n            var best = s.length\n            var idx = p0\n            while (true) {\n                idx = s.indexOf(\"11\", idx)\n                if (idx == -1) break\n                if (digitsAt(idx + 2, 6) && isValidYyMmDd(s.substring(idx + 2, idx + 8))) {\n                    best = minOf(best, idx); break\n                }\n                idx++\n            }\n            idx = p0\n            while (true) {\n                idx = s.indexOf(\"17\", idx)\n                if (idx == -1) break\n                if (digitsAt(idx + 2, 6) && isValidYyMmDd(s.substring(idx + 2, idx + 8))) {\n                    best = minOf(best, idx); break\n                }\n                idx++\n            }\n            return best\n        }\n        // Next duplicate \"01\" (with 14 digits after) before searchEnd\n        fun nextDup01After(p0: Int, searchEnd: Int): Int {\n            var idx = s.indexOf(\"01\", p0)\n            while (idx != -1 && idx < searchEnd) {\n                if (digitsAt(idx + 2, 14)) return idx\n                idx = s.indexOf(\"01\", idx + 1)\n            }\n            return -1\n        }\n        // -------- boundaries for variable AIs --------\n        // LOT (AI=10): prefer a plausible SERIAL (21) if it does NOT overlap a date AI; else fixed date; else dup 01.\n        fun boundaryForLot(p0: Int, haveSerial: Boolean): Int {\n            val fixedCandidate = nextFixedBoundaryNo01(p0)\n            var candidate = fixedCandidate\n            var chosen = false\n            if (!haveSerial) {\n                var idx = p0\n                while (true) {\n                    idx = s.indexOf(\"21\", idx)\n                    if (idx == -1) break\n                    val gap = idx - p0\n                    if (gap > MAX_VAR_LEN) break\n                    // prevent overlap - require the '21' to fully precede the fixed boundary, not share its '1'\n                    if (fixedCandidate != s.length && (idx + 2) > fixedCandidate) { idx++; continue }\n                    if (gap < MIN_LOT_LEN) { idx++; continue }\n                    val endFor21 = nextFixedBoundaryNo01(idx + 2)\n                    val serialCand = s.substring(idx + 2, minOf(idx + 2 + MAX_VAR_LEN, endFor21))\n                    val ok = serialCand.isNotEmpty() &&\n                            serialCand.length >= MIN_SERIAL_LEN &&\n                            serialCand.all { it.isLetterOrDigit() }\n                    if (ok) {\n                        candidate = minOf(candidate, idx)\n                        chosen = true\n                        break\n                    }\n                    idx++\n                }\n            }\n            // If no valid date boundary exists at all, allow dup 01 as last resort\n            if (!chosen && candidate == s.length && seenGtin) {\n                val dup01 = nextDup01After(p0, candidate)\n                if (dup01 != -1 && (dup01 - p0) >= MIN_LOT_LEN) candidate = dup01\n            }\n            return candidate\n        }\n        // SERIAL (AI=21): use near fixed date if present; else right-most valid LOT (10); else dup \"01\".\n        fun boundaryForSerial(p0: Int, haveLot: Boolean): Int {\n            val fixed = nextFixedBoundaryNo01(p0)\n            val useFixed = fixed != s.length && (fixed - p0) <= MAX_VAR_LEN\n            if (useFixed) return fixed\n            val searchEnd = if (fixed != s.length) fixed else s.length\n            var best10 = -1\n            if (!haveLot) {\n                var idx = p0\n                while (true) {\n                    idx = s.indexOf(\"10\", idx)\n                    if (idx == -1 || idx >= searchEnd) break\n                    if (idx - p0 >= MIN_SERIAL_LEN) {\n                        val endFor10 = nextFixedBoundaryNo01(idx + 2)\n                        val lotCand = s.substring(idx + 2, minOf(idx + 2 + MAX_VAR_LEN, endFor10))\n                        val ok = lotCand.isNotEmpty() &&\n                                lotCand.length in MIN_LOT_LEN..MAX_VAR_LEN &&\n                                lotCand.all { it.isLetterOrDigit() || it == '-' || it == '/' || it == '.' }\n                        if (ok) best10 = idx // keep right-most valid 10\n                    }\n                    idx++\n                }\n            }\n            val dup01 = nextDup01After(p0, searchEnd)\n            if (best10 != -1) {\n                if (dup01 != -1 && dup01 < best10) {\n                    return if (dup01 + 1 == best10) best10 else dup01\n                }\n                return best10\n            }\n            if (dup01 != -1) return dup01\n            return fixed\n        }\n        // ---- main scan loop ----\n        while (i + 2 <= s.length) {\n            if (s[i] == GS) { i++; continue }\n            val ai = s.substring(i, i + 2)\n            val p = i + 2\n            when (ai) {\n                \"01\" -> {\n                    if (seenGtin) break\n                    val (v, np) = fixedDigits(p, 14)\n                    if (v.length == 14) {\n                        gtin = if (validateCheckDigit) v.takeIf { isValidGtin14(it) } else v\n                        seenGtin = true\n                        i = np\n                    } else {\n                        i++\n                    }\n                }\n                \"11\" -> {\n                    val (v, np) = fixedDigits(p, 6)\n                    if (v.length == 6 && isValidYyMmDd(v)) {\n                        prodIso = yymmddToIso(v); i = np\n                    } else i += 2\n                }\n                \"17\" -> {\n                    val (v, np) = fixedDigits(p, 6)\n                    if (v.length == 6 && isValidYyMmDd(v)) {\n                        expIso = yymmddToIso(v); i = np\n                    } else i += 2\n                }\n                \"10\" -> {\n                    val end = boundaryForLot(p, haveSerial = (serial != null))\n                    val v = s.substring(p, end).trim().trimEnd(GS)\n                    if (v.isNotEmpty() && lot == null) lot = v\n                    i = end\n                }\n                \"21\" -> {\n                    val end = boundaryForSerial(p, haveLot = (lot != null))\n                    val v = s.substring(p, end).trim().trimEnd(GS)\n                    if (v.isNotEmpty() && serial == null) serial = v\n                    i = end\n                }\n                else -> {\n                    if (ai.all { it.isDigit() }) i += 2 else i++\n                }\n            }\n        }\n        if (gtin == null && lot == null && expIso == null && serial == null && prodIso == null) return null\n        return Result(raw0, gtin, lot, expIso, serial, prodIso)\n    }\n    // -------------------- HELPERS --------------------\n    private fun isValidGtin14(s: String): Boolean {\n        if (!s.matches(Regex(\"\\\\d{14}\"))) return false\n        val d = s.map { it - '0' }\n        var sum = 0\n        for (i in 12 downTo 0) {\n            val weight = if ((12 - i) % 2 == 0) 3 else 1\n            sum += d[i] * weight\n        }\n        val check = (10 - (sum % 10)) % 10\n        return d[13] == check\n    }\n}",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "code",
+          "language": "kotlin",
+          "code": "// Production code (silent)\nval parsed = Gs1.parse(rawScan)\nif (parsed != null) {\n    // Use fields: parsed.gtin, parsed.lot, parsed.expiryYmd, parsed.productionYmd, parsed.serial\n}\n\n// During development\nval debug = Gs1.parseWithDebug(rawScan)",
+          "fontRole": "monospace"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "What made this work in practice",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Date-aware boundaries**: Treating `11`/`17` As real boundaries, only with valid YYMMDD suppressed tons of false splits.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Right-most lot for serial**: When dates were distant, choosing the **right-most** `10` (still valid) gave stable splits between `21` and `10`.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Dup-block trimming**: Many scanners emit `A + A`. Trimming early avoids cascading misparses.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Allowing `/`, `-`, `.` in lots**: Small change, big impact.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Future improvements",
+          "fontRole": "heading"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Make `MIN_SERIAL_LEN`, `MAX_VAR_LEN`, and allowed lot characters configurable per site or label family.",
+            "Add support for more AIs (e.g., `240`, `241`, etc.) if your products require them.",
+            "Optional check digit validation for GTIN (`validateCheckDigit = true` Once your dataset is stable."
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Wrap-up",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "If you’re dealing with scanners that don’t insert FNC1 and labels that aren’t pristine, a heuristic parser beats strict validators. This one has held up across a growing set of hospital-grade samples, and it’s easy to drop into any Android project.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**With love,**  \n**Jaswanth**  \n**Software Engineer at Sedin Technologies**  \n**Happy coding!**",
+          "fontRole": "body"
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Text transcribed from the original cover illustration",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "The cover repeats the article title and shows this illustrative medical label:",
+          "fontRole": "body"
+        },
+        {
+          "type": "code",
+          "language": "text",
+          "code": "(01) 12345678901234\n(10) LOT2025\n(17) 250630\n(21) ABC123",
+          "fontRole": "monospace"
+        }
+      ],
+      "toc": [
+        {
+          "level": 2,
+          "text": "The real-world problem"
+        },
+        {
+          "level": 2,
+          "text": "Design principles"
+        },
+        {
+          "level": 2,
+          "text": "Edge cases the parser handles"
+        },
+        {
+          "level": 2,
+          "text": "Drop-in “plugin” for Android/Kotlin"
+        },
+        {
+          "level": 2,
+          "text": "What made this work in practice"
+        },
+        {
+          "level": 2,
+          "text": "Future improvements"
+        },
+        {
+          "level": 2,
+          "text": "Wrap-up"
+        },
+        {
+          "level": 3,
+          "text": "Text transcribed from the original cover illustration"
+        }
+      ],
+      "wordCountIncludingCode": 2019,
+      "codeBlockCount": 3,
+      "tableCount": 0
+    },
+    {
+      "id": "00ad24061524",
+      "slug": "comparing-django-flask-and-fastapi-for-data-analytics",
+      "title": "🧠 Comparing Django, Flask, and FastAPI for Data Analytics Tool",
+      "publishedAt": "2025-04-10",
+      "author": "Jaswanth",
+      "category": "Python frameworks",
+      "featuredRank": 6,
+      "excerpt": "A use-case comparison of Django, Flask, and FastAPI for data ingestion, dashboards, analytics, and ML APIs.",
+      "sourceUrl": "https://medium.com/@jashuamrita360/comparing-django-flask-and-fastapi-for-data-analytics-00ad24061524",
+      "sourceReadingMinutes": 3,
+      "contentFormat": "markdown-and-semantic-blocks",
+      "fullTextIncluded": true,
+      "images": [],
+      "markdownFile": "articles/06-framework-comparison.md",
+      "bodyMarkdown": "# 🧠 Comparing Django, Flask, and FastAPI for Data Analytics Tool\n\nIn the evolving world of data-driven applications, choosing the right backend framework can make or break your product’s scalability, performance, and development speed. I recently built a Data Analytics Tool using **Django**, **Flask**, and **FastAPI**, and here’s a deep dive comparing them — from setup to scalability — to help you pick the best fit for your use case.\n\n## 🛠 What is a Data Analytics Tool?\n\nA Data Analytics Tool ingests large volumes of data (e.g., competitors’ prices, historical pricing, demand), processes it, and suggests optimal customers, and prices using rules or machine learning. It typically involves:\n\n- Data ingestion APIs\n- Dashboards and visualizations\n- Model integration (ML logic)\n- Authentication and user roles\n- Scheduling and reporting\n\n## 🚀 Which Framework to Choose?\n\n| Feature / Framework | Django | Flask | FastAPI |\n| --- | --- | --- | --- |\n| Ease of Setup | ✅ Easy (batteries included) | ⚠️ Minimalist (DIY) | ⚠️ Moderate |\n| Performance | ⚠️ Slower | ✅ Decent | ✅ ⚡ Fastest |\n| Async Support | ❌ Limited | ✅ With Extensions | ✅ Built-in |\n| ML/DS Integration | ✅ Great with Django REST + Celery | ✅ Flexible | ✅ Very ML-friendly |\n| API Development | ✅ Easy with DRF | ⚠️ Manual | ✅ Best with Pydantic |\n| Scalability | ✅ Good | ✅ Better | ✅ Best |\n| Community | 🔥 Huge | ✅ Mature | 🚀 Growing Fast |\n| Best For | Full-stack dashboards | Microservices or PoCs | High-perf APIs, ML apps |\n\n### 1. Django — The Full-Stack Beast\n\n**Strengths:**\n\n- Comes with ORM, Admin Panel, and User Auth — out of the box.\n- Great for quick **dashboarding** and **data visualization**.\n- Works well with **Celery** for asynchronous tasks like report generation.\n\n**Downsides:**\n\n- Not built for high-performance async workloads.\n- Can be bulky for microservices.\n\n> 🔍 Verdict: Ideal for monolithic internal tools or admin-heavy dashboards with minimal async requirements.\n\n### 2. Flask — The Lightweight Pioneer\n\n**Strengths:**\n\n- Flexible and simple — you can plug in what you need.\n- Works well with libraries like **Pandas**, **Scikit-learn**, and **Jinja** for custom logic and views.\n- Great for small-to-medium apps and **PoCs**.\n\n**Downsides:**\n\n- Lack of built-in structure can slow large project development.\n- Requires more effort for async, security, and scalability.\n\n> 🔍 Verdict: Perfect for early-stage tools or quick data science experiment APIs.\n\n### 3. FastAPI — The Async Native\n\n**Strengths:**\n\n- **Async by default**, powered by Starlette + Pydantic.\n- Auto-generates docs (Swagger, Redoc).\n- Excellent type hints, data validation, and ML integration.\n- Feels modern and production-ready for API-first apps.\n\n**Downsides:**\n\n- Not full-stack — you need to bring your templates/admin (but that’s often fine for APIs).\n- Slightly steeper learning curve compared to Flask.\n\n> 🔍 Verdict: Best for **scalable**, high-performance, API-first **ML/data science** tools.\n\n## 🧪 Real-World Comparison: Build Observations\n\n| Criteria | Django | Flask | FastAPI |\n| --- | --- | --- | --- |\n| Data Upload API (CSV, Excel) | ✅ With DRF | ✅ Easy | ✅ Super clean with Pydantic |\n| ML Model Integration | ✅ With Celery or Scripts | ✅ Directly with joblib/pickle | ✅ Best with async endpoints |\n| Dashboarding | ✅ Django Admin + Plotly | ✅ With Flask-Admin | ⚠️ Not built-in |\n| API Response Time (Avg) | ~200ms | ~100ms | ~50ms |\n| Developer Experience | 🔥 Mature | ✅ Simple | 🚀 Cutting-edge |\n\n## 📊 Final Recommendation\n\nIf you’re building a **dashboard-heavy** internal tool, go with **Django**.  \nIf you’re building a **microservice** to expose ML logic as APIs, use **FastAPI**.  \nFor quick **prototypes** or ML model testing, **Flask** is still gold.\n\nFor modern data science apps in production, FastAPI is the winner.  \nIt’s:\n\n- Async-ready\n- ML-friendly\n- Fast as hell\n- Great developer experience\n\nBut if your project also needs admin dashboards, user management, and database-heavy CRUD — Django still rocks.",
+      "bodyBlocks": [
+        {
+          "type": "paragraph",
+          "markdown": "In the evolving world of data-driven applications, choosing the right backend framework can make or break your product’s scalability, performance, and development speed. I recently built a Data Analytics Tool using **Django**, **Flask**, and **FastAPI**, and here’s a deep dive comparing them — from setup to scalability — to help you pick the best fit for your use case.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "🛠 What is a Data Analytics Tool?",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "A Data Analytics Tool ingests large volumes of data (e.g., competitors’ prices, historical pricing, demand), processes it, and suggests optimal customers, and prices using rules or machine learning. It typically involves:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Data ingestion APIs",
+            "Dashboards and visualizations",
+            "Model integration (ML logic)",
+            "Authentication and user roles",
+            "Scheduling and reporting"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "🚀 Which Framework to Choose?",
+          "fontRole": "heading"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Feature / Framework",
+            "Django",
+            "Flask",
+            "FastAPI"
+          ],
+          "rows": [
+            [
+              "Ease of Setup",
+              "✅ Easy (batteries included)",
+              "⚠️ Minimalist (DIY)",
+              "⚠️ Moderate"
+            ],
+            [
+              "Performance",
+              "⚠️ Slower",
+              "✅ Decent",
+              "✅ ⚡ Fastest"
+            ],
+            [
+              "Async Support",
+              "❌ Limited",
+              "✅ With Extensions",
+              "✅ Built-in"
+            ],
+            [
+              "ML/DS Integration",
+              "✅ Great with Django REST + Celery",
+              "✅ Flexible",
+              "✅ Very ML-friendly"
+            ],
+            [
+              "API Development",
+              "✅ Easy with DRF",
+              "⚠️ Manual",
+              "✅ Best with Pydantic"
+            ],
+            [
+              "Scalability",
+              "✅ Good",
+              "✅ Better",
+              "✅ Best"
+            ],
+            [
+              "Community",
+              "🔥 Huge",
+              "✅ Mature",
+              "🚀 Growing Fast"
+            ],
+            [
+              "Best For",
+              "Full-stack dashboards",
+              "Microservices or PoCs",
+              "High-perf APIs, ML apps"
+            ]
+          ],
+          "fontRole": "table",
+          "transcribedFromImage": true
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "1. Django — The Full-Stack Beast",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Strengths:**",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Comes with ORM, Admin Panel, and User Auth — out of the box.",
+            "Great for quick **dashboarding** and **data visualization**.",
+            "Works well with **Celery** for asynchronous tasks like report generation."
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Downsides:**",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Not built for high-performance async workloads.",
+            "Can be bulky for microservices."
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "blockquote",
+          "markdown": "🔍 Verdict: Ideal for monolithic internal tools or admin-heavy dashboards with minimal async requirements.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "2. Flask — The Lightweight Pioneer",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Strengths:**",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Flexible and simple — you can plug in what you need.",
+            "Works well with libraries like **Pandas**, **Scikit-learn**, and **Jinja** for custom logic and views.",
+            "Great for small-to-medium apps and **PoCs**."
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Downsides:**",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Lack of built-in structure can slow large project development.",
+            "Requires more effort for async, security, and scalability."
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "blockquote",
+          "markdown": "🔍 Verdict: Perfect for early-stage tools or quick data science experiment APIs.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "3. FastAPI — The Async Native",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Strengths:**",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "**Async by default**, powered by Starlette + Pydantic.",
+            "Auto-generates docs (Swagger, Redoc).",
+            "Excellent type hints, data validation, and ML integration.",
+            "Feels modern and production-ready for API-first apps."
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "**Downsides:**",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Not full-stack — you need to bring your templates/admin (but that’s often fine for APIs).",
+            "Slightly steeper learning curve compared to Flask."
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "blockquote",
+          "markdown": "🔍 Verdict: Best for **scalable**, high-performance, API-first **ML/data science** tools.",
+          "fontRole": "body"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "🧪 Real-World Comparison: Build Observations",
+          "fontRole": "heading"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Criteria",
+            "Django",
+            "Flask",
+            "FastAPI"
+          ],
+          "rows": [
+            [
+              "Data Upload API (CSV, Excel)",
+              "✅ With DRF",
+              "✅ Easy",
+              "✅ Super clean with Pydantic"
+            ],
+            [
+              "ML Model Integration",
+              "✅ With Celery or Scripts",
+              "✅ Directly with joblib/pickle",
+              "✅ Best with async endpoints"
+            ],
+            [
+              "Dashboarding",
+              "✅ Django Admin + Plotly",
+              "✅ With Flask-Admin",
+              "⚠️ Not built-in"
+            ],
+            [
+              "API Response Time (Avg)",
+              "~200ms",
+              "~100ms",
+              "~50ms"
+            ],
+            [
+              "Developer Experience",
+              "🔥 Mature",
+              "✅ Simple",
+              "🚀 Cutting-edge"
+            ]
+          ],
+          "fontRole": "table",
+          "transcribedFromImage": true
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "📊 Final Recommendation",
+          "fontRole": "heading"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "If you’re building a **dashboard-heavy** internal tool, go with **Django**.  \nIf you’re building a **microservice** to expose ML logic as APIs, use **FastAPI**.  \nFor quick **prototypes** or ML model testing, **Flask** is still gold.",
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "For modern data science apps in production, FastAPI is the winner.  \nIt’s:",
+          "fontRole": "body"
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "itemsMarkdown": [
+            "Async-ready",
+            "ML-friendly",
+            "Fast as hell",
+            "Great developer experience"
+          ],
+          "fontRole": "body"
+        },
+        {
+          "type": "paragraph",
+          "markdown": "But if your project also needs admin dashboards, user management, and database-heavy CRUD — Django still rocks.",
+          "fontRole": "body"
+        }
+      ],
+      "toc": [
+        {
+          "level": 2,
+          "text": "🛠 What is a Data Analytics Tool?"
+        },
+        {
+          "level": 2,
+          "text": "🚀 Which Framework to Choose?"
+        },
+        {
+          "level": 3,
+          "text": "1. Django — The Full-Stack Beast"
+        },
+        {
+          "level": 3,
+          "text": "2. Flask — The Lightweight Pioneer"
+        },
+        {
+          "level": 3,
+          "text": "3. FastAPI — The Async Native"
+        },
+        {
+          "level": 2,
+          "text": "🧪 Real-World Comparison: Build Observations"
+        },
+        {
+          "level": 2,
+          "text": "📊 Final Recommendation"
+        }
+      ],
+      "wordCountIncludingCode": 685,
+      "codeBlockCount": 0,
+      "tableCount": 2
+    }
+  ]
+}

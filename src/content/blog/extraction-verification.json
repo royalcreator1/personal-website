@@ -1,0 +1,72 @@
+{
+  "description": "Browser-source versus local complete-text checks, not technical correctness or runtime certification.",
+  "normalization": "Remove Markdown fence markers, non-letter/non-number characters, and case. Ignore image-derived additions absent from source DOM. Source-code checks normalize whitespace and smart quotes. Source fingerprints recorded from rendered article DOM.",
+  "articles": [
+    {
+      "id": "0bdcfb91a745",
+      "file": "01-streamlit.md",
+      "sourceNormalizedTextFingerprint": "29ce247c",
+      "localNormalizedTextFingerprint": "29ce247c",
+      "completeSourceTextMatches": true,
+      "sourceCodeBlocksChecked": 5,
+      "sourceCodeMatchesIgnoringWhitespaceAndSmartQuotes": true,
+      "renderableCodeBlocks": 5,
+      "sha256": "07cb5ecc228afea223cae2fbabea1ff9c7cb97559cb6122cd567296bec01510b"
+    },
+    {
+      "id": "f380583bf50b",
+      "file": "02-backend-principles.md",
+      "sourceNormalizedTextFingerprint": "20fa6b63",
+      "localNormalizedTextFingerprint": "20fa6b63",
+      "completeSourceTextMatches": true,
+      "sourceCodeBlocksChecked": 9,
+      "sourceCodeMatchesIgnoringWhitespaceAndSmartQuotes": true,
+      "renderableCodeBlocks": 10,
+      "sha256": "eb11d73ac22074b8dc424fb52b395c49e9f3321beaf82f74b33e681010af85ee"
+    },
+    {
+      "id": "d9c4b0dc6e30",
+      "file": "03-alembic-migrations.md",
+      "sourceNormalizedTextFingerprint": "ab03150f",
+      "localNormalizedTextFingerprint": "ab03150f",
+      "completeSourceTextMatches": true,
+      "sourceCodeBlocksChecked": 0,
+      "sourceCodeMatchesIgnoringWhitespaceAndSmartQuotes": null,
+      "renderableCodeBlocks": 5,
+      "sha256": "bcf16745c26840a8260fb4d1464c73808ad7cdf85e807937aff42d914cba27c3"
+    },
+    {
+      "id": "1b11d0863b9b",
+      "file": "04-django-sessions.md",
+      "sourceNormalizedTextFingerprint": "cd36ba37",
+      "localNormalizedTextFingerprint": "cd36ba37",
+      "completeSourceTextMatches": true,
+      "sourceCodeBlocksChecked": 17,
+      "sourceCodeMatchesIgnoringWhitespaceAndSmartQuotes": true,
+      "renderableCodeBlocks": 17,
+      "sha256": "adb889979723e9ac4d6ec565b29986d83ee9035defc3e78b22857d1fd42fafca"
+    },
+    {
+      "id": "1293665633f7",
+      "file": "05-gs1-parser.md",
+      "sourceNormalizedTextFingerprint": "4ac5909d",
+      "localNormalizedTextFingerprint": "4ac5909d",
+      "completeSourceTextMatches": true,
+      "sourceCodeBlocksChecked": 2,
+      "sourceCodeMatchesIgnoringWhitespaceAndSmartQuotes": true,
+      "renderableCodeBlocks": 3,
+      "sha256": "ccb75a377712300f6a73d5fb1f1c182919fd2881d400bdb12c651e0cde135b7f"
+    },
+    {
+      "id": "00ad24061524",
+      "file": "06-framework-comparison.md",
+      "sourceNormalizedTextFingerprint": "a631ebf",
+      "localNormalizedTextFingerprint": "a631ebf",
+      "completeSourceTextMatches": true,
+      "sourceCodeBlocksChecked": 0,
+      "sourceCodeMatchesIgnoringWhitespaceAndSmartQuotes": null,
+      "renderableCodeBlocks": 0,
+      "sha256": "bb6f0ae0efd8ab221e10a73fcbb4cf21ca40db98cf7675ea1fd4b200f272b6e9"
+    }
+  ]
+}

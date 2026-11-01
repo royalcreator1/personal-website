@@ -9,6 +9,7 @@ const links = [
   ['Work', 'projects'],
   ['Experience', 'experience'],
   ['Skills', 'skills'],
+  ['Blog', 'writing'],
   ['Contact', 'contact'],
 ]
 
@@ -18,6 +19,8 @@ export default function Navbar() {
   const [active, setActive] = useState('')
   const pathname = usePathname()
   const sectionHref = (id: string) => pathname === '/' ? `#${id}` : `/#${id}`
+  const navigationHref = (id: string) => id === 'writing' && pathname !== '/' ? '/blog' : sectionHref(id)
+  const currentSection = pathname.startsWith('/blog') ? 'writing' : active
   const trigger = useRef<HTMLButtonElement>(null)
   const dialog = useRef<HTMLDialogElement>(null)
 
@@ -64,7 +67,7 @@ export default function Navbar() {
     <><header className={`header wrap ${scrolled ? 'header-floating' : ''} ${pathname !== '/' ? 'header-detail' : ''}`}>
       <a className="wordmark" href={sectionHref('home')} aria-label="Jaswanth home">JC<span className="wordmark-dot">.</span></a>
       <nav aria-label="Main navigation">
-        {links.filter(([, id]) => id !== 'contact').map(([label, id]) => <a key={id} href={sectionHref(id)} aria-current={active === id ? 'location' : undefined}>{label}</a>)}
+        {links.filter(([, id]) => id !== 'contact').map(([label, id]) => <a key={id} href={navigationHref(id)} aria-current={currentSection === id ? 'location' : undefined}>{label}</a>)}
       </nav>
       <a className="header-cta" href={sectionHref('contact')}>Let’s talk <ArrowUpRight size={15} aria-hidden="true" /></a>
       <button ref={trigger} className="menu-trigger" onClick={() => setOpen(true)}
@@ -80,7 +83,7 @@ export default function Navbar() {
         </div>
         <nav aria-label="Mobile navigation">
           {links.map(([label, id], index) => (
-            <a key={id} href={sectionHref(id)} onClick={() => navigate(id)}>
+            <a key={id} href={navigationHref(id)} onClick={() => navigate(id)}>
               <small>0{index + 1}</small>{label}<span aria-hidden="true">↗</span>
             </a>
           ))}

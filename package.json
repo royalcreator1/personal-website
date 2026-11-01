@@ -7,14 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "check:navigation": "node scripts/check-navigation.mjs"
+    "check:navigation": "node scripts/check-navigation.mjs",
+    "check:blog": "node scripts/check-blog-content.mjs"
   },
   "dependencies": {
+    "framer-motion": "^10.16.16",
+    "highlight.js": "^11.12.0",
+    "lucide-react": "^0.294.0",
     "next": "14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "framer-motion": "^10.16.16",
-    "lucide-react": "^0.294.0"
+    "react-markdown": "^10.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.5",
@@ -26,4 +29,3 @@
     "typescript": "^5.3.3"
   }
 }
-

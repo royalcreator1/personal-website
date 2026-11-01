@@ -7,6 +7,7 @@ import Skills from '@/components/Skills'
 import Education from '@/components/Education'
 import Contact from '@/components/Contact'
 import PageEffects from '@/components/PageEffects'
+import Writing from '@/components/Writing'
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
         <Experience />
         <Skills />
         <Education />
+        <Writing />
         <Contact />
       </main>
     </>

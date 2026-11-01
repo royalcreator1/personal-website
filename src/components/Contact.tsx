@@ -59,7 +59,7 @@ export default function Contact() {
   return (
     <section id="contact" className="contact">
       <div className="wrap">
-        <SectionLabel number="06">Contact / The next chapter</SectionLabel>
+        <SectionLabel number="07">Contact / The next chapter</SectionLabel>
         <div className="contact-grid">
           <div className="contact-intro">
             <p className="eyebrow">Have an idea worth building?</p>
