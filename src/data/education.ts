@@ -24,6 +24,9 @@ export type StudentRecognition = {
   credentialId?: string
   imagePath?: string
   imageAlt?: string
+  credentialMark?: string
+  credentialCaption?: string
+  credentialIcon?: 'design' | 'simulation' | 'computation'
   href: string
   linkLabel: string
 }
@@ -118,8 +121,37 @@ export const studentRecognition: StudentRecognition[] = [
     date: 'December 2020',
     description: 'Mechanical Design certification, building on hands-on work in mechanical product design.',
     credentialId: 'C-A62LCHBMP5',
+    credentialMark: 'CSWA',
+    credentialCaption: 'Mechanical design',
+    credentialIcon: 'design',
     href: 'https://cv.virtualtester.com/qr/?b=SLDWRKS&i=C-A62LCHBMP5',
     linkLabel: 'Verify the credential',
+  },
+  {
+    id: 'ansys-workbench',
+    type: 'Certificate',
+    title: 'ANSYS Workbench – Introduction to Simulation Design',
+    issuer: 'Udemy',
+    date: 'October 2020',
+    description: 'Course certificate for an introduction to simulation design with ANSYS Workbench.',
+    credentialMark: 'ANSYS',
+    credentialCaption: 'Simulation design',
+    credentialIcon: 'simulation',
+    href: 'https://www.udemy.com/certificate/UC-c3554a99-caa6-4d83-854d-66cc9474bf15/',
+    linkLabel: 'View the credential',
+  },
+  {
+    id: 'matlab-onramp',
+    type: 'Certificate',
+    title: 'MATLAB Onramp',
+    issuer: 'MathWorks',
+    date: 'January 2021',
+    description: 'Course certificate for MATLAB Onramp from MathWorks.',
+    credentialMark: 'MATLAB',
+    credentialCaption: 'Numerical computing',
+    credentialIcon: 'computation',
+    href: 'https://matlabacademy.mathworks.com/progress/share/certificate.html?id=f2fb4918-5963-42ed-8bbf-bdb40e4463d7',
+    linkLabel: 'View the credential',
   },
   {
     id: 'hal-applied-research',

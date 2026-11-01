@@ -10,7 +10,7 @@ const labels: Record<string, string> = {
   grid: 'OnboardIQ / assessments',
   orbit: 'EFleet.ai / connected fleet',
   steps: 'Sedstart / test studio',
-  bars: 'Vertex / sales workspace',
+  bars: 'NBX / sales workspace',
   mesh: 'Synergy / communications',
   pulse: 'Zivian / provider workspace',
 }
@@ -82,7 +82,7 @@ function RecorderPreview() {
 function SalesPreview() {
   return (
     <div className="pv-sales">
-      <div className="pv-sales-heading"><div><span className="pv-kicker">SALES INTELLIGENCE</span><h4>A clearer next step.</h4></div><div className="pv-search"><Search size={13} /><span>Find a provider</span></div></div>
+      <div className="pv-sales-heading"><div><span className="pv-kicker">NEXT BEST EXPERIENCE</span><h4>A clearer next step.</h4></div><div className="pv-search"><Search size={13} /><span>Find a provider</span></div></div>
       <div className="pv-sales-tabs"><span className="is-selected">Provider insights</span><span>Territories</span><span>Overview</span></div>
       <div className="pv-table"><div className="pv-table-row pv-table-head"><span>Provider</span><span>Specialty</span><span>Review</span></div>{['Endocrinology', 'Specialist care', 'Clinical practice'].map((specialty, index) => <div className="pv-table-row" key={specialty}><span><span className="pv-table-avatar">{String(index + 1).padStart(2, '0')}</span><span className="pv-skeleton" /></span><span>{specialty}</span><span><ArrowUpRight size={14} /></span></div>)}</div>
     </div>

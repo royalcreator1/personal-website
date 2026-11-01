@@ -16,7 +16,7 @@ A personal engineering studio: graphite black, cool silver, blue-gray paper, cle
 | Case studies | The same interface concepts, readable metadata, semantic section headings, and previous/next project navigation. Existing routes are retained. |
 | Experience | A compact chronological record with native accessible disclosures and the current role expanded. |
 | Skills | Dark technical cards with consistent padding, icons, legible tags, and a shared grid. |
-| Education | The institution overview keeps the Amrita IQAC link. A closed-by-default disclosure reveals activities, practical engineering work, and a horizontal achievement/certification row. |
+| Education | The institution overview keeps the Amrita IQAC link and uses a single-line school name where space permits. An arrow link opens a dedicated student-life page. |
 | Contact | A clear invitation, direct contact channels, and a project-focused form with pending/error feedback and focus management. |
 | Motion | Subtle entrances, preview hover movement, and a scroll-progress line where supported. Reduced motion is respected; all project content is visible without JavaScript. |
 | Maintainability | Replaced accumulated CSS overrides with one stylesheet and one set of spacing/type tokens. No new UI dependency was needed. |
@@ -32,15 +32,17 @@ All seven case-study routes returned HTTP 200. The removed Sattva route returned
 
 These checks use Chromium. Safari, Firefox, physical-device testing, and successful live message delivery were not verified in this pass.
 
-## Education expansion
+## Student-life page
 
-The Education overview remains compact until “Student life, projects & recognition” is opened. The expanded chapter progresses from activities and societies (AMEYA Racing Team, SAE Club, AYUDH), through practical engineering work (SAE BAJA 2021 and the HAL apprenticeship), to a horizontal row of supporting achievements and certificates.
+The Education overview links to `/student-life`, titled “The years that built me.” It has no inline expansion or new main-navigation item. The page progresses from activities and societies (AMEYA Racing Team, SAE Club, AYUDH), through practical engineering work (SAE BAJA 2021 and the HAL apprenticeship), to a horizontal row of six supporting achievements and certificates. Local chapter links and a return-to-education link keep navigation clear.
 
-The row supports touch/trackpad scrolling, keyboard arrows when focused, and previous/next buttons. Cards use modest elevation and hover movement rather than automatic scrolling. Supplied thumbnails are stored locally to avoid expiring image URLs. The SOLIDWORKS credential uses the supplied verification URL; LinkedIn sources use public treasury links rather than profile-edit routes.
+The row supports touch/trackpad scrolling, keyboard arrows when focused, and previous/next buttons. Cards use modest elevation and hover movement rather than automatic scrolling. Supplied thumbnails are stored locally to avoid expiring image URLs. SOLIDWORKS, ANSYS Workbench (Udemy, October 2020), and MATLAB Onramp (MathWorks, January 2021) use the supplied direct credential URLs. Typography and icon tiles identify certificates without supplied images. LinkedIn sources use public treasury links rather than profile-edit routes.
 
 The AMEYA 25+ team and BAJA 20+ event team remain distinct. The Altair team’s top-10 result is separate from the participation certificate. The HAL research certificate is labeled as a completion document, with the apprenticeship period kept in the engineering-work description.
 
-Education-specific Chromium checks covered 320, 390, 560, 768, 1024, 1440, and 1920 CSS pixels. The new content was hidden initially, displayed correctly on expansion, and hid again on collapse. The rail scrolled through its own controls and keyboard arrows, thumbnails loaded successfully, and control states refreshed after reopening. No page overflow or runtime exceptions were found. Reduced-motion mode disabled the disclosure entrance animation.
+Student-life Chromium checks covered 320, 390, 560, 768, 1024, 1440, and 1920 CSS pixels, plus 844 × 390 landscape. The homepage arrow opened the page, chapter links cleared the fixed header, all six recognition cards were present, rail controls and keyboard arrows worked, and thumbnails loaded. The institution name stayed on one line from 560 pixels upward and wrapped on smaller screens. No page overflow or runtime exceptions were found. Screenshots of the page, activities, engineering cards, and new credentials were reviewed at 390 and 1440 pixels. These are Chromium checks; physical touch devices and other browser engines were not tested.
+
+The sales project is now named **NBX - SALES TOOL**, with **Next Best Experience** explained in the summary and interface concept. Vertex Pharmaceuticals remains the client context, and `/work/sales-tool-vertex-pharmaceuticals-boston` remains stable. The production build, TypeScript, navigation checks, and full Blog content-integrity checks passed after the changes.
 
 ## Highest-value future additions
 

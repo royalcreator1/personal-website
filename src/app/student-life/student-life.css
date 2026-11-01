@@ -1,0 +1,74 @@
+.student-page { padding-top: 136px; padding-bottom: clamp(48px,6vw,80px); }
+.student-back-link { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: #586a82; font-size: 12px; margin-bottom: 38px; }
+.student-back-link:hover { color: #142b48; }
+.student-page-hero { display: grid; grid-template-columns: minmax(0,1.25fr) minmax(0,.75fr); align-items: end; gap: clamp(30px,6vw,88px); }
+.student-page-heading > .eyebrow { color: #65758a; margin-bottom: 24px; }
+.student-page h1 { font-size: clamp(46px,6.3vw,88px); line-height: 1.07; letter-spacing: -.065em; }
+.student-page h1 > span { color: #778292; }
+.student-page-lede { font-size: clamp(17px,1.65vw,23px); line-height: 1.65; margin-top: 28px; color: #4d5a6d; }
+.student-era { position: relative; isolation: isolate; overflow: hidden; border-radius: 18px; border: 1px solid #3d4755; padding: clamp(24px,3vw,38px); color: #eff3f9; background: linear-gradient(135deg,#252d38,#11161d 70%); box-shadow: 0 12px 35px #18243816; }
+.student-era::before { content: ''; position: absolute; z-index: -1; inset: 0; background-image: linear-gradient(#a9bfd00a 1px,transparent 1px),linear-gradient(90deg,#a9bfd00a 1px,transparent 1px); background-size: 28px 28px; mask-image: linear-gradient(#000,transparent); }
+.student-era-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; color: #b3c1d4; }
+.student-era-top > .eyebrow { font-size: 9px; }
+.student-era-years { display: flex; flex-direction: column; align-items: start; font-size: clamp(42px,4.4vw,62px); font-weight: 500; letter-spacing: -.055em; line-height: .95; margin-block: 36px; }
+.student-era-years > span { color: #708096; font-size: .5em; line-height: 1.2; margin-left: 3px; }
+.student-era-school { display: flex; align-items: center; gap: 14px; padding-top: 24px; border-top: 1px solid #b3c2d826; }
+.student-era-mark { display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid #97abc141; border-radius: 50%; color: #b3c5db; flex: 0 0 38px; font-size: 10px; letter-spacing: -.3px; }
+.student-era-school p { font-size: 13px; line-height: 1.5; }
+.student-era-school div > span { font-size: 10px; color: #a5b3c7; }
+.student-era-degree { color: #9dacc1; font-size: 11px; line-height: 1.8; margin-top: 18px; }
+.student-page-intro { display: grid; grid-template-columns: minmax(0,1fr) minmax(220px,.5fr); gap: clamp(30px,8vw,110px); align-items: center; padding-block: clamp(38px,5vw,64px); }
+.student-page-intro > p { max-width: 61ch; color: #586576; font-size: clamp(14px,1.2vw,16px); line-height: 1.9; }
+.student-chapters { display: flex; flex-direction: column; }
+.student-chapters a { display: flex; align-items: center; gap: 14px; min-height: 44px; border-bottom: 1px solid #c5cfdb; font-size: 12px; }
+.student-chapters a > span { color: #77869a; font-size: 9px; }
+.student-chapters a > svg { margin-left: auto; color: #6e8098; }
+.student-chapters a:hover { color: #2b527f; }
+.student-chapter { border-top: 1px solid #c3ccd8; padding-top: 22px; margin-top: 32px; }
+.student-chapter-label { display: flex; justify-content: space-between; align-items: center; gap: 12px 24px; flex-wrap: wrap; color: #65758a; margin-bottom: 32px; }
+.student-chapter-label > span { font-size: 10px; }
+.student-page .student-group-heading { align-items: end; margin-bottom: 25px; }
+.student-page .student-group-heading h2 { font-size: clamp(27px,3vw,40px); line-height: 1.2; letter-spacing: -.045em; }
+.student-group-heading > p { font-size: 12px; color: #62748c; }
+.student-page .student-activities { margin-bottom: 0; }
+.student-page .student-activity-card, .student-page .student-build-card { background: #f6f8fb99; }
+.student-page .education-highlights { border: 0; margin: 0; padding: 0; }
+.student-milestones { margin-top: 50px; }
+.student-page-end { display: flex; align-items: center; justify-content: space-between; gap: 18px 28px; flex-wrap: wrap; padding-top: 26px; margin-top: 28px; border-top: 1px solid #c3ccd8; }
+.student-page-end > p { color: #637187; font-size: 13px; }
+@media (max-width: 800px) {
+  .student-page { padding-top: 112px; }
+  .student-page-hero { grid-template-columns: minmax(0,1fr) minmax(0,.7fr); gap: 26px; align-items: stretch; }
+  .student-page h1 { font-size: clamp(43px,6.4vw,60px); }
+  .student-page-lede { font-size: 16px; }
+  .student-era { padding: 24px; }
+  .student-era-years { font-size: 48px; margin-block: 30px; }
+  .student-page-intro { grid-template-columns: minmax(0,1fr); gap: 26px; }
+  .student-chapters { flex-direction: row; gap: 22px; }
+  .student-chapters a { flex: 1; gap: 9px; }
+  .student-page .student-activities { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .student-page .student-activity-card { padding: 20px; }
+}
+@media (max-width: 650px) {
+  .student-page-hero { grid-template-columns: minmax(0,1fr); gap: 30px; }
+  .student-page h1 { font-size: clamp(44px,10.2vw,64px); }
+  .student-page-lede { margin-top: 22px; }
+  .student-page-lede br { display: none; }
+  .student-back-link { margin-bottom: 28px; }
+  .student-era-years { flex-direction: row; align-items: center; gap: 12px; margin-block: 28px; font-size: clamp(38px,9vw,56px); }
+  .student-era-years > span { margin: 0; }
+  .student-era-school { padding-top: 20px; }
+  .student-page .student-activities { grid-template-columns: minmax(0,1fr); }
+  .student-page .student-activity-card { padding: 24px; }
+  .student-engineering { grid-template-columns: minmax(0,1fr); }
+  .student-chapter { margin-top: 26px; }
+  .student-chapter-label { margin-bottom: 24px; }
+  .student-chapter-label > span { font-size: 9px; }
+  .student-milestones { margin-top: 36px; }
+}
+@media (max-width: 420px) {
+  .student-chapters { flex-direction: column; gap: 0; }
+  .student-page .student-group-heading { align-items: start; gap: 12px; }
+  .student-chapter-label { align-items: start; }
+  .student-chapter-label > span { max-width: 48%; text-align: right; }
+}

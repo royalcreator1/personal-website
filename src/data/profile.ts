@@ -89,7 +89,7 @@ export const profile = {
       ]
     },
     {
-      name: "SALES TOOL – VERTEX PHARMACEUTICALS, BOSTON",
+      name: "NBX - SALES TOOL – VERTEX PHARMACEUTICALS, BOSTON",
       company: "Tiger Analytics",
       location: "Bangalore, IN",
       year: "2024-2025",
