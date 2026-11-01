@@ -3,6 +3,9 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function POST(request: NextRequest) {
   try {
     const { name, email, message } = await request.json()
+    if (typeof name !== 'string' || typeof email !== 'string' || typeof message !== 'string' || !name.trim() || !message.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return NextResponse.json({ error: 'Please provide a valid name, email, and message.' }, { status: 400 })
+    }
 
     // Get Telegram bot token and chat ID from environment variables
     const botToken = process.env.TELEGRAM_BOT_TOKEN

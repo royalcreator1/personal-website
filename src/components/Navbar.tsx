@@ -1,64 +1,76 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useContext, useEffect, useState } from 'react'
-import { ThemeContext } from '@/contexts/ThemeContext'
-import { Sun, Moon } from 'lucide-react'
-import { playMorningSound, playNightTimeSound } from '@/utils/sounds'
+import { useEffect, useRef, useState } from 'react'
 
-const Navbar = () => {
-  const [mounted, setMounted] = useState(false)
-  const context = useContext(ThemeContext)
+const links = [
+  ['About', 'about'],
+  ['Work', 'projects'],
+  ['Experience', 'experience'],
+  ['Skills', 'skills'],
+  ['Contact', 'contact'],
+]
+
+export default function Navbar() {
+  const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const trigger = useRef<HTMLButtonElement>(null)
+  const dialog = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
-    setMounted(true)
+    if (open) {
+      dialog.current?.showModal()
+      document.body.style.overflow = 'hidden'
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [open])
+
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 72)
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    return () => window.removeEventListener('scroll', update)
   }, [])
 
-  if (!mounted || !context) {
-    return (
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        className="fixed top-0 right-0 z-50 p-4 md:p-6"
-      >
-        <div className="w-10 h-10 rounded-full dark:bg-dark-secondary/90 bg-white/90 backdrop-blur-md shadow-lg" />
-      </motion.nav>
-    )
+  function close() {
+    dialog.current?.close()
+    setOpen(false)
+    trigger.current?.focus()
   }
 
-  const { theme, toggleTheme } = context
-  const isDark = theme === 'dark'
-
-  const handleToggle = () => {
-    // Play sound based on current theme (before toggle)
-    if (isDark) {
-      // Switching from dark to light - morning sound
-      playMorningSound()
-    } else {
-      // Switching from light to dark - night time sound
-      playNightTimeSound()
-    }
-    
-    toggleTheme()
+  function navigate(id: string) {
+    close()
+    requestAnimationFrame(() => {
+      const target = document.getElementById(id)
+      target?.setAttribute('tabindex', '-1')
+      target?.focus({ preventScroll: true })
+    })
   }
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className="fixed top-0 right-0 z-50 p-4 md:p-6"
-    >
-      <motion.button
-        onClick={handleToggle}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        className="w-10 h-10 rounded-full dark:bg-dark-secondary/90 bg-white/90 backdrop-blur-md shadow-lg flex items-center justify-center dark:text-gray-300 text-gray-700 hover:bg-gradient-to-br hover:from-primary hover:to-secondary hover:text-white transition-all"
-        aria-label="Toggle theme"
-      >
-        {isDark ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-      </motion.button>
-    </motion.nav>
+    <header className={`header wrap ${scrolled ? 'header-floating' : ''}`}>
+      <a className="wordmark" href="#home" aria-label="Jaswanth home">JC<span>↗</span></a>
+      <nav aria-label="Main navigation">
+        {links.map(([label, id]) => <a key={id} href={`#${id}`}>{label}</a>)}
+      </nav>
+      <button ref={trigger} className="menu-trigger" onClick={() => setOpen(true)}
+        aria-expanded={open} aria-controls="mobile-menu">
+        Menu <span aria-hidden="true">＋</span>
+      </button>
+      <dialog id="mobile-menu" aria-label="Navigation menu" ref={dialog}
+        onCancel={event => { event.preventDefault(); close() }} onClose={() => setOpen(false)}>
+        <div className="menu-top">
+          <span className="wordmark">JC</span>
+          <button autoFocus onClick={close}>Close ×</button>
+        </div>
+        <nav aria-label="Mobile navigation">
+          {links.map(([label, id], index) => (
+            <a key={id} href={`#${id}`} onClick={() => navigate(id)}>
+              <small>0{index + 1}</small>{label}<span aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </nav>
+        <p className="menu-invite">Building useful systems, one thoughtful interface at a time.<br /><a href={`mailto:jashuamrita360@gmail.com`}>Start a conversation ↗</a></p>
+      </dialog>
+    </header>
   )
 }
-
-export default Navbar
