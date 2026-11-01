@@ -158,18 +158,6 @@ export const profile = {
         "Twilio integration for two factor authentication."
       ]
     },
-    {
-      name: "SATTVA",
-      company: "Sedin Technologies",
-      location: "Chennai, IN",
-      year: "2022-2023",
-      role: "Full Stack Developer",
-      tools: "Django, Python, HTML/CSS, JavaScript, Celery, Redis, PostgreSQL",
-      contribution: [
-        "Utilized Django framework for backend APIs, models, views, and templates, coupled with front-end UI development incorporating HTML, CSS, JavaScript, and Bootstrap.",
-        "Showcased project progress and functionality in a comprehensive demo to the CEO of Sedin Technologies."
-      ]
-    }
   ]
 }
 

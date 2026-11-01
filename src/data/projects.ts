@@ -11,9 +11,12 @@ export const projectPresentation: Record<string, {
   ONBOARDIQ: { title: 'ONBOARDIQ', category: 'Assessment / Full stack platform', summary: 'An end-to-end examination platform, from candidate assessment to proctoring and evaluation.', motif: 'grid', slug: 'onboardiq' },
   'EFLEET.AI': { title: 'EFLEET.AI', category: 'Electric mobility / Fleet systems', summary: 'Vehicle onboarding, telemetry, and charging data brought into a connected fleet platform.', motif: 'orbit', slug: 'efleet-ai' },
   SEDSTART: { title: 'SEDSTART', category: 'Developer tools / QA automation', summary: 'Turning recorded screen sessions into step-by-step test scripts.', motif: 'steps', slug: 'sedstart' },
+  'SALES TOOL': { title: 'SALES TOOL', category: 'Pharmaceuticals / Sales intelligence', summary: 'A multipage sales application for Vertex Pharmaceuticals, connecting data, workflows, and deployment.', motif: 'bars', slug: 'sales-tool-vertex-pharmaceuticals-boston' },
+  'SYNERGY MARINE': { title: 'SYNERGY MARINE', category: 'Maritime / Communication', summary: 'Supporting ship-to-shore communication with WebRTC calling and adaptive video quality.', motif: 'mesh', slug: 'synergy-marine' },
+  'ZIVIAN HEALTH': { title: 'ZIVIAN HEALTH', category: 'Healthcare / Backend', summary: 'Backend APIs and integrations for payments, provider verification, and secure authentication.', motif: 'pulse', slug: 'zivian-health' },
 }
 
-export const orderedProjects = [0, 1, 3, 4, 2, 5, 6, 7].map(i => profile.projects[i])
+export const orderedProjects = [0, 1, 3, 4, 2, 5, 6].map(i => profile.projects[i])
 
 export function getPresentation(projectName: string) {
   return Object.entries(projectPresentation).find(([key]) => projectName.startsWith(key))?.[1]

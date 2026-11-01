@@ -6,11 +6,13 @@ import Experience from '@/components/Experience'
 import Skills from '@/components/Skills'
 import Education from '@/components/Education'
 import Contact from '@/components/Contact'
+import PageEffects from '@/components/PageEffects'
 
 export default function Home() {
   return (
     <>
       <a className="skip-link" href="#main">Skip to content</a>
+      <PageEffects />
       <div className="opening"><Navbar /></div>
       <main id="main">
         <div className="opening"><Hero /></div>

@@ -1,5 +1,36 @@
-import SectionLabel from './SectionLabel';
-const capabilities = [['⌘', 'Full Stack Development', 'End-to-end web and mobile application development with modern frameworks and best practices.'], ['↗', 'Backend Architecture', 'Scalable RESTful APIs, microservices, and cloud infrastructure design and implementation.'], ['⧉', 'Integration Engineering', 'Seamless third-party integrations, API design, and enterprise system connectivity solutions.'], ['⊞', 'Cloud & DevOps', 'AWS infrastructure, containerization, CI/CD pipelines, and automated deployment strategies.']];
+import { Cloud, Code2, Network, Server } from 'lucide-react'
+import SectionLabel from './SectionLabel'
+
+const capabilities = [
+  { Icon: Code2, title: 'Interfaces that make sense.', label: 'Web & mobile', copy: 'React, Next.js, and Android experiences that turn complex workflows into clear next steps.' },
+  { Icon: Server, title: 'Systems with a solid foundation.', label: 'Backend engineering', copy: 'APIs, authentication, and data models built around the way your application needs to work.' },
+  { Icon: Network, title: 'Everything, connected.', label: 'Integrations', copy: 'Connecting enterprise platforms, payments, real-time communication, and external APIs.' },
+  { Icon: Cloud, title: 'Ready for the real world.', label: 'Cloud & delivery', copy: 'AWS infrastructure, containers, and deployment pipelines that take an application into production.' },
+]
+
 export default function About() {
-    return <section id="about" className="section wrap"><SectionLabel number="01">About / The approach</SectionLabel><div className="editorial"><h2>Across the stack.<br />Focused on the whole.</h2><div className="body-copy"><p className="lead">I’m a software engineer building high-performance, scalable applications — connecting thoughtful interfaces with robust systems.</p><p>My work spans backend systems, frontend frameworks, cloud infrastructure, and mobile development. Across healthcare, pharmaceuticals, fintech, and enterprise solutions, I translate complex business requirements into user-centric technical implementations.</p><p>Currently at Sedin Technologies, I deliver production-grade applications with Python, Java, TypeScript, Kotlin, and cloud platforms. Clean code, architectural excellence, and seamless user experiences guide how I build.</p></div></div><div className="capabilities">{capabilities.map(([icon, title, copy]) => <article key={title}><span className="geometric" aria-hidden="true">{icon}</span><h3>{title}</h3><p>{copy}</p></article>)}</div></section>;
+  return (
+    <section id="about" className="section about-section wrap">
+      <SectionLabel number="01">The engineer behind the work</SectionLabel>
+      <div className="editorial">
+        <h2>Thoughtful interfaces.<br /><span>Serious engineering.</span></h2>
+        <div className="body-copy">
+          <p className="lead">I’m Jaswanth, a software engineer at Sedin Technologies. I connect the experience people see with the systems they depend on.</p>
+          <p>My background is in mechanical engineering. Today, that same curiosity about how things work shapes the web, mobile, and backend applications I build.</p>
+          <p>From hospital inventory to connected fleets, I work across the stack to turn complex requirements into software people can use.</p>
+          <a className="about-link text-link" href="#experience">A closer look at my experience <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div className="capabilities">
+        {capabilities.map(({ Icon, title, label, copy }, index) => (
+          <article className="capability-card" key={label}>
+            <div className="capability-top"><Icon size={23} strokeWidth={1.5} aria-hidden="true" /><span>0{index + 1}</span></div>
+            <p className="capability-label">{label}</p>
+            <h3>{title}</h3>
+            <p>{copy}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
 }

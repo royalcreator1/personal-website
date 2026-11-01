@@ -1,10 +1,42 @@
-import SectionLabel from './SectionLabel';
-import Link from 'next/link';
-import { getPresentation, orderedProjects, slugForProject } from '@/data/projects';
+import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
+import SectionLabel from './SectionLabel'
+import ProjectVisual from './ProjectVisual'
+import { getPresentation, orderedProjects, slugForProject } from '@/data/projects'
+
+const projectContext: Record<string, string> = {
+  mediscan: 'King’s College Hospital London · Dubai',
+  onboardiq: 'Sedin Technologies',
+  'efleet-ai': 'Connected mobility · Chargfy',
+  sedstart: 'Sedin Technologies',
+  'sales-tool-vertex-pharmaceuticals-boston': 'Vertex Pharmaceuticals · Boston',
+  'synergy-marine': 'Maritime communication',
+  'zivian-health': 'Healthcare infrastructure',
+}
+
 export default function Projects() {
-    return <section id="projects" className="section wrap"><SectionLabel number="02">Selected work</SectionLabel><div className="section-heading"><h2>Complex challenges.<br />Considered solutions.</h2><p>A selection of applications and systems<br />I’ve helped bring to production.</p></div><div className="project-list">{orderedProjects.map((project, i) => {
-            const p = getPresentation(project.name);
-            const category = p?.category || (project.name.startsWith('SALES') ? 'Pharmaceuticals' : project.name === 'SYNERGY MARINE' ? 'Maritime / Communication' : project.name === 'ZIVIAN HEALTH' ? 'Healthcare / Backend' : 'Enterprise / Web application');
-            return <article className={`project ${i < 4 ? 'featured' : 'archive'}`} key={project.name}>{p && <div className={`project-cover cover-${p.motif}`} aria-hidden="true"><div className="cover-top"><span>{p.category.split(' / ')[0]}</span><span>0{i + 1} / {project.year}</span></div><div className="cover-art"><i /><i /><i /><i /><i /></div><span className="cover-title">{p.title}</span><span className="cover-note">Concept illustration</span></div>}<div className="project-content"><p className="eyebrow">{category}<span>{project.year}</span></p><h3>{p?.title || project.name}</h3>{p?.title !== project.name && p && <p className="project-subtitle">{project.name.replace(p.title, '').replace(/^\s*-\s*/, '')}</p>}<p className="project-summary">{p?.summary || project.contribution[0]}</p><dl><div><dt>Role</dt><dd>{project.role}</dd></div><div><dt>Team / Location</dt><dd>{project.company} · {project.location}</dd></div><div><dt>Technologies</dt><dd>{project.tools}</dd></div></dl><Link className="project-link" href={`/work/${slugForProject(project.name)}`}>View project <span aria-hidden="true">↗</span></Link></div></article>;
-        })}</div></section>;
+  return (
+    <section id="projects" className="section projects-section wrap">
+      <SectionLabel number="02">Selected work</SectionLabel>
+      <div className="section-heading"><h2>Different challenges.<br /><span className="muted">The same care.</span></h2><p>Real systems, built for real people. A closer look at the work behind the interfaces.</p></div>
+      <div className="work-grid">
+        {orderedProjects.map((project, index) => {
+          const presentation = getPresentation(project.name)
+          const slug = slugForProject(project.name)
+          const title = presentation?.title ?? project.name
+          return (
+            <Link className={`work-card ${index < 2 ? 'work-card--lead' : ''}`} href={`/work/${slug}`} key={project.name} aria-label={`Explore ${title}`}>
+              <div className={`work-visual work-visual--${presentation?.motif ?? 'bars'}`}>
+                <div className="work-visual-meta"><span>{String(index + 1).padStart(2, '0')} / {presentation?.category.split(' / ')[0]}</span><span>Interface concept</span></div>
+                <ProjectVisual kind={presentation?.motif ?? 'bars'} />
+                <span className="work-open" aria-hidden="true"><ArrowUpRight size={21} /></span>
+              </div>
+              <div className="work-info"><div className="work-title-row"><h3>{title}</h3><span>{project.year}</span></div><p className="work-client">{projectContext[slug] ?? project.company}</p><p className="work-description">{presentation?.summary ?? project.contribution[0]}</p><div className="work-footer"><span>{project.role}</span><span className="work-explore">Explore project <ArrowUpRight size={14} aria-hidden="true" /></span></div></div>
+            </Link>
+          )
+        })}
+      </div>
+      <div className="work-endnote"><span>From the first interaction to the last API call.</span><a className="text-link" href="#contact">Have something in mind? <ArrowUpRight size={16} aria-hidden="true" /></a></div>
+    </section>
+  )
 }
