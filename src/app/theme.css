@@ -1,0 +1,86 @@
+/* The silver and graphite appearances share one type and spacing system. */
+:root {
+  color-scheme: light;
+  --surface: #eef0f4;
+  --surface-raised: #f5f7fb;
+  --accent: #344f73;
+  --subtle: #65758a;
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #edf1f7;
+  --paper: #101419;
+  --muted: #a9b4c3;
+  --line: #303b49;
+  --white: #1a222c;
+  --surface: #171e27;
+  --surface-raised: #1d2733;
+  --accent: #b4cbe7;
+  --subtle: #8e9eb4;
+}
+/* Only explicit switches animate; initial paint and route changes stay immediate. */
+html[data-theme-transition] *, html[data-theme-transition] *::before, html[data-theme-transition] *::after {
+  transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease, box-shadow 220ms ease, fill 220ms ease, stroke 220ms ease !important;
+}
+.header { grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); }
+.header-actions { display: flex; align-items: center; justify-self: end; gap: 12px; }
+.theme-toggle { position: relative; display: grid; place-items: center; flex: 0 0 44px; width: 44px; height: 44px; padding: 0; border: 1px solid #ffffff2e; border-radius: 50%; background: #ffffff06; color: inherit; }
+.theme-toggle:hover { background: #ffffff16; border-color: #ffffff55; }
+.theme-icon { position: absolute; transition: opacity 180ms ease; }
+.theme-icon-sun { opacity: 0; }
+html[data-theme="dark"] .theme-icon-sun { opacity: 1; }
+html[data-theme="dark"] .theme-icon-moon { opacity: 0; }
+html[data-theme-transition] .theme-icon { transition: opacity 180ms ease !important; }
+html[data-theme="light"] .header { color: var(--ink); background: #f4f6f9ba; border-color: #ffffffbf; box-shadow: 0 8px 32px #16202e12, inset 0 1px #fff9; }
+html[data-theme="light"] .header .header-cta { background: #171a1f; color: white; border-color: #171a1f; }
+html[data-theme="light"] .header .header-cta:hover { background: #3b4552; }
+html[data-theme="light"] .header .menu-trigger { border-color: #68778b55; }
+html[data-theme="light"] .header .theme-toggle, .header-floating .theme-toggle, .header-detail .theme-toggle { border-color: #bfcbd9; background: #ffffff26; }
+html[data-theme="light"] .header .theme-toggle:hover, .header-floating .theme-toggle:hover, .header-detail .theme-toggle:hover { background: #ffffffa3; border-color: #899bb1; }
+html[data-theme="dark"] .header-floating, html[data-theme="dark"] .header-detail { color: var(--ink); background: #151c25bd; border-color: #a8bbd129; box-shadow: 0 8px 32px #0003, inset 0 1px #ffffff09; }
+html[data-theme="dark"] .header-floating .theme-toggle, html[data-theme="dark"] .header-detail .theme-toggle { border-color: #a8bbd138; background: #ffffff04; }
+html[data-theme="dark"] .header-floating .theme-toggle:hover, html[data-theme="dark"] .header-detail .theme-toggle:hover { background: #ffffff0d; border-color: #a8bbd180; }
+html[data-theme="dark"] .header-floating .header-cta, html[data-theme="dark"] .header-detail .header-cta { background: #e7edf5; color: #101419; border-color: #e7edf5; }
+html[data-theme="dark"] .header-floating .header-cta:hover, html[data-theme="dark"] .header-detail .header-cta:hover { background: #c8d5e6; }
+html[data-theme="dark"] .header-floating .menu-trigger, html[data-theme="dark"] .header-detail .menu-trigger { border-color: #a8bbd138; }
+html[data-theme="dark"] dialog { background: #11171ff5; color: var(--ink); }
+html[data-theme="dark"] :focus-visible { outline-color: #9ebee4; }
+html[data-theme="dark"] ::selection { background: #8fa9c7; color: #080d14; }
+html[data-theme="dark"] .muted, html[data-theme="dark"] .editorial h2 > span { color: var(--subtle); }
+html[data-theme="dark"] .capabilities { background: var(--line); border-color: var(--line); }
+html[data-theme="dark"] .capability-card { background: var(--surface); }
+html[data-theme="dark"] .capability-top { color: var(--accent); }
+html[data-theme="dark"] .work-card:first-child { background: var(--surface); border-color: var(--line); }
+html[data-theme="dark"] .work-description, html[data-theme="dark"] .detail-copy { color: var(--muted); }
+html[data-theme="dark"] .role-badge { color: var(--accent); border-color: #42536a; }
+html[data-theme="dark"] .education-story-arrow { color: var(--accent); background: var(--surface); border-color: #3e5067; }
+html[data-theme="dark"] .education-story-link:hover .education-story-arrow { background: var(--surface-raised); border-color: #7c96b5; }
+html[data-theme="dark"] .student-activity-card, html[data-theme="dark"] .student-build-card { background: var(--surface); border-color: var(--line); }
+html[data-theme="dark"] .student-card-top, html[data-theme="dark"] .student-role { color: var(--accent); }
+html[data-theme="dark"] .student-activity-card ul, html[data-theme="dark"] .student-build-card ul { color: var(--muted); }
+html[data-theme="dark"] .student-build-meta, html[data-theme="dark"] .education-highlights-heading .eyebrow { color: var(--subtle); }
+html[data-theme="dark"] .education-rail-controls button { color: var(--accent); background: var(--surface); border-color: #42556e; }
+html[data-theme="dark"] .education-rail-controls button:hover:not(:disabled) { background: var(--surface-raised); border-color: #829bb9; }
+html[data-theme="dark"] .education-rail { scrollbar-color: #617996 #1d2733; }
+html[data-theme="dark"] .education-rail::-webkit-scrollbar-thumb { background: #617996; }
+html[data-theme="dark"] .education-rail::-webkit-scrollbar-track { background: #1d2733; }
+html[data-theme="dark"] .achievement-card { background: var(--surface); border-color: var(--line); box-shadow: 0 7px 16px #0002; }
+html[data-theme="dark"] .achievement-card:hover { border-color: #607b9d; }
+html[data-theme="dark"] .achievement-media { border-color: var(--line); background: #202c3a; }
+html[data-theme="dark"] .achievement-media--credential { background: linear-gradient(140deg,#202c3a,#18222f); }
+html[data-theme="dark"] .credential-illustration { color: var(--accent); }
+html[data-theme="dark"] .credential-caption, html[data-theme="dark"] .achievement-meta, html[data-theme="dark"] .achievement-issuer, html[data-theme="dark"] .achievement-id { color: var(--muted); }
+html[data-theme="dark"] .achievement-description { color: var(--muted); }
+html[data-theme="dark"] .achievement-id > span, html[data-theme="dark"] .achievement-link { color: var(--accent); }
+html[data-theme="dark"] .achievement-link { border-color: var(--line); }
+html[data-theme="dark"] .achievement-link:hover { color: var(--ink); }
+@media (max-width: 960px) {
+  .header-actions { gap: 10px; }
+}
+@media (max-width: 560px) {
+  html[data-theme="dark"] .work-card:first-child { background: transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme-transition] *, html[data-theme-transition] *::before, html[data-theme-transition] *::after { transition: none !important; }
+  html[data-theme-transition] .theme-icon { transition: none !important; }
+}

@@ -1,8 +1,7 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState } from 'react'
-
-type Theme = 'dark' | 'light'
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { themeStorageKey, type Theme } from '@/lib/theme'
 
 interface ThemeContextType {
   theme: Theme
@@ -12,33 +11,58 @@ interface ThemeContextType {
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('dark')
-  const [mounted, setMounted] = useState(false)
+  const [theme, setTheme] = useState<Theme>('light')
+  const explicitChoice = useRef(false)
+  const transitionTimer = useRef<ReturnType<typeof setTimeout>>()
 
-  useEffect(() => {
-    setMounted(true)
-    const savedTheme = localStorage.getItem('theme') as Theme | null
-    if (savedTheme) {
-      setTheme(savedTheme)
-    } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-      setTheme('light')
+  const applyTheme = useCallback((next: Theme, animate = false) => {
+    const root = document.documentElement
+    clearTimeout(transitionTimer.current)
+    if (animate && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      root.setAttribute('data-theme-transition', '')
+      transitionTimer.current = setTimeout(() => root.removeAttribute('data-theme-transition'), 240)
+    } else {
+      root.removeAttribute('data-theme-transition')
     }
+    root.dataset.theme = next
+    root.style.colorScheme = next
+    root.classList.toggle('dark', next === 'dark')
+    setTheme(next)
   }, [])
 
   useEffect(() => {
-    if (mounted) {
-      document.documentElement.classList.remove('dark', 'light')
-      document.documentElement.classList.add(theme)
-      localStorage.setItem('theme', theme)
+    const preference = window.matchMedia('(prefers-color-scheme: dark)')
+    try {
+      const saved = localStorage.getItem(themeStorageKey)
+      explicitChoice.current = saved === 'dark' || saved === 'light'
+    } catch {}
+    const initial = document.documentElement.dataset.theme
+    applyTheme(initial === 'dark' || initial === 'light' ? initial : preference.matches ? 'dark' : 'light')
+
+    const syncSystem = () => {
+      if (!explicitChoice.current) applyTheme(preference.matches ? 'dark' : 'light')
     }
-  }, [theme, mounted])
+    const syncStorage = (event: StorageEvent) => {
+      if (event.key !== themeStorageKey && event.key !== null) return
+      const saved = event.newValue
+      explicitChoice.current = saved === 'dark' || saved === 'light'
+      applyTheme(explicitChoice.current ? saved as Theme : preference.matches ? 'dark' : 'light')
+    }
+    preference.addEventListener('change', syncSystem)
+    window.addEventListener('storage', syncStorage)
+    return () => {
+      preference.removeEventListener('change', syncSystem)
+      window.removeEventListener('storage', syncStorage)
+      clearTimeout(transitionTimer.current)
+      document.documentElement.removeAttribute('data-theme-transition')
+    }
+  }, [applyTheme])
 
   const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark')
-  }
-
-  if (!mounted) {
-    return <>{children}</>
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'
+    explicitChoice.current = true
+    applyTheme(next, true)
+    try { localStorage.setItem(themeStorageKey, next) } catch {}
   }
 
   return (

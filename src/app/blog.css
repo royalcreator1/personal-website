@@ -144,3 +144,37 @@
   .writing-contact-body { flex-direction: column; align-items: start; gap: 24px; }
   .writing-contact-body h2 { font-size: 30px; }
 }
+
+/* Graphite reading surfaces keep the same editorial hierarchy in dark mode. */
+html[data-theme="dark"] .writing-card { background: var(--surface); border-color: var(--line); }
+html[data-theme="dark"] .writing-card:hover { background: var(--surface-raised); border-color: #53677f; }
+html[data-theme="dark"] .writing-card-media,
+html[data-theme="dark"] .writing-card-footer,
+html[data-theme="dark"] .article-cover { border-color: var(--line); }
+html[data-theme="dark"] .writing-card-category,
+html[data-theme="dark"] .article-header > .eyebrow { color: var(--accent); }
+html[data-theme="dark"] .writing-card-date,
+html[data-theme="dark"] .blog-back-link,
+html[data-theme="dark"] .article-meta,
+html[data-theme="dark"] .article-pagination span { color: var(--muted); }
+html[data-theme="dark"] .blog-back-link:hover { color: var(--ink); }
+html[data-theme="dark"] .article-subtitle { color: #bdc9d9; }
+html[data-theme="dark"] .article-prose { color: #d5dfec; }
+html[data-theme="dark"] .article-prose h2,
+html[data-theme="dark"] .article-prose h3,
+html[data-theme="dark"] .article-prose h4,
+html[data-theme="dark"] .article-prose strong { color: var(--ink); }
+html[data-theme="dark"] .article-prose a { color: var(--accent); text-decoration-color: #7896b9; }
+html[data-theme="dark"] .article-prose a:hover { color: #d1e2f8; text-decoration-color: currentColor; }
+html[data-theme="dark"] .article-prose blockquote { color: #b5c5da; border-left-color: #7896b9; }
+html[data-theme="dark"] .article-prose :not(pre) > code { background: #253244; color: #c5d9f1; }
+html[data-theme="dark"] .article-table-scroll { border-color: var(--line); scrollbar-color: #637d9d var(--surface); }
+html[data-theme="dark"] .article-prose th,
+html[data-theme="dark"] .article-prose td { border-bottom-color: var(--line); }
+html[data-theme="dark"] .article-prose thead th { background: #202e3f; color: #d9e7f8; }
+html[data-theme="dark"] .article-prose tbody th { background: #17212e; color: #c4d4e8; }
+html[data-theme="dark"] .article-contents-desktop { border-left-color: var(--line); }
+html[data-theme="dark"] .article-contents-title { color: var(--subtle); }
+html[data-theme="dark"] .article-contents-list a { color: var(--muted); }
+html[data-theme="dark"] .article-contents-list a:hover,
+html[data-theme="dark"] .article-contents-list a.is-active { color: var(--accent); }

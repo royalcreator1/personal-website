@@ -9,6 +9,7 @@ A personal engineering studio: graphite black, cool silver, blue-gray paper, cle
 | Area | Design decision |
 | --- | --- |
 | Navigation | A fixed translucent glass surface, centered desktop links, a direct contact action, current-section feedback, and a full-screen mobile dialog. |
+| Appearance | A compact sun/moon button sits left of “Let’s talk” on desktop and left of “Menu” on smaller screens. Silver light surfaces and graphite dark surfaces share the same typography, layout, and restrained glass header. |
 | Opening | An expressive two-line introduction, concise positioning, and the original image on a contained stage. Both the car and aircraft remain visible. |
 | About | A personal explanation of the move from mechanical engineering to software, followed by four concrete capabilities. |
 | Selected work | Mediscan opens as a larger feature. The other six projects form balanced pairs on desktop, with a consistent single-column layout on phones. |
@@ -19,7 +20,7 @@ A personal engineering studio: graphite black, cool silver, blue-gray paper, cle
 | Education | The institution overview keeps the Amrita IQAC link and uses a single-line school name where space permits. An arrow link opens a dedicated student-life page. |
 | Contact | A clear invitation, direct contact channels, and a project-focused form with pending/error feedback and focus management. |
 | Motion | Subtle entrances, preview hover movement, and a scroll-progress line where supported. Reduced motion is respected; all project content is visible without JavaScript. |
-| Maintainability | Replaced accumulated CSS overrides with one stylesheet and one set of spacing/type tokens. No new UI dependency was needed. |
+| Maintainability | Shared spacing and type tokens keep the portfolio and dedicated page styles consistent. No new UI dependency was needed. |
 | Hero delivery | Uses Next Image with responsive source selection, priority loading, and modern image format optimization. |
 
 ## Verification
@@ -43,6 +44,14 @@ The AMEYA 25+ team and BAJA 20+ event team remain distinct. The Altair team’s 
 Student-life Chromium checks covered 320, 390, 560, 768, 1024, 1440, and 1920 CSS pixels, plus 844 × 390 landscape. The homepage arrow opened the page, chapter links cleared the fixed header, all six recognition cards were present, rail controls and keyboard arrows worked, and thumbnails loaded. The institution name stayed on one line from 560 pixels upward and wrapped on smaller screens. No page overflow or runtime exceptions were found. Screenshots of the page, activities, engineering cards, and new credentials were reviewed at 390 and 1440 pixels. These are Chromium checks; physical touch devices and other browser engines were not tested.
 
 The sales project is now named **NBX - SALES TOOL**, with **Next Best Experience** explained in the summary and interface concept. Vertex Pharmaceuticals remains the client context, and `/work/sales-tool-vertex-pharmaceuticals-boston` remains stable. The production build, TypeScript, navigation checks, and full Blog content-integrity checks passed after the changes.
+
+## Light and dark appearance
+
+The first visit follows the device’s color preference. An explicit choice is saved as `portfolio-theme` in local storage and takes priority over later device changes. A small document-head script applies the preference before the body appears, including direct article and project visits. The root provider keeps the setting through route navigation and follows changes from other tabs. If storage is unavailable, the toggle still works for the current visit.
+
+Explicit switches use a 220 ms color transition and a short icon crossfade, with no page movement or overlay. Reduced-motion preferences disable the transition. The original dark hero artwork, technical previews, code blocks, skills panel, and contact footer retain their authored appearance. Reading surfaces, cards, metadata, borders, and glass navigation adapt to the selected theme. No dependency was added.
+
+Chromium checks covered both modes at 320, 390, 768, 960, 1024, 1440, and 1920 CSS pixels, plus 844 × 390 landscape, across home, Blog index, article, student-life, and project detail views. The toggle has a 44 px target, a stable accessible name and pressed state, and native keyboard activation. Checks verified first-body appearance, saved preference after reload, live system changes without an override, invalid and blocked storage, cross-tab updates, reduced motion, mobile menu behavior, centered desktop navigation, and no horizontal overflow. All six articles retained their complete source examples. Sampled dark-mode text on home, Blog index, article, and student-life surfaces measured at least 7.99:1 foreground contrast. No hydration or runtime errors were observed. These checks do not cover Safari, Firefox, or physical devices.
 
 ## Highest-value future additions
 

@@ -72,3 +72,23 @@
   .student-chapter-label { align-items: start; }
   .student-chapter-label > span { max-width: 48%; text-align: right; }
 }
+
+/* Keep the college archive in the same silver-on-graphite palette as the portfolio. */
+html[data-theme="dark"] .student-back-link { color: var(--accent); }
+html[data-theme="dark"] .student-back-link:hover { color: var(--ink); }
+html[data-theme="dark"] .student-page-heading > .eyebrow,
+html[data-theme="dark"] .student-chapter-label,
+html[data-theme="dark"] .student-group-heading > p { color: var(--subtle); }
+html[data-theme="dark"] .student-page h1 > span { color: var(--subtle); }
+html[data-theme="dark"] .student-page-lede { color: #bdc9d9; }
+html[data-theme="dark"] .student-page-intro > p,
+html[data-theme="dark"] .student-page-end > p { color: var(--muted); }
+html[data-theme="dark"] .student-chapters a,
+html[data-theme="dark"] .student-chapter,
+html[data-theme="dark"] .student-page-end { border-color: var(--line); }
+html[data-theme="dark"] .student-chapters a > span { color: var(--subtle); }
+html[data-theme="dark"] .student-chapters a > svg { color: var(--accent); }
+html[data-theme="dark"] .student-chapters a:hover { color: var(--accent); }
+html[data-theme="dark"] .student-page .student-activity-card,
+html[data-theme="dark"] .student-page .student-build-card { background: var(--surface); }
+html[data-theme="dark"] .student-era { box-shadow: 0 12px 35px #00000026; }

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { ArrowUpRight } from 'lucide-react'
+import ThemeToggle from './ThemeToggle'
 
 const links = [
   ['About', 'about'],
@@ -69,11 +70,14 @@ export default function Navbar() {
       <nav aria-label="Main navigation">
         {links.filter(([, id]) => id !== 'contact').map(([label, id]) => <a key={id} href={navigationHref(id)} aria-current={currentSection === id ? 'location' : undefined}>{label}</a>)}
       </nav>
-      <a className="header-cta" href={sectionHref('contact')}>Let’s talk <ArrowUpRight size={15} aria-hidden="true" /></a>
-      <button ref={trigger} className="menu-trigger" onClick={() => setOpen(true)}
-        aria-expanded={open} aria-controls="mobile-menu">
-        Menu <span aria-hidden="true">＋</span>
-      </button>
+      <div className="header-actions">
+        <ThemeToggle />
+        <a className="header-cta" href={sectionHref('contact')}>Let’s talk <ArrowUpRight size={15} aria-hidden="true" /></a>
+        <button ref={trigger} className="menu-trigger" onClick={() => setOpen(true)}
+          aria-expanded={open} aria-controls="mobile-menu">
+          Menu <span aria-hidden="true">＋</span>
+        </button>
+      </div>
     </header>
       <dialog id="mobile-menu" aria-label="Navigation menu" ref={dialog}
         onCancel={event => { event.preventDefault(); close() }} onClose={() => setOpen(false)}>
