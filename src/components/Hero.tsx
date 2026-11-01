@@ -7,7 +7,10 @@ export default function Hero() {
     <section id="home" className="hero wrap">
       <div className="hero-intro">
         <div>
-          <p className="eyebrow hero-byline"><span className="status-dot" /> Jaswanth Chengalapttu <span className="byline-divider">/</span> Software engineer</p>
+          <div className="hero-identity">
+            <p className="hero-name">Jaswanth Chengalapttu</p>
+            <p className="hero-role"><span className="status-dot" aria-hidden="true" />Software engineer</p>
+          </div>
           <h1>Ideas into software.<br /><span>Engineered to last.</span></h1>
         </div>
         <div className="hero-aside">
