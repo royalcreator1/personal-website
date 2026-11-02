@@ -9,13 +9,14 @@ export const profile = {
   experience: [
     {
       company: "SEDIN TECHNOLOGIES",
-      location: "Chennai, IN",
+      location: "Bangalore, IN",
       role: "Software Engineer",
       period: "2023-Present",
       achievements: [
-        "Development of RESTful APIs using Django Framework, Spring Boot, and Node.js, reducing response time and enabling seamless integration with front-end applications.",
-        "Skilled in payment gateway integration (Stripe) and chat functionality using third-party APIs (Sendbird Chat). Proven expertise in seamlessly implementing these features for enhanced application functionality.",
-        "WebRTC with Dynamic Adaptive Bitrate was integrated to maintain smooth video calls and reduce call drop-offs, even in low-bandwidth conditions."
+        "Developed RESTful backend services using Django REST Framework, Spring Boot, and Node.js, supporting business workflows, role-based access, and integration with frontend applications and external platforms.",
+        "Implemented Stripe payment workflows covering user onboarding, subscriptions, invoicing, and webhooks, alongside Sendbird messaging, Twilio two-factor authentication, and provider verification integrations.",
+        "Built WebRTC signalling and calling features across Python, Node.js, and React Native, applying adaptive bitrate handling to support ship-to-shore communication in low-bandwidth environments.",
+        "Developed Android inventory workflows integrated with Oracle Fusion, covering barcode scanning, purchase and transfer order receiving, goods receipt creation, secure sign-on, and transaction validation."
       ]
     },
     {
@@ -24,8 +25,9 @@ export const profile = {
       role: "MLE Full Stack Engineer (Contractor from Sedin Technologies)",
       period: "2024-2025",
       achievements: [
-        "Delivered end-to-end solutions for a highly dynamic and data-driven application, including API development, UI implementation, and testing.",
-        "Developed RESTful APIs for a Pharma application using Python, ensuring robust backend architecture and seamless data integration."
+        "Owned end-to-end development of NBX — Sales Tool (Next Best Experience) for Vertex Pharmaceuticals, translating requirements into interface design, backend functionality, testing, and deployment.",
+        "Designed and refined a multipage Streamlit application, connecting pharmaceutical sales workflows with Python backend components and data access using SQLAlchemy and Snowflake.",
+        "Managed Bitbucket and AWS DevOps deployment pipelines, coordinating frontend and backend changes through application builds, releases, and ongoing feature development."
       ]
     },
     {
@@ -34,8 +36,8 @@ export const profile = {
       role: "Junior Software Engineer",
       period: "2022-2023",
       achievements: [
-        "Engineered web application leveraging the Django Framework's Model-View-Template (MVT) architecture, facilitating streamlined development and scalability improvements.",
-        "Produced high-quality code and collaborated effectively with cross-functional teams to achieve successful project outcomes."
+        "Developed Django web applications using the Model–View–Template architecture, structuring data models, application logic, and templates to support maintainable feature development.",
+        "Collaborated with cross-functional teams to implement application features, translate project requirements into code, and maintain consistent code quality throughout development."
       ]
     }
   ],

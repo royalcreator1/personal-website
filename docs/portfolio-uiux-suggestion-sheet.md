@@ -53,6 +53,16 @@ Explicit switches use a 220 ms color transition and a short icon crossfade, with
 
 Chromium checks covered both modes at 320, 390, 768, 960, 1024, 1440, and 1920 CSS pixels, plus 844 × 390 landscape, across home, Blog index, article, student-life, and project detail views. The toggle has a 44 px target, a stable accessible name and pressed state, and native keyboard activation. Checks verified first-body appearance, saved preference after reload, live system changes without an override, invalid and blocked storage, cross-tab updates, reduced motion, mobile menu behavior, centered desktop navigation, and no horizontal overflow. All six articles retained their complete source examples. Sampled dark-mode text on home, Blog index, article, and student-life surfaces measured at least 7.99:1 foreground contrast. No hydration or runtime errors were observed. These checks do not cover Safari, Firefox, or physical devices.
 
+## Hero capability artwork
+
+The existing Interfaces, Systems, and Delivery tabs share the same contained hero frame. Interfaces shows a silver CAD/planning study of the sedan and aircraft; Systems shows a grounded engineering and maintenance scene, with both vehicles supported on one continuous hangar floor; Delivery uses the original `public/engineering-royal.png` without editing, replacing, or re-encoding it. The companion assets and full built-in image-generation prompts are documented in [hero-image-prompts.md](hero-image-prompts.md).
+
+The sequence advances from Interfaces to Systems after five seconds, then to Delivery after another five seconds and stops. Selecting an earlier tab, including reselecting the current tab, begins a fresh five-second dwell. Selecting Delivery stops immediately. Image changes use a restrained crossfade, disabled for reduced-motion preferences. The surrounding copy, layout, tab styling, and image masks stay unchanged.
+
+The countdown pauses when the page is hidden, the hero is out of view, or keyboard focus is reading panel content/the project link. Tab-button focus and hover do not pause a manually started countdown. Returning to the scene starts a fresh dwell; automatic progression never moves keyboard focus. Image layers use responsive Next Image sources, with the first image prioritized and the others loaded eagerly to prepare subsequent scenes.
+
+Real-time Chromium checks verified the five-second forward progression, stopping at Delivery, manual restart from Systems, reselecting Interfaces, native arrow-key selection, preserved focus, and offscreen pause/resume. Layout checks covered 320, 390, 560, 768, 1024, 1440, and 1920 CSS pixels, plus 844 × 390 landscape. All three assets loaded, each selected tab matched its image, the original 1672:941 frame stayed contained, and tab changes did not alter stage height or create horizontal overflow. Screenshots at 390 and 1440 pixels were reviewed. Reduced motion disabled the image fade while preserving the requested sequence. No runtime errors were observed. Production build, TypeScript, navigation, and Blog integrity checks passed. The original image SHA-256 still matches the value in the artwork notes.
+
 ## Highest-value future additions
 
 1. Replace interface concepts with approved product screenshots or recordings as permission becomes available. Keep confidential information out of public examples.

@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { ArrowUpRight, Code2 } from 'lucide-react'
 
 const capabilities = [
@@ -9,8 +9,13 @@ const capabilities = [
   { label: 'Delivery', number: '03', title: 'From development to production.', description: 'Cloud infrastructure and deployment workflows that support the application beyond launch.', tools: ['AWS', 'Docker', 'CI/CD'] },
 ]
 
-export default function HeroWorkbench() {
-  const [selected, setSelected] = useState(0)
+type HeroWorkbenchProps = {
+  selected: number
+  onSelect: (index: number) => void
+  onReadingChange: (reading: boolean) => void
+}
+
+export default function HeroWorkbench({ selected, onSelect, onReadingChange }: HeroWorkbenchProps) {
   const tabs = useRef<HTMLDivElement>(null)
 
   function move(event: React.KeyboardEvent<HTMLButtonElement>, index: number) {
@@ -19,7 +24,7 @@ export default function HeroWorkbench() {
         : event.key === 'Home' ? 0 : event.key === 'End' ? capabilities.length - 1 : null
     if (next === null) return
     event.preventDefault()
-    setSelected(next)
+    onSelect(next)
     tabs.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]')[next]?.focus()
   }
 
@@ -27,17 +32,17 @@ export default function HeroWorkbench() {
     <aside className="hero-workbench" aria-label="Explore my engineering capabilities">
       <div className="workbench-heading"><span><Code2 size={15} aria-hidden="true" /> How I build</span><span>End to end</span></div>
       <div className="workbench-tabs" role="tablist" aria-label="Engineering focus" ref={tabs}>
-        {capabilities.map((capability, index) => <button key={capability.label} type="button" role="tab" id={`focus-tab-${index}`} aria-controls={`focus-panel-${index}`} aria-selected={selected === index} tabIndex={selected === index ? 0 : -1} onClick={() => setSelected(index)} onKeyDown={event => move(event, index)}>{capability.label}</button>)}
+        {capabilities.map((capability, index) => <button key={capability.label} type="button" role="tab" id={`focus-tab-${index}`} aria-controls={`focus-panel-${index}`} aria-selected={selected === index} tabIndex={selected === index ? 0 : -1} onClick={() => onSelect(index)} onKeyDown={event => move(event, index)}>{capability.label}</button>)}
       </div>
       <div className="workbench-panels">{capabilities.map((capability, index) => (
-        <div className="workbench-panel" key={capability.label} role="tabpanel" id={`focus-panel-${index}`} aria-labelledby={`focus-tab-${index}`} hidden={selected !== index} aria-hidden={selected !== index} tabIndex={selected === index ? 0 : -1}>
+        <div className="workbench-panel" key={capability.label} role="tabpanel" id={`focus-panel-${index}`} aria-labelledby={`focus-tab-${index}`} hidden={selected !== index} aria-hidden={selected !== index} tabIndex={selected === index ? 0 : -1} onFocus={() => onReadingChange(true)} onBlur={() => onReadingChange(false)}>
           <span className="workbench-index">{capability.number} / {capability.label}</span>
           <h2>{capability.title}</h2>
           <p>{capability.description}</p>
           <ul aria-label="Technologies">{capability.tools.map(tool => <li key={tool}>{tool}</li>)}</ul>
         </div>
       ))}</div>
-      <a className="workbench-link" href="#projects">See it in the work <ArrowUpRight size={16} aria-hidden="true" /></a>
+      <a className="workbench-link" href="#projects" onFocus={() => onReadingChange(true)} onBlur={() => onReadingChange(false)}>See it in the work <ArrowUpRight size={16} aria-hidden="true" /></a>
     </aside>
   )
 }
